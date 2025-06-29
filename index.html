@@ -2,13 +2,12 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <title>Harith Kavish</title>
-    <link rel="stylesheet" href="style.css" />
-
-    <!-- ✅ Schema.org WebSite definition -->
+    <link rel="stylesheet" href="style.css">
+    <!-- ✅ Schema.org JSON-LD Metadata -->
     <script type="application/ld+json">
     {
     "@context": "https://schema.org",
@@ -22,52 +21,42 @@
     },
     "description": "A gateway to projects, tools, APIs, and profiles by Harith Kavish."
     }
-  </script>
+    </script>
 </head>
 
 <body>
     <header>
-        <h1 id="site-title">Harith Kavish</h1>
+        <h1> Harith Kavish</h1>
     </header>
-
     <main>
-        <section class="main-center" aria-label="Main Controls">
+        <div class="main-center">
             <div class="center-buttons">
-                <a href="https://harithkavish.github.io/HarithKavish/" class="portfolio-btn" id="about-link">About
-                    Me</a>
-
+                <a href="https://harithkavish.github.io/HarithKavish/" class="portfolio-btn">About Me</a>
                 <button class="websites-toggle-btn" onclick="toggleWebsites(event)">My Websites</button>
-                <div class="footer-buttons websites-hidden" id="websitesSection" aria-label="My Projects">
-                    <article class="project-entry" id="skinnet">
-                        <a href="https://harithkavish.github.io/SkinNet-Analyzer/" class="footer-btn">SkinNet
-                            Analyzer</a>
-                    </article>
-                    <!-- More project links will go here -->
+                <div class="footer-buttons websites-hidden" id="websitesSection">
+                    <a href="https://harithkavish.github.io/SkinNet-Analyzer/" target="_blank"
+                        class="footer-btn">SkinNet Analyzer</a>
+                    <!-- Add more website links here as needed -->
                 </div>
-
-                <button class="connect-toggle-btn" onclick="toggleConnect(event)">Connect with Me</button>
-                <div class="footer-buttons connect-hidden" id="connectSection" aria-label="Social Media">
-                    <a href="https://www.instagram.com/harithkavish/" class="footer-btn">Instagram</a>
-                    <a href="https://x.com/harithkavish" class="footer-btn">X</a>
-                    <a href="https://github.com/HarithKavish" class="footer-btn">GitHub</a>
-                    <a href="https://www.facebook.com/harithkavish" class="footer-btn">Facebook</a>
-                    <a href="https://huggingface.co/harithkavish" class="footer-btn">HuggingFace</a>
-                    <a href="https://www.youtube.com/@harithkavish" class="footer-btn">YouTube</a>
-                    <a href="https://www.linkedin.com/in/harithkavish/" class="footer-btn">LinkedIn</a>
-                    <a href="https://hub.docker.com/u/harithkavish" class="footer-btn">DockerHub</a>
-                    <a href="https://discord.com/users/harithkavish" class="footer-btn">Discord</a>
+                <button class="connect-toggle-btn" onclick="toggleConnect(event)">Connect with me</button>
+                <div class="footer-buttons connect-hidden" id="connectSection">
+                    <a href="https://www.instagram.com/harithkavish/" target="_blank" class="footer-btn">Instagram</a>
+                    <a href="https://x.com/harithkavish" target="_blank" class="footer-btn">X</a>
+                    <a href="https://github.com/HarithKavish" target="_blank" class="footer-btn">Github</a>
+                    <a href="https://www.facebook.com/harithkavish" target="_blank" class="footer-btn">Facebook</a>
+                    <a href="https://huggingface.co/harithkavish" target="_blank" class="footer-btn">Huggingface</a>
+                    <a href="https://www.youtube.com/@harithkavish" target="_blank" class="footer-btn">Youtube</a>
+                    <a href="https://www.linkedin.com/in/harithkavish/" target="_blank" class="footer-btn">LinkedIn</a>
+                    <a href="https://hub.docker.com/u/harithkavish" target="_blank" class="footer-btn">DockerHub</a>
+                    <a href="https://discord.com/users/harithkavish" target="_blank" class="footer-btn">Discord</a>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
-
     <footer>
-        <p>
-            &copy; 2025 Harith Kavish • All rights reserved • Built with 💻 HTML/CSS • Hosted on
-            <a href="https://pages.github.com" target="_blank" class="gh-pages-link">GitHub Pages</a>
-        </p>
+        <p>&copy; 2025 Harith Kavish • All rights reserved • Built with 💻 HTML/CSS • Hosted on<a
+                href="https://pages.github.com" target="_blank" class="gh-pages-link">GitHub Pages</a></p>
     </footer>
-
     <script src="script.js"></script>
 </body>
 
