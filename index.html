@@ -14,29 +14,27 @@
         <h1> Harith Kavish</h1>
     </header>
     <main>
-        <!-- <p>Welcome to my personal homepage!</p> -->
         <div class="main-center">
             <div class="center-buttons">
-                <a href="" class="portfolio-btn">My Portfolio</a>
-                <div class="dropdown">
-                    <a href="#" class="portfolio-btn dropdown-toggle" onclick="toggleDropdown(event)">My Websites</a>
-                    <div class="dropdown-menu">
-                        <a href="https://harithkavish.github.io/SkinNet-Analyzer/" target="_blank">SkinNet Analyzer</a>
-                        <!-- <a href="https://site2.example.com" target="_blank">Site 2</a> -->
-                        <!-- <a href="https://site3.example.com" target="_blank">Site 3</a> -->
-                    </div>
+                <a href="https://harithkavish.github.io/HarithKavish/" class="portfolio-btn">About Me</a>
+                <button class="websites-toggle-btn" onclick="toggleWebsites(event)">My Websites</button>
+                <div class="footer-buttons websites-hidden" id="websitesSection">
+                    <a href="https://harithkavish.github.io/SkinNet-Analyzer/" target="_blank"
+                        class="footer-btn">SkinNet Analyzer</a>
+                    <!-- Add more website links here as needed -->
                 </div>
-            </div>
-            <div class="footer-buttons">
-                <a href="https://www.instagram.com/harithkavish/" target="_blank" class="footer-btn">Instagram</a>
-                <a href="https://x.com/harithkavish" target="_blank" class="footer-btn">X</a>
-                <a href="https://github.com/HarithKavish" target="_blank" class="footer-btn">Github</a>
-                <a href="https://www.facebook.com/harithkavish" target="_blank" class="footer-btn">Facebook</a>
-                <a href="https://huggingface.co/harithkavish" target="_blank" class="footer-btn">Huggingface</a>
-                <a href="https://www.youtube.com/@harithkavish" target="_blank" class="footer-btn">Youtube</a>
-                <a href="https://www.linkedin.com/in/harithkavish/" target="_blank" class="footer-btn">LinkedIn</a>
-                <a href="https://hub.docker.com/u/harithkavish" target="_blank" class="footer-btn">DockerHub</a>
-                <a href="https://discord.com/users/harithkavish" target="_blank" class="footer-btn">Discord</a>
+                <button class="connect-toggle-btn" onclick="toggleConnect(event)">Connect with me</button>
+                <div class="footer-buttons connect-hidden" id="connectSection">
+                    <a href="https://www.instagram.com/harithkavish/" target="_blank" class="footer-btn">Instagram</a>
+                    <a href="https://x.com/harithkavish" target="_blank" class="footer-btn">X</a>
+                    <a href="https://github.com/HarithKavish" target="_blank" class="footer-btn">Github</a>
+                    <a href="https://www.facebook.com/harithkavish" target="_blank" class="footer-btn">Facebook</a>
+                    <a href="https://huggingface.co/harithkavish" target="_blank" class="footer-btn">Huggingface</a>
+                    <a href="https://www.youtube.com/@harithkavish" target="_blank" class="footer-btn">Youtube</a>
+                    <a href="https://www.linkedin.com/in/harithkavish/" target="_blank" class="footer-btn">LinkedIn</a>
+                    <a href="https://hub.docker.com/u/harithkavish" target="_blank" class="footer-btn">DockerHub</a>
+                    <a href="https://discord.com/users/harithkavish" target="_blank" class="footer-btn">Discord</a>
+                </div>
             </div>
         </div>
     </main>
