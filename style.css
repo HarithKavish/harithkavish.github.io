@@ -138,17 +138,29 @@ footer {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.13), 0 1.5px 4px rgba(0, 0, 0, 0.10);
     cursor: pointer;
     display: inline-block;
+    position: relative;
 }
 
-.connect-toggle-btn:hover,
-.connect-toggle-btn:focus,
-.websites-toggle-btn:hover,
-.websites-toggle-btn:focus {
-    background: #f4f4f9;
-    color: #222;
-    transform: translateY(-4px) scale(1.08);
-    border-color: #38bdf8;
-    box-shadow: 0 8px 24px rgba(56, 189, 248, 0.18), 0 1.5px 4px rgba(0, 0, 0, 0.10);
+.connect-toggle-btn::before,
+.websites-toggle-btn::before {
+    content: '>';
+    position: absolute;
+    left: 0.3em;
+    top: 50%;
+    font-size: 1.1em;
+    color: #38bdf8;
+    opacity: 0;
+    transform: translateY(-50%);
+    transition: opacity 0.2s, color 0.2s;
+    pointer-events: none;
+    display: block;
+}
+
+.connect-toggle-btn:hover::before,
+.connect-toggle-btn:focus::before,
+.websites-toggle-btn:hover::before,
+.websites-toggle-btn:focus::before {
+    opacity: 1;
 }
 
 .websites-hidden {
@@ -175,4 +187,74 @@ footer {
 .connect-hidden {
     box-shadow: none !important;
     background: transparent !important;
+}
+
+.external-link-btn {
+    position: relative;
+}
+
+.external-link-btn::before {
+    content: '\2197';
+    /* Unicode for ↗ */
+    position: absolute;
+    right: 0.1em;
+    top: -0.4em;
+    font-size: 1.3em;
+    color: #38bdf8;
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s;
+    pointer-events: none;
+    display: block;
+}
+
+.external-link-btn:hover::before,
+.external-link-btn:focus::before {
+    opacity: 1;
+}
+
+.footer-btn {
+    position: relative;
+}
+
+.footer-btn::before {
+    content: '\2197';
+    /* Unicode for ↗ */
+    position: absolute;
+    right: 0.1em;
+    top: -0.4em;
+    font-size: 1.3em;
+    color: #38bdf8;
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s;
+    pointer-events: none;
+    display: block;
+}
+
+.footer-btn:hover::before,
+.footer-btn:focus::before {
+    opacity: 1;
+}
+
+.status-dot {
+    display: inline-block;
+    width: 0.7em;
+    height: 0.7em;
+    border-radius: 50%;
+    margin-right: 0.5em;
+    vertical-align: middle;
+    background: #bbb;
+    box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.12);
+    transition: background 0.2s;
+}
+
+.status-dot.online {
+    background: #22c55e;
+}
+
+.status-dot.offline {
+    background: #ef4444;
+}
+
+.status-dot.unknown {
+    background: #bbb;
 }

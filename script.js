@@ -43,3 +43,36 @@ function toggleConnect(event) {
         }
     }
 }
+
+// Check SkinNet Analyzer backend status and update dot
+function updateSkinNetStatus() {
+    const dot = document.getElementById('skinnet-status-dot');
+    if (!dot) return;
+    dot.className = 'status-dot unknown';
+    fetch('https://skinnet-analyzer-backend-latest.onrender.com/api/status', { method: 'GET', mode: 'cors' })
+        .then(r => {
+            if (!r.ok) throw new Error('Network response was not ok');
+            return r.json();
+        })
+        .then(data => {
+            if (data && typeof data.status === 'string') {
+                const status = data.status.trim().toLowerCase();
+                console.log('SkinNet Analyzer status:', status); // Log status for debugging
+                if (status === 'online') {
+                    dot.className = 'status-dot online';
+                } else if (status === 'offline') {
+                    dot.className = 'status-dot offline';
+                } else {
+                    dot.className = 'status-dot unknown';
+                }
+            } else {
+                console.log('SkinNet Analyzer status: unknown (invalid response)', data);
+                dot.className = 'status-dot unknown';
+            }
+        })
+        .catch((err) => {
+            console.log('SkinNet Analyzer status: unknown (fetch error)', err);
+            dot.className = 'status-dot unknown';
+        });
+}
+window.addEventListener('DOMContentLoaded', updateSkinNetStatus);

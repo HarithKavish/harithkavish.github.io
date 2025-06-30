@@ -31,11 +31,15 @@
     <main>
         <div class="main-center">
             <div class="center-buttons">
-                <a href="https://harithkavish.github.io/HarithKavish/" class="portfolio-btn">About Me</a>
-                <button class="websites-toggle-btn" onclick="toggleWebsites(event)">My Websites</button>
+                <a href="https://harithkavish.github.io/HarithKavish/" class="portfolio-btn external-link-btn">About
+                    Me</a>
+                <button class="websites-toggle-btn" onclick="toggleWebsites(event)">My Fullstack Projects</button>
                 <div class="footer-buttons websites-hidden" id="websitesSection">
-                    <a href="https://harithkavish.github.io/SkinNet-Analyzer/" target="_blank"
-                        class="footer-btn">SkinNet Analyzer</a>
+                    <a href="https://harithkavish.github.io/SkinNet-Analyzer/" target="_blank" class="footer-btn"
+                        id="skinnet-btn">
+                        <span class="status-dot" id="skinnet-status-dot"></span>
+                        SkinNet Analyzer
+                    </a>
                     <!-- Add more website links here as needed -->
                 </div>
                 <button class="connect-toggle-btn" onclick="toggleConnect(event)">Connect with me</button>
@@ -54,8 +58,9 @@
         </div>
     </main>
     <footer>
-        <p>&copy; 2025 Harith Kavish • All rights reserved • Built with 💻 HTML/CSS • Hosted on<a
-                href="https://pages.github.com" target="_blank" class="gh-pages-link">GitHub Pages</a></p>
+        <p>&copy; 2025 Harith Kavish • All rights reserved • Built with 💻 HTML/CSS • Hosted on
+            <a href="https://pages.github.com" target="_blank" class="gh-pages-link">GitHub Pages</a>
+        </p>
     </footer>
     <script src="script.js"></script>
 </body>
