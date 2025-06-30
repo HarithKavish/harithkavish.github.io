@@ -70,12 +70,9 @@ main {
 }
 
 .portfolio-btn:hover,
-.portfolio-btn:focus,
 .footer-btn:hover,
 .connect-toggle-btn:hover,
-.connect-toggle-btn:focus,
-.websites-toggle-btn:hover,
-.websites-toggle-btn:focus {
+.websites-toggle-btn:hover {
     background: #f4f4f9;
     color: #222;
     transform: translateY(-4px) scale(1.08);
@@ -150,16 +147,22 @@ footer {
     font-size: 1.1em;
     color: #38bdf8;
     opacity: 0;
-    transform: translateY(-50%);
-    transition: opacity 0.2s, color 0.2s;
+    transform: translateY(-50%) rotate(0deg);
+    transition: opacity 0.2s, color 0.2s, transform 0.2s;
     pointer-events: none;
     display: block;
 }
 
 .connect-toggle-btn:hover::before,
-.connect-toggle-btn:focus::before,
-.websites-toggle-btn:hover::before,
-.websites-toggle-btn:focus::before {
+.websites-toggle-btn:hover::before {
+    opacity: 1;
+}
+
+.connect-toggle-btn.expanded::before,
+.websites-toggle-btn.expanded::before {
+    content: '\2228';
+    /* Unicode for logical OR, looks like a wide down arrow */
+    transform: translateY(-50%) rotate(0deg);
     opacity: 1;
 }
 

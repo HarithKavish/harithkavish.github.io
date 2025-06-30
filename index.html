@@ -33,7 +33,13 @@
             <div class="center-buttons">
                 <a href="https://harithkavish.github.io/HarithKavish/" class="portfolio-btn external-link-btn">About
                     Me</a>
-                <button class="websites-toggle-btn" onclick="toggleWebsites(event)">My Fullstack Projects</button>
+                <button class="websites-toggle-btn" onclick="toggleWebsites(event)" id="websitesToggleBtn">My Fullstack
+                    Projects</button>
+                <div id="skinnet-status-info" style="display:none;">
+                    <span class="status-dot online" style="margin-right:0.3em;"></span>Online &nbsp;
+                    <span class="status-dot offline" style="margin-right:0.3em;"></span>Offline &nbsp;
+                    <span class="status-dot unknown" style="margin-right:0.3em;"></span>Not Reachable
+                </div>
                 <div class="footer-buttons websites-hidden" id="websitesSection">
                     <a href="https://harithkavish.github.io/SkinNet-Analyzer/" target="_blank" class="footer-btn"
                         id="skinnet-btn">

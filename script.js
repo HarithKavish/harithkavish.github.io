@@ -8,22 +8,36 @@ function toggleSection(sectionId) {
 
 function toggleConnect(event) {
     event.preventDefault();
-    const connectSection = document.getElementById('connectSection');
-    if (connectSection) {
-        connectSection.classList.toggle('connect-hidden');
+    const btn = event.currentTarget;
+    const section = document.getElementById('connectSection');
+    if (section && btn) {
+        section.classList.toggle('connect-hidden');
+        if (!section.classList.contains('connect-hidden')) {
+            sortConnectButtons();
+            btn.classList.add('expanded');
+        } else {
+            btn.classList.remove('expanded');
+        }
     }
 }
 
 function toggleWebsites(event) {
     event.preventDefault();
+    const btn = document.getElementById('websitesToggleBtn');
     const websitesSection = document.getElementById('websitesSection');
-    if (websitesSection) {
-        websitesSection.classList.toggle('websites-hidden');
+    if (websitesSection && btn) {
+        const isHidden = websitesSection.classList.toggle('websites-hidden');
+        showStatusInfo(!isHidden);
+        if (!isHidden) {
+            btn.classList.add('expanded');
+        } else {
+            btn.classList.remove('expanded');
+        }
     }
 }
 
-// Alphabetically sort the buttons in the Connect section on page load and when toggled
 function sortConnectButtons() {
+    // Alphabetically sort the buttons in the Connect section on page load and when toggled
     const connectSection = document.getElementById('connectSection');
     if (!connectSection) return;
     const links = Array.from(connectSection.querySelectorAll('a.footer-btn'));
@@ -33,46 +47,42 @@ function sortConnectButtons() {
 
 // Sort on page load
 window.addEventListener('DOMContentLoaded', sortConnectButtons);
-// Also sort every time the section is toggled (in case new buttons are added dynamically)
-function toggleConnect(event) {
-    const section = document.getElementById('connectSection');
-    if (section) {
-        section.classList.toggle('connect-hidden');
-        if (!section.classList.contains('connect-hidden')) {
-            sortConnectButtons();
-        }
-    }
-}
 
-// Check SkinNet Analyzer backend status and update dot
 function updateSkinNetStatus() {
+    // Check SkinNet Analyzer backend status and update dot
     const dot = document.getElementById('skinnet-status-dot');
     if (!dot) return;
-    dot.className = 'status-dot unknown';
     fetch('https://skinnet-analyzer-backend-latest.onrender.com/api/status', { method: 'GET', mode: 'cors' })
-        .then(r => {
-            if (!r.ok) throw new Error('Network response was not ok');
-            return r.json();
-        })
+        .then(response => response.json())
         .then(data => {
             if (data && typeof data.status === 'string') {
                 const status = data.status.trim().toLowerCase();
-                console.log('SkinNet Analyzer status:', status); // Log status for debugging
-                if (status === 'online') {
-                    dot.className = 'status-dot online';
-                } else if (status === 'offline') {
+                dot.className = 'status-dot online';
+                if (status === 'offline') {
                     dot.className = 'status-dot offline';
-                } else {
-                    dot.className = 'status-dot unknown';
                 }
             } else {
-                console.log('SkinNet Analyzer status: unknown (invalid response)', data);
                 dot.className = 'status-dot unknown';
             }
         })
-        .catch((err) => {
-            console.log('SkinNet Analyzer status: unknown (fetch error)', err);
+        .catch(err => {
             dot.className = 'status-dot unknown';
+            console.log('SkinNet Analyzer status: unknown (fetch error)', err);
         });
 }
+
 window.addEventListener('DOMContentLoaded', updateSkinNetStatus);
+
+function showStatusInfo(show) {
+    // Show/hide the status info legend above the websites section
+    const info = document.getElementById('skinnet-status-info');
+    if (!info) return;
+    info.style.display = show ? 'block' : 'none';
+}
+
+// Initial call to show/hide status info based on current visibility of websites section
+window.addEventListener('DOMContentLoaded', () => {
+    const websitesSection = document.getElementById('websitesSection');
+    const isHidden = websitesSection.classList.contains('websites-hidden');
+    showStatusInfo(!isHidden);
+});
