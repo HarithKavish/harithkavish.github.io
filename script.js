@@ -25,8 +25,15 @@ function toggleWebsites(event) {
     event.preventDefault();
     const btn = document.getElementById('websitesToggleBtn');
     const websitesSection = document.getElementById('websitesSection');
-    if (websitesSection && btn) {
-        const isHidden = websitesSection.classList.toggle('websites-hidden');
+    const websitesSection2 = document.getElementById('websitesSection2');
+    const websitesHeading = document.getElementById('websitesHeading');
+    const websitesHeading2 = document.getElementById('websitesHeading2');
+    let isHidden = true;
+    if (websitesSection && btn && websitesSection2 && websitesHeading && websitesHeading2) {
+        isHidden = websitesSection.classList.toggle('websites-hidden');
+        websitesSection2.classList.toggle('websites-hidden');
+        websitesHeading.classList.toggle('websites-hidden');
+        websitesHeading2.classList.toggle('websites-hidden');
         showStatusInfo(!isHidden);
         if (!isHidden) {
             btn.classList.add('expanded');

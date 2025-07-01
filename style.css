@@ -138,6 +138,7 @@ footer {
     position: relative;
 }
 
+/* --- Toggle Arrow Logic --- */
 .connect-toggle-btn::before,
 .websites-toggle-btn::before {
     content: '>';
@@ -153,16 +154,21 @@ footer {
     display: block;
 }
 
-.connect-toggle-btn:hover::before,
-.websites-toggle-btn:hover::before {
+.connect-toggle-btn:hover:not(.expanded)::before,
+.websites-toggle-btn:hover:not(.expanded)::before {
     opacity: 1;
 }
 
 .connect-toggle-btn.expanded::before,
 .websites-toggle-btn.expanded::before {
     content: '\2228';
-    /* Unicode for logical OR, looks like a wide down arrow */
-    transform: translateY(-50%) rotate(0deg);
+    /* Unicode for wide down arrow */
+    opacity: 0;
+}
+
+.connect-toggle-btn.expanded:hover::before,
+.websites-toggle-btn.expanded:hover::before {
+    content: '\2228';
     opacity: 1;
 }
 
