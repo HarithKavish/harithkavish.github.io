@@ -131,8 +131,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const darkModeToggle = document.getElementById('darkModeToggle');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    // Check localStorage or system preference
-    if (localStorage.getItem('darkMode') === 'true' || (prefersDark && !localStorage.getItem('darkMode'))) {
+    // Check localStorage or system preference (using 'theme' key for cross-page compatibility)
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark' || (prefersDark && !savedTheme)) {
         document.body.classList.add('dark-mode');
         if (darkModeToggle) darkModeToggle.textContent = '☀️';
     }
@@ -141,7 +142,8 @@ window.addEventListener('DOMContentLoaded', () => {
     darkModeToggle?.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
         const isDark = document.body.classList.contains('dark-mode');
-        localStorage.setItem('darkMode', isDark);
+        // Store theme preference using 'theme' key for cross-page compatibility
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
         darkModeToggle.textContent = isDark ? '☀️' : '🌙';
     });
 });
