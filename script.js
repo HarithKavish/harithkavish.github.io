@@ -99,29 +99,11 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function updateDetectObjectStatus() {
-    // Check Detect Object backend status and update dot
+    // Object Detection is always available (client-side only, no backend needed)
     const dot = document.getElementById('detectobject-status-dot');
     if (!dot) return;
-    fetch('https://harithkavish-multi-object-detection-using-yolo.hf.space/health', { method: 'GET', mode: 'cors' })
-        .then(response => response.json())
-        .then(data => {
-            if (data && typeof data.status === 'string') {
-                const status = data.status.trim().toLowerCase();
-                if (status === 'ok') {
-                    dot.className = 'status-dot online';
-                } else if (status === 'offline') {
-                    dot.className = 'status-dot offline';
-                } else {
-                    dot.className = 'status-dot unknown';
-                }
-            } else {
-                dot.className = 'status-dot unknown';
-            }
-        })
-        .catch(err => {
-            dot.className = 'status-dot unknown';
-            console.log('Detect Object status: unknown (fetch error)', err);
-        });
+    // Set to always online since it runs entirely in the browser
+    dot.className = 'status-dot online';
 }
 
 window.addEventListener('DOMContentLoaded', updateDetectObjectStatus);
