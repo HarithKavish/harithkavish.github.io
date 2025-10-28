@@ -11,12 +11,14 @@ function toggleConnect(event) {
     const btn = event.currentTarget;
     const section = document.getElementById('connectSection');
     if (section && btn) {
-        section.classList.toggle('connect-hidden');
+        const isHidden = section.classList.toggle('connect-hidden');
         if (!section.classList.contains('connect-hidden')) {
             sortConnectButtons();
             btn.classList.add('expanded');
+            btn.setAttribute('aria-expanded', 'true');
         } else {
             btn.classList.remove('expanded');
+            btn.setAttribute('aria-expanded', 'false');
         }
     }
 }
@@ -37,8 +39,10 @@ function toggleWebsites(event) {
         showStatusInfo(!isHidden);
         if (!isHidden) {
             btn.classList.add('expanded');
+            btn.setAttribute('aria-expanded', 'true');
         } else {
             btn.classList.remove('expanded');
+            btn.setAttribute('aria-expanded', 'false');
         }
     }
 }
@@ -121,3 +125,23 @@ function updateDetectObjectStatus() {
 }
 
 window.addEventListener('DOMContentLoaded', updateDetectObjectStatus);
+
+// Dark Mode Toggle
+window.addEventListener('DOMContentLoaded', () => {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    // Check localStorage or system preference
+    if (localStorage.getItem('darkMode') === 'true' || (prefersDark && !localStorage.getItem('darkMode'))) {
+        document.body.classList.add('dark-mode');
+        if (darkModeToggle) darkModeToggle.textContent = '☀️';
+    }
+
+    // Toggle dark mode on button click
+    darkModeToggle?.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDark);
+        darkModeToggle.textContent = isDark ? '☀️' : '🌙';
+    });
+});

@@ -4,36 +4,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Explore AI projects, tools, and APIs by Harith Kavish. Connect across Instagram, GitHub, LinkedIn, and more.">
+    <meta name="keywords"
+        content="Harith Kavish, SkinNet Analyzer, AI projects, machine learning, object detection, portfolio, developer, full stack">
+    <meta name="author" content="Harith Kavish">
+    <meta name="theme-color" content="#38bdf8">
+
+    <!-- Open Graph (Facebook, LinkedIn) -->
+    <meta property="og:title" content="Harith Kavish - Projects & Portfolio">
+    <meta property="og:description"
+        content="Gateway to AI projects, tools, APIs, and social profiles by Harith Kavish.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://harithkavish.github.io/">
+    <meta property="og:image" content="https://harithkavish.github.io/favicon.svg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@harithkavish">
+    <meta name="twitter:title" content="Harith Kavish - Projects & Portfolio">
+    <meta name="twitter:description" content="Explore AI projects, tools, and connect with Harith Kavish.">
+    <meta name="twitter:image" content="https://harithkavish.github.io/favicon.svg">
+
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <title>Harith Kavish</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <title>Harith Kavish - AI Projects & Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <!-- ✅ Schema.org JSON-LD Metadata -->
     <script type="application/ld+json">
-    {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Harith Kavish",
-    "url": "https://harithkavish.github.io",
-    "creator": {
-        "@type": "Person",
-        "name": "Harith Kavish",
-        "url": "https://harithkavish.github.io/HarithKavish"
-    },
-    "description": "A gateway to projects, tools, APIs, and profiles by Harith Kavish."
-    }
+                {
+                    "@context": "https://schema.org",
+                    "@type": "WebSite",
+                    "name": "Harith Kavish",
+                    "url": "https://harithkavish.github.io",
+                    "description": "A gateway to projects, tools, APIs, and profiles by Harith Kavish.",
+                    "inLanguage": "en",
+                    "publisher": {
+                        "@type": "Organization",
+                        "name": "Harith Kavish",
+                        "url": "https://harithkavish.github.io",
+                        "logo": "https://harithkavish.github.io/favicon.svg"
+                    },
+                    "creator": {
+                        "@type": "Person",
+                        "name": "Harith Kavish",
+                        "url": "https://harithkavish.github.io/HarithKavish",
+                        "sameAs": [
+                            "https://www.instagram.com/harithkavish/",
+                            "https://x.com/harithkavish",
+                            "https://github.com/HarithKavish",
+                            "https://www.facebook.com/harithkavish",
+                            "https://huggingface.co/harithkavish",
+                            "https://www.youtube.com/@harithkavish",
+                            "https://www.linkedin.com/in/harithkavish/",
+                            "https://hub.docker.com/u/harithkavish",
+                            "https://discord.com/users/harithkavish"
+                        ]
+                    },
+                    "sameAs": [
+                        "https://www.instagram.com/harithkavish/",
+                        "https://x.com/harithkavish",
+                        "https://github.com/HarithKavish",
+                        "https://www.facebook.com/harithkavish",
+                        "https://huggingface.co/harithkavish",
+                        "https://www.youtube.com/@harithkavish",
+                        "https://www.linkedin.com/in/harithkavish/",
+                        "https://hub.docker.com/u/harithkavish",
+                        "https://discord.com/users/harithkavish"
+                    ],
+                    "potentialAction": {
+                        "@type": "SearchAction",
+                        "target": "https://harithkavish.github.io/?q={search_term_string}",
+                        "query-input": "required name=search_term_string"
+                    }
+                }
+    </script>
+    <!-- ✅ BreadcrumbList Schema -->
+    <script type="application/ld+json">
+                {
+                    "@context": "https://schema.org",
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                        {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": "Home",
+                            "item": "https://harithkavish.github.io/"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 2,
+                            "name": "About Me",
+                            "item": "https://harithkavish.github.io/HarithKavish/"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 3,
+                            "name": "SkinNet Analyzer",
+                            "item": "https://harithkavish.github.io/SkinNet-Analyzer/"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 4,
+                            "name": "Object Detector",
+                            "item": "https://harithkavish.github.io/Multi-Object-Detection-using-YOLO/"
+                        }
+                    ]
+                }
     </script>
 </head>
 
 <body>
     <header>
         <h1> Harith Kavish</h1>
+        <button id="darkModeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
     </header>
     <main>
         <div class="main-center">
+            <div class="intro">
+                <p class="tagline">AI Developer | Full-Stack Engineer</p>
+                <p class="subtitle">Building intelligent applications and sharing knowledge.</p>
+            </div>
             <div class="center-buttons">
                 <a href="https://harithkavish.github.io/HarithKavish/" class="portfolio-btn external-link-btn">About
                     Me</a>
-                <button class="websites-toggle-btn" onclick="toggleWebsites(event)" id="websitesToggleBtn">My
+                <button class="websites-toggle-btn" onclick="toggleWebsites(event)" id="websitesToggleBtn"
+                    aria-expanded="false">My
                     Applications</button>
                 <div id="skinnet-status-info" style="display:none;">
                     <span class="status-dot online" style="margin-right:0.3em;"></span>Online &nbsp;
@@ -59,27 +158,66 @@
                     </a>
                     <!-- Add more website links here as needed -->
                 </div>
-                <button class="connect-toggle-btn" onclick="toggleConnect(event)">Connect with me</button>
+                <button class="connect-toggle-btn" onclick="toggleConnect(event)" id="connectToggleBtn"
+                    aria-expanded="false">Connect with me</button>
                 <div class="footer-buttons connect-hidden" id="connectSection">
-                    <a href="https://www.instagram.com/harithkavish/" target="_blank" class="footer-btn">Instagram</a>
-                    <a href="https://x.com/harithkavish" target="_blank" class="footer-btn">X</a>
-                    <a href="https://github.com/HarithKavish" target="_blank" class="footer-btn">GitHub</a>
-                    <a href="https://www.facebook.com/harithkavish" target="_blank" class="footer-btn">Facebook</a>
-                    <a href="https://huggingface.co/harithkavish" target="_blank" class="footer-btn">HuggingFace</a>
-                    <a href="https://www.youtube.com/@harithkavish" target="_blank" class="footer-btn">YouTube</a>
-                    <a href="https://www.linkedin.com/in/harithkavish/" target="_blank" class="footer-btn">LinkedIn</a>
-                    <a href="https://hub.docker.com/u/harithkavish" target="_blank" class="footer-btn">DockerHub</a>
-                    <a href="https://discord.com/users/harithkavish" target="_blank" class="footer-btn">Discord</a>
+                    <a href="https://www.instagram.com/harithkavish/" target="_blank" class="footer-btn">
+                        <img src="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png"
+                            alt="Instagram" class="btn-icon" loading="lazy" />
+                        Instagram
+                    </a>
+                    <a href="https://x.com/harithkavish" target="_blank" class="footer-btn">
+                        <img src="https://abs.twimg.com/favicons/twitter.3.ico" alt="X" class="btn-icon"
+                            loading="lazy" />
+                        X
+                    </a>
+                    <a href="https://github.com/HarithKavish" target="_blank" class="footer-btn">
+                        <img src="https://github.githubassets.com/favicons/favicon.svg" alt="GitHub" class="btn-icon"
+                            loading="lazy" />
+                        GitHub
+                    </a>
+                    <a href="https://www.facebook.com/harithkavish" target="_blank" class="footer-btn">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
+                            alt="Facebook" class="btn-icon" loading="lazy" />
+                        Facebook
+                    </a>
+                    <a href="https://huggingface.co/harithkavish" target="_blank" class="footer-btn">
+                        <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="HuggingFace"
+                            class="btn-icon" loading="lazy" />
+                        HuggingFace
+                    </a>
+                    <a href="https://www.youtube.com/@harithkavish" target="_blank" class="footer-btn">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png"
+                            alt="YouTube" class="btn-icon" loading="lazy" />
+                        YouTube
+                    </a>
+                    <a href="https://www.linkedin.com/in/harithkavish/" target="_blank" class="footer-btn">
+                        <img src="https://static.licdn.com/scds/common/u/images/logos/favicons/v1/favicon.ico"
+                            alt="LinkedIn" class="btn-icon" loading="lazy" />
+                        LinkedIn
+                    </a>
+                    <a href="https://hub.docker.com/u/harithkavish" target="_blank" class="footer-btn">
+                        <img src="https://www.docker.com/favicon.ico" alt="DockerHub" class="btn-icon" loading="lazy" />
+                        DockerHub
+                    </a>
+                    <a href="https://discord.com/users/harithkavish" target="_blank" class="footer-btn">
+                        <img src="https://static.vecteezy.com/system/resources/previews/006/892/625/original/discord-logo-icon-editorial-free-vector.jpg"
+                            alt="Discord" class="btn-icon discord" loading="lazy" />
+                        Discord
+                    </a>
                 </div>
             </div>
         </div>
     </main>
     <footer>
-        <p>&copy; 2025 Harith Kavish • All rights reserved • Built with 💻 HTML/CSS • Hosted on
-            <a href="https://pages.github.com" target="_blank" class="gh-pages-link">GitHub Pages</a>
-        </p>
+        <div class="footer-info">&copy; <span id="currentYear"></span> Harith Kavish</div>
     </footer>
     <script src="script.js"></script>
+</body>
+<script>
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+</script>
 </body>
 
 </html>
