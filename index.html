@@ -33,8 +33,8 @@
     <link rel="manifest" href="site.webmanifest">
     <title>Harith Kavish - AI Projects & Portfolio</title>
 
-    <!-- Theme detector - must load before CSS to prevent flash -->
-    <script src="theme-detector.js"></script>
+    <!-- Theme detector in script.js - must load before CSS to prevent flash -->
+    <script src="script.js"></script>
 
     <link rel="stylesheet" href="style.css">
     <!-- ✅ Schema.org JSON-LD Metadata -->
@@ -216,11 +216,102 @@
     <footer>
         <div class="footer-info">&copy; <span id="currentYear"></span> Harith Kavish</div>
     </footer>
-    <script src="script.js"></script>
+
+    <!-- Floating Chat Button -->
+    <button id="chatButton" class="chat-button" aria-label="Open AI Chat">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+    </button>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="chat-modal">
+        <div class="chat-modal-content">
+            <div class="chat-modal-header">
+                <h3>💬 Chat with My Portfolio</h3>
+                <button id="closeChatButton" class="close-chat-button" aria-label="Close chat">&times;</button>
+            </div>
+            <iframe id="chatFrame" src="portfolio_chat.html" title="Portfolio Chat"></iframe>
+        </div>
+    </div>
 </body>
 <script>
     // Set current year in footer
     document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Chat modal functionality
+    const chatButton = document.getElementById('chatButton');
+    const chatModal = document.getElementById('chatModal');
+    const closeChatButton = document.getElementById('closeChatButton');
+
+    chatButton.addEventListener('click', () => {
+        chatModal.classList.add('active');
+        chatButton.style.display = 'none';
+
+        // Apply current theme to chat iframe
+        const chatFrame = document.getElementById('chatFrame');
+        const isDark = document.body.classList.contains('dark-mode');
+
+        function applyThemeToIframe() {
+            if (chatFrame.contentDocument && chatFrame.contentDocument.body) {
+                if (isDark) {
+                    chatFrame.contentDocument.body.classList.add('dark-mode');
+                    console.log('Applied dark mode to iframe');
+                } else {
+                    chatFrame.contentDocument.body.classList.remove('dark-mode');
+                    console.log('Applied light mode to iframe');
+                }
+            }
+
+            // Also send postMessage as backup
+            if (chatFrame.contentWindow) {
+                chatFrame.contentWindow.postMessage({
+                    type: 'theme-change',
+                    theme: isDark ? 'dark' : 'light'
+                }, '*');
+            }
+        }
+
+        // Wait for iframe to load, then apply theme
+        if (chatFrame) {
+            chatFrame.addEventListener('load', function applyTheme() {
+                console.log('Iframe loaded, applying theme');
+                applyThemeToIframe();
+
+                // Retry a few times to ensure it's applied
+                setTimeout(applyThemeToIframe, 100);
+                setTimeout(applyThemeToIframe, 300);
+
+                chatFrame.removeEventListener('load', applyTheme);
+            });
+
+            // If already loaded, apply immediately and retry
+            applyThemeToIframe();
+            setTimeout(applyThemeToIframe, 100);
+            setTimeout(applyThemeToIframe, 300);
+        }
+    });
+
+    closeChatButton.addEventListener('click', () => {
+        chatModal.classList.remove('active');
+        chatButton.style.display = 'flex';
+    });
+
+    // Close on outside click
+    chatModal.addEventListener('click', (e) => {
+        if (e.target === chatModal) {
+            chatModal.classList.remove('active');
+            chatButton.style.display = 'flex';
+        }
+    });
+
+    // Close with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && chatModal.classList.contains('active')) {
+            chatModal.classList.remove('active');
+            chatButton.style.display = 'flex';
+        }
+    });
 </script>
 </body>
 

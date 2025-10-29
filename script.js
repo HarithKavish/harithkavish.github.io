@@ -1,3 +1,29 @@
+/**
+ * Universal Theme Detector
+ * Immediately checks for theme preference and applies dark mode class
+ * to prevent flash of unstyled content.
+ * Works across all GitHub Pages subpaths by using shared localStorage.
+ */
+(function () {
+    // Immediately check for theme preference
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    // Apply dark mode class if needed
+    if (savedTheme === 'dark' || (prefersDark && !savedTheme)) {
+        document.documentElement.classList.add('dark-mode');
+        // Also add to body for compatibility with existing styles
+        if (document.body) {
+            document.body.classList.add('dark-mode');
+        } else {
+            // If body doesn't exist yet, add it when DOM is ready
+            document.addEventListener('DOMContentLoaded', () => {
+                document.body.classList.add('dark-mode');
+            });
+        }
+    }
+})();
+
 // Toggle the visibility of a section by its id (used for both My Websites and Connect with me)
 function toggleSection(sectionId) {
     const section = document.getElementById(sectionId);
@@ -127,5 +153,14 @@ window.addEventListener('DOMContentLoaded', () => {
         // Store theme preference using 'theme' key for cross-page compatibility
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
         darkModeToggle.textContent = isDark ? '☀️' : '🌙';
+
+        // Notify chat iframe about theme change
+        const chatFrame = document.getElementById('chatFrame');
+        if (chatFrame && chatFrame.contentWindow) {
+            chatFrame.contentWindow.postMessage({
+                type: 'theme-change',
+                theme: isDark ? 'dark' : 'light'
+            }, '*');
+        }
     });
 });
