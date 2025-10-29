@@ -437,6 +437,39 @@
 
         const API_URL = 'https://harithkavish-nlweb-portfolio-chat.hf.space';
         let isProcessing = false;
+        let apiConnected = false;
+
+        // Check API connection on load
+        async function checkApiConnection() {
+            try {
+                const response = await fetch(`${API_URL}/`, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    apiConnected = true;
+                    console.log('✅ API connection successful');
+                    return true;
+                }
+            } catch (error) {
+                console.log('❌ API connection failed:', error.message);
+            }
+
+            apiConnected = false;
+            return false;
+        }
+
+        // Initialize chat with welcome message
+        async function initializeChat() {
+            const connected = await checkApiConnection();
+
+            if (connected) {
+                addMessage("👋 Hello! I'm your AI assistant powered by Harith's portfolio data. Ask me anything about his projects, skills, or experience!", false);
+            } else {
+                addMessage("⚠️ AI assistant is currently starting up. This may take a few moments. Please try asking your question in a minute!", false);
+            }
+        }
 
         function parseMarkdown(text) {
             // Helper function to apply inline formatting
@@ -557,11 +590,29 @@
 
                 const data = await response.json();
                 showTyping(false);
-                addMessage(data.answer, false, data.sources);
+
+                // Handle response from HuggingFace Space API
+                const responseText = data.response || data.answer || 'No response received.';
+                const sources = data.sources || [];
+
+                addMessage(responseText, false, sources);
 
             } catch (error) {
                 showTyping(false);
-                addMessage(`Sorry, I encountered an error: ${error.message}. Please make sure the API server is running.`, false);
+                let errorMessage = `Sorry, I encountered an error: ${error.message}.`;
+
+                // Provide helpful error messages based on the error
+                if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                    errorMessage += ' Please check your internet connection and try again.';
+                } else if (error.message.includes('503')) {
+                    errorMessage += ' The AI service is currently starting up. Please try again in a moment.';
+                } else if (error.message.includes('500')) {
+                    errorMessage += ' There was a server error. The chat service may be temporarily unavailable.';
+                } else {
+                    errorMessage += ' Please try again later.';
+                }
+
+                addMessage(errorMessage, false);
             } finally {
                 isProcessing = false;
                 sendButton.disabled = false;
@@ -582,8 +633,11 @@
             }
         }
 
-        // Focus input on load
+        // Focus input on load and initialize chat
         document.getElementById('chatInput').focus();
+
+        // Initialize chat with API connection check
+        initializeChat();
     </script>
 </body>
 
