@@ -164,3 +164,30 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+/**
+ * Auto-load Neo AI Chatbot Widget
+ * Automatically injects the chatbot widget on all pages across harithkavish.github.io
+ * No manual embedding required - widget appears on every page automatically
+ */
+(function () {
+    // Only load widget once
+    if (window.NeoAIWidgetLoaded) return;
+    window.NeoAIWidgetLoaded = true;
+
+    // Load widget script dynamically
+    const widgetScript = document.createElement('script');
+    widgetScript.src = 'https://harithkavish-nlweb-portfolio-chat.hf.space/widget.js';
+    widgetScript.async = true;
+    widgetScript.defer = true;
+
+    // Add error handling
+    widgetScript.onerror = function () {
+        console.warn('Neo AI widget failed to load - continuing without chatbot');
+    };
+
+    // Inject script into page
+    document.head.appendChild(widgetScript);
+
+    console.log('✅ Neo AI widget auto-loader initialized');
+})();
