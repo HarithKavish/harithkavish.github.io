@@ -1,0 +1,37 @@
+{
+    "protocol": "mcp",
+    "version": "1.0.0",
+    "name": "Harith Kavish Portfolio",
+    "description": "Natural language interface for Harith Kavish's portfolio, projects, and professional information",
+    "endpoints": {
+        "chat": "https://harithkavish-nlweb-portfolio-chat.hf.space/chat",
+        "health": "https://harithkavish-nlweb-portfolio-chat.hf.space/health"
+    },
+    "capabilities": [
+        "query",
+        "search",
+        "conversation"
+    ],
+    "data_sources": [
+        {
+            "type": "Person",
+            "description": "Information about Harith Kavish - AI-Driven Systems Architect & Creative Director"
+        },
+        {
+            "type": "Project",
+            "description": "Portfolio projects including SkinNet Analyzer, Object Detection, and other AI applications"
+        },
+        {
+            "type": "Skills",
+            "description": "Technical skills and expertise in AI, ML, Full-Stack Development"
+        },
+        {
+            "type": "Website",
+            "description": "Information about portfolio website and applications"
+        }
+    ],
+    "contact": {
+        "website": "https://harithkavish.github.io",
+        "github": "https://github.com/HarithKavish"
+    }
+}

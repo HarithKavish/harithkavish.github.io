@@ -1,0 +1,18 @@
+{
+    "schema_version": "v1",
+    "name_for_model": "harithkavish_portfolio",
+    "name_for_human": "Harith Kavish Portfolio Assistant",
+    "description_for_model": "AI-powered assistant for querying information about Harith Kavish's portfolio, projects, skills, and professional experience. Use this to answer questions about his work, technical expertise, and projects like SkinNet Analyzer and Object Detection systems.",
+    "description_for_human": "Get information about Harith Kavish's portfolio, projects, and expertise",
+    "auth": {
+        "type": "none"
+    },
+    "api": {
+        "type": "openapi",
+        "url": "https://harithkavish-nlweb-portfolio-chat.hf.space/openapi.json",
+        "has_user_authentication": false
+    },
+    "logo_url": "https://harithkavish.github.io/favicon.svg",
+    "contact_email": "contact@harithkavish.com",
+    "legal_info_url": "https://harithkavish.github.io"
+}
