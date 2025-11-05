@@ -9,7 +9,7 @@
     },
     "api": {
         "type": "openapi",
-        "url": "https://harithkavish-nlweb-portfolio-chat.hf.space/openapi.json",
+        "url": "https://harithkavish-harithkavish-nlweb-orchestrator.hf.space/openapi.json",
         "has_user_authentication": false
     },
     "logo_url": "https://harithkavish.github.io/favicon.svg",

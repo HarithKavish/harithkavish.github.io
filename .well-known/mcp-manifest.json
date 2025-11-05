@@ -4,8 +4,8 @@
     "name": "Harith Kavish Portfolio",
     "description": "Natural language interface for Harith Kavish's portfolio, projects, and professional information",
     "endpoints": {
-        "chat": "https://harithkavish-nlweb-portfolio-chat.hf.space/chat",
-        "health": "https://harithkavish-nlweb-portfolio-chat.hf.space/health"
+        "chat": "https://harithkavish-harithkavish-nlweb-orchestrator.hf.space/chat",
+        "health": "https://harithkavish-harithkavish-nlweb-orchestrator.hf.space/health"
     },
     "capabilities": [
         "query",

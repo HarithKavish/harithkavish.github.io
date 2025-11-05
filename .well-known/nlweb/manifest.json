@@ -1,95 +1,99 @@
 {
-  "version": "1.0",
-  "name": "Harith Kavish Portfolio",
-  "description": "Natural language interface for querying Harith Kavish's portfolio, projects, skills, and professional experience. Powered by NLWeb with RAG-based AI assistant.",
-  "provider": {
-    "name": "Harith Kavish",
-    "url": "https://harithkavish.github.io",
-    "contact": "https://github.com/HarithKavish"
-  },
-  "api": {
-    "type": "rest",
-    "base_url": "https://harithkavish-nlweb-portfolio-chat.hf.space",
-    "openapi_url": "https://harithkavish-nlweb-portfolio-chat.hf.space/openapi.json",
-    "endpoints": {
-      "chat": {
-        "path": "/chat",
-        "method": "POST",
-        "description": "Query the portfolio using natural language",
-        "parameters": {
-          "query": {
-            "type": "string",
-            "required": true,
-            "description": "Natural language question about the portfolio"
-          },
-          "top_k": {
-            "type": "integer",
-            "required": false,
-            "default": 5,
-            "description": "Number of relevant sources to retrieve"
-          }
+    "version": "1.0",
+    "name": "Harith Kavish Portfolio",
+    "description": "Natural language interface for querying Harith Kavish's portfolio, projects, skills, and professional experience. Powered by NLWeb with RAG-based AI assistant.",
+    "provider": {
+        "name": "Harith Kavish",
+        "url": "https://harithkavish.github.io",
+        "contact": "https://github.com/HarithKavish"
+    },
+    "api": {
+        "type": "rest",
+        "base_url": "https://harithkavish-harithkavish-nlweb-orchestrator.hf.space",
+        "openapi_url": "https://harithkavish-harithkavish-nlweb-orchestrator.hf.space/openapi.json",
+        "endpoints": {
+            "chat": {
+                "path": "/chat",
+                "method": "POST",
+                "description": "Query the portfolio using natural language",
+                "parameters": {
+                    "query": {
+                        "type": "string",
+                        "required": true,
+                        "description": "Natural language question about the portfolio"
+                    },
+                    "top_k": {
+                        "type": "integer",
+                        "required": false,
+                        "default": 5,
+                        "description": "Number of relevant sources to retrieve"
+                    }
+                }
+            },
+            "health": {
+                "path": "/health",
+                "method": "GET",
+                "description": "Check API health status"
+            }
         }
-      },
-      "health": {
-        "path": "/health",
-        "method": "GET",
-        "description": "Check API health status"
-      }
+    },
+    "capabilities": [
+        "natural_language_query",
+        "portfolio_search",
+        "project_information",
+        "skills_lookup",
+        "conversational_interface"
+    ],
+    "data_sources": [
+        {
+            "type": "Person",
+            "name": "Harith Kavish",
+            "description": "AI-Driven Systems Architect & Creative Director",
+            "properties": [
+                "bio",
+                "expertise",
+                "contact"
+            ]
+        },
+        {
+            "type": "Project",
+            "name": "SkinNet Analyzer",
+            "description": "AI-powered skin condition analysis application",
+            "url": "https://harithkavish.github.io/SkinNet-Analyzer/"
+        },
+        {
+            "type": "Project",
+            "name": "Object Detector",
+            "description": "Multi-object detection using YOLO",
+            "url": "https://harithkavish.github.io/Multi-Object-Detection-using-YOLO/"
+        },
+        {
+            "type": "Skills",
+            "description": "Technical skills and expertise in AI, ML, Full-Stack Development, Cloud Computing"
+        },
+        {
+            "type": "Website",
+            "description": "Portfolio website and applications",
+            "url": "https://harithkavish.github.io"
+        }
+    ],
+    "ai_model": {
+        "type": "FLAN-T5-large",
+        "embedding_model": "all-mpnet-base-v2",
+        "vector_db": "MongoDB Atlas",
+        "rag_enabled": true
+    },
+    "features": {
+        "dark_theme_support": true,
+        "embeddable_widget": true,
+        "source_citations": true,
+        "streaming": false,
+        "session_persistence": false
+    },
+    "widget": {
+        "available": true,
+        "url": "https://harithkavish-harithkavish-nlweb-orchestrator.hf.space/widget.js",
+        "loader_url": "https://harithkavish.github.io/widget-loader.js",
+        "name": "Neo AI - Harith Kavish's Assistant"
     }
-  },
-  "capabilities": [
-    "natural_language_query",
-    "portfolio_search",
-    "project_information",
-    "skills_lookup",
-    "conversational_interface"
-  ],
-  "data_sources": [
-    {
-      "type": "Person",
-      "name": "Harith Kavish",
-      "description": "AI-Driven Systems Architect & Creative Director",
-      "properties": ["bio", "expertise", "contact"]
-    },
-    {
-      "type": "Project",
-      "name": "SkinNet Analyzer",
-      "description": "AI-powered skin condition analysis application",
-      "url": "https://harithkavish.github.io/SkinNet-Analyzer/"
-    },
-    {
-      "type": "Project",
-      "name": "Object Detector",
-      "description": "Multi-object detection using YOLO",
-      "url": "https://harithkavish.github.io/Multi-Object-Detection-using-YOLO/"
-    },
-    {
-      "type": "Skills",
-      "description": "Technical skills and expertise in AI, ML, Full-Stack Development, Cloud Computing"
-    },
-    {
-      "type": "Website",
-      "description": "Portfolio website and applications",
-      "url": "https://harithkavish.github.io"
-    }
-  ],
-  "ai_model": {
-    "type": "FLAN-T5-large",
-    "embedding_model": "all-mpnet-base-v2",
-    "vector_db": "MongoDB Atlas",
-    "rag_enabled": true
-  },
-  "features": {
-    "dark_theme_support": true,
-    "embeddable_widget": true,
-    "source_citations": true,
-    "streaming": false,
-    "session_persistence": false
-  },
-  "widget": {
-    "available": true,
-    "url": "https://harithkavish-nlweb-portfolio-chat.hf.space/widget.js",
-    "loader_url": "https://harithkavish.github.io/widget-loader.js",
-    "name": "Neo AI - Harith Kavish's Assistant"
-  }
 }
