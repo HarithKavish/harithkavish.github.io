@@ -13,9 +13,9 @@
     }
     window.NeoAIWidgetLoaded = true;
 
-    // Load the widget from HuggingFace Space
+    // Load the widget from HuggingFace Space (Multi-Agent Orchestrator)
     const widgetScript = document.createElement('script');
-    widgetScript.src = 'https://harithkavish-nlweb-portfolio-chat.hf.space/widget.js';
+    widgetScript.src = 'https://harithkavish-harithkavish-nlweb-orchestrator.hf.space/widget.js';
     widgetScript.async = true;
     widgetScript.defer = true;
 
