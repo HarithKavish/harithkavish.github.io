@@ -30,8 +30,13 @@ app.add_middleware(
 MONGO_URI = os.getenv("MONGODB_URI")
 DB_NAME = os.getenv("DB_NAME", "nlweb")
 COLLECTION_NAME = os.getenv("COLLECTION_NAME", "portfolio_vectors")
-VECTOR_INDEX = os.getenv("VECTOR_INDEX", "vector_index")
+VECTOR_INDEX = os.getenv("VECTOR_INDEX", "vector_index")  # Fixed to match actual index name
 HISTORY_COLLECTION = os.getenv("HISTORY_COLLECTION", "conversation_history")
+
+# System purpose for this layer
+MEMORY_MISSION = """This layer manages vector storage and conversation history.
+Specialized for: Vector similarity search, conversation persistence, context retrieval.
+No AI model - pure database operations for fast, accurate retrieval."""
 
 # Global MongoDB client
 mongo_client: Optional[AsyncIOMotorClient] = None
@@ -75,6 +80,8 @@ async def startup_event():
     global mongo_client
     
     print("🚀 Initializing Memory Layer...")
+    print("   🗄️ Specialized for: Vector Search & Conversation Storage")
+    print(f"   Mission: {MEMORY_MISSION}")
     
     if not MONGO_URI:
         print("✗ No MONGODB_URI found in environment variables")
@@ -97,6 +104,13 @@ async def startup_event():
             mongo_client.admin.command('ping'),
             timeout=30.0
         )
+        
+        print(f"✓ Connected to MongoDB Atlas")
+        print(f"   • Database: {DB_NAME}")
+        print(f"   • Collection: {COLLECTION_NAME}")
+        print(f"   • Vector Index: {VECTOR_INDEX}")
+        print(f"   • History Collection: {HISTORY_COLLECTION}")
+        print("✓ Memory Layer ready!")
         
         print(f"✓ Connected to MongoDB: {DB_NAME}")
         print(f"  - Vector collection: {COLLECTION_NAME}")
@@ -137,7 +151,8 @@ async def vector_search(request: VectorSearchRequest):
             "$project": {
                 "content": 1,
                 "metadata": 1,
-                "score": {"$meta": "vectorSearchScore"}
+                "score": {"$meta": "vectorSearchScore"},
+                "_id": 0  # Exclude ObjectId to avoid serialization error
             }
         }]
         

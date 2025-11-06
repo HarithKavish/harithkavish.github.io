@@ -25,10 +25,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Configuration
+# Configuration - Specialized for action execution
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 GITHUB_USERNAME = os.getenv("GITHUB_USERNAME", "HarithKavish")
 
+# System purpose for this layer
+EXECUTION_MISSION = """This layer handles all external actions, tool calls, and API integrations.
+Specialized for: GitHub API calls, web requests, data fetching, external tool execution."""
 
 # Request/Response Models
 class ExecuteActionRequest(BaseModel):
@@ -71,6 +74,18 @@ AVAILABLE_TOOLS = {
         }
     }
 }
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Initialize Execution Layer."""
+    print("🚀 Loading Execution Layer...")
+    print("   🔧 Specialized for: Tool Calling & External Actions")
+    print(f"   Mission: {EXECUTION_MISSION}")
+    print(f"   Available Tools: {len(AVAILABLE_TOOLS)}")
+    for tool_name in AVAILABLE_TOOLS.keys():
+        print(f"      • {tool_name}")
+    print("✓ Execution Layer ready!")
 
 
 async def check_project_status(project_name: str) -> Dict:

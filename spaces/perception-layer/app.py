@@ -26,6 +26,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Model Configuration - Specialized for NLU tasks
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")  # Fast, 384-dim embeddings
+INTENT_MODEL = os.getenv("INTENT_MODEL", "facebook/bart-large-mnli")  # Zero-shot classification specialist
+
 # Global models
 embedder: Optional[SentenceTransformer] = None
 intent_classifier = None
@@ -61,23 +65,28 @@ async def startup_event():
     global embedder, intent_classifier
     
     print("🚀 Loading Perception Layer models...")
+    print("   📊 Specialized for: Embeddings + Intent Classification")
     
-    # Load embedding model
+    # Load embedding model - Optimized for semantic similarity
     try:
-        embedder = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-        print("✓ Embedding model loaded (all-MiniLM-L6-v2)")
+        embedder = SentenceTransformer(EMBEDDING_MODEL)
+        print(f"✓ Embedding model loaded: {EMBEDDING_MODEL}")
+        print(f"   • Purpose: Generate 384-dim semantic embeddings")
+        print(f"   • Optimized for: Fast inference, high-quality semantic search")
     except Exception as e:
         print(f"✗ Failed to load embedding model: {e}")
         embedder = None
     
-    # Load intent classifier (zero-shot classification)
+    # Load intent classifier - Specialized for zero-shot classification
     try:
         intent_classifier = pipeline(
             "zero-shot-classification",
-            model="facebook/bart-large-mnli",
+            model=INTENT_MODEL,
             device=0 if torch.cuda.is_available() else -1
         )
-        print("✓ Intent classifier loaded (BART-large-MNLI)")
+        print(f"✓ Intent classifier loaded: {INTENT_MODEL}")
+        print(f"   • Purpose: Classify user intent without training data")
+        print(f"   • Optimized for: Multi-label classification, high accuracy")
     except Exception as e:
         print(f"✗ Failed to load intent classifier: {e}")
         intent_classifier = None

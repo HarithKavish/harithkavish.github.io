@@ -25,10 +25,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Configuration
-MODEL_NAME = os.getenv("MODEL_NAME", "google/flan-t5-large")
+# Model Configuration - Specialized for reasoning & generation
+MODEL_NAME = os.getenv("MODEL_NAME", "google/flan-t5-large")  # Instruction-tuned for reasoning
 MAX_TOKENS = int(os.getenv("MAX_TOKENS", "250"))
 TEMPERATURE = float(os.getenv("TEMPERATURE", "0.7"))
+
+# System prompt for this layer's purpose
+SYSTEM_IDENTITY = """You are Neo AI, an intelligent assistant representing Harith Kavish's portfolio.
+Your purpose is to provide accurate, detailed information ABOUT Harith Kavish based on the knowledge base.
+Always speak in third person about Harith (he/his), never as him (I/my)."""
 
 # Global model
 text_generator = None
@@ -65,6 +70,7 @@ async def startup_event():
     global text_generator, tokenizer
     
     print("🚀 Loading Reasoning Layer models...")
+    print(f"   📝 Specialized for: Strategic Reasoning & Response Generation")
     print(f"   Model: {MODEL_NAME}")
     
     try:
@@ -88,7 +94,10 @@ async def startup_event():
         )
         
         print("✓ FLAN-T5 model loaded successfully")
-        print(f"   Using device: {'CUDA' if torch.cuda.is_available() else 'CPU'}")
+        print(f"   • Purpose: Generate coherent, contextual responses")
+        print(f"   • Optimized for: Instruction-following, reasoning over context")
+        print(f"   • Using device: {'CUDA' if torch.cuda.is_available() else 'CPU'}")
+        print(f"   • System Identity: {SYSTEM_IDENTITY[:100]}...")
         
     except Exception as e:
         print(f"✗ Failed to load model: {e}")
@@ -99,7 +108,10 @@ async def startup_event():
 
 
 def build_prompt(query: str, context: List[Dict], intent: Optional[str] = None) -> str:
-    """Build optimized prompt for FLAN-T5."""
+    """
+    Build optimized prompt for FLAN-T5 with specialized system instructions.
+    This layer's responsibility: Synthesize context into coherent, third-person responses.
+    """
     
     # Build context section
     context_parts = []
@@ -115,34 +127,54 @@ def build_prompt(query: str, context: List[Dict], intent: Optional[str] = None) 
     
     context_text = "\n\n".join(context_parts) if context_parts else "No specific context available."
     
-    # Adjust prompt based on intent
+    # Adjust prompt based on intent - Each intent gets specialized instructions
     if intent == "GREETING":
-        prompt = f"""You are a friendly AI assistant. Respond warmly to the greeting: "{query}"
+        # Specialized prompt for greetings - warm but professional
+        prompt = f"""{SYSTEM_IDENTITY}
 
-Keep your response brief and welcoming."""
+Task: Respond warmly to this greeting: "{query}"
+
+Instructions:
+- Be brief (2-3 sentences)
+- Welcome the user
+- Introduce yourself as Neo AI, Harith Kavish's portfolio assistant
+- Offer to help with questions about his work
+
+Response:"""
     
     elif intent == "FAREWELL":
-        prompt = f"""You are a friendly AI assistant. Respond appropriately to the farewell: "{query}"
+        # Specialized prompt for farewells - positive closure
+        prompt = f"""{SYSTEM_IDENTITY}
 
-Keep your response brief and positive."""
+Task: Respond appropriately to this farewell: "{query}"
+
+Instructions:
+- Be brief and positive
+- Thank them for their interest
+- Leave a good impression
+
+Response:"""
     
     else:
-        # Standard RAG prompt
-        prompt = f"""You are an intelligent AI assistant with access to a knowledge base. Use the information below to answer the user's question accurately and completely.
+        # Standard RAG prompt - Specialized for information synthesis
+        prompt = f"""{SYSTEM_IDENTITY}
 
-RULES:
-1. Use ONLY information from the knowledge base
-2. Provide complete, detailed answers - never truncate lists
-3. Be specific with names, numbers, and technical details
-4. If the knowledge base doesn't have the answer, say so clearly
-5. Speak naturally and conversationally
+Your core competency: Synthesize information from the knowledge base into accurate, detailed responses about Harith Kavish.
 
-KNOWLEDGE BASE:
+SYNTHESIS RULES:
+1. Speak ABOUT Harith in third person (he/his), never as him (I/my)
+2. Use ONLY verified information from the knowledge base below
+3. Provide complete, detailed answers - never truncate lists or skip details
+4. Be specific: Include names, numbers, technologies, and technical details
+5. If the knowledge base lacks information, clearly state "The available information doesn't include..."
+6. Speak naturally and conversationally, but maintain accuracy
+
+KNOWLEDGE BASE ABOUT HARITH KAVISH:
 {context_text}
 
 USER QUESTION: {query}
 
-Provide a complete, detailed response:"""
+Synthesized answer about Harith Kavish:"""
     
     return prompt
 

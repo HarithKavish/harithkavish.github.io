@@ -26,11 +26,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Configuration
+# Model Configuration - Specialized for safety & compliance
+SAFETY_MODEL = os.getenv("SAFETY_MODEL", None)  # Optional: "unitary/toxic-bert" for toxicity detection
 TOXICITY_THRESHOLD = float(os.getenv("TOXICITY_THRESHOLD", "0.7"))
 RATE_LIMIT_PER_MINUTE = int(os.getenv("RATE_LIMIT_PER_MINUTE", "60"))
 MAX_INPUT_LENGTH = int(os.getenv("MAX_INPUT_LENGTH", "1000"))
 MAX_OUTPUT_LENGTH = int(os.getenv("MAX_OUTPUT_LENGTH", "2000"))
+
+# System purpose for this layer
+SAFETY_MISSION = """This layer ensures all input and output meets safety, security, and quality standards.
+Specialized for: Pattern-based filtering, rate limiting, content validation."""
 
 # In-memory rate limiting (in production, use Redis)
 rate_limit_store = defaultdict(list)
@@ -73,10 +78,24 @@ async def startup_event():
     global toxicity_model
     
     print("🚀 Loading Monitoring & Safety Layer...")
+    print("   🛡️ Specialized for: Input/Output Validation & Content Safety")
+    print(f"   Mission: {SAFETY_MISSION}")
     
-    # Optional: Load toxicity detection model
-    # Keeping it simple for now - pattern-based filtering
-    toxicity_model = None  # Could load "unitary/toxic-bert" here
+    # Optional: Load toxicity detection model for advanced safety
+    if SAFETY_MODEL:
+        try:
+            from transformers import pipeline
+            toxicity_model = pipeline("text-classification", model=SAFETY_MODEL)
+            print(f"✓ Toxicity model loaded: {SAFETY_MODEL}")
+            print(f"   • Purpose: Detect harmful, toxic, or inappropriate content")
+        except Exception as e:
+            print(f"✗ Failed to load toxicity model: {e}")
+            toxicity_model = None
+    else:
+        # Pattern-based filtering (lightweight, fast)
+        toxicity_model = None
+        print("✓ Using pattern-based safety filtering (lightweight mode)")
+        print("   • Purpose: Fast regex-based filtering for common threats")
     
     print("✓ Monitoring & Safety Layer ready!")
 
