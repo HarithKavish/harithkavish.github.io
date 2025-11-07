@@ -26,14 +26,27 @@ app.add_middleware(
 )
 
 # Model Configuration - Specialized for reasoning & generation
-MODEL_NAME = os.getenv("MODEL_NAME", "google/flan-t5-large")  # Instruction-tuned for reasoning
-MAX_TOKENS = int(os.getenv("MAX_TOKENS", "250"))
-TEMPERATURE = float(os.getenv("TEMPERATURE", "0.7"))
+# Using larger, more capable model for better responses
+MODEL_NAME = os.getenv("MODEL_NAME", "google/flan-t5-xl")  # 3B params - much better than base/large
+MAX_TOKENS = int(os.getenv("MAX_TOKENS", "350"))  # Increased for complete answers
+TEMPERATURE = float(os.getenv("TEMPERATURE", "0.8"))  # Slightly higher for more natural language
 
 # System prompt for this layer's purpose
-SYSTEM_IDENTITY = """You are Neo AI, an intelligent assistant representing Harith Kavish's portfolio.
-Your purpose is to provide accurate, detailed information ABOUT Harith Kavish based on the knowledge base.
-Always speak in third person about Harith (he/his), never as him (I/my)."""
+SYSTEM_IDENTITY = """You are Neo AI, Harith Kavish's intelligent portfolio assistant.
+
+CRITICAL RULES:
+1. ALWAYS speak ABOUT Harith in third person (he/his), NEVER as him (I/my)
+2. Use ONLY information from the provided knowledge base
+3. Give COMPLETE, DETAILED answers - never truncate lists or say "including:"
+4. Be SPECIFIC: mention project names, technologies, skills by name
+5. If asked about yourself (Neo AI), explain you're his assistant
+6. If information is missing, say "I don't have that information" - DO NOT make things up
+
+RESPONSE STYLE:
+- Professional but conversational
+- Detailed and informative
+- Always complete your sentences and lists
+- Focus on Harith's accomplishments and expertise"""
 
 # Global model
 text_generator = None
@@ -109,36 +122,49 @@ async def startup_event():
 
 def build_prompt(query: str, context: List[Dict], intent: Optional[str] = None) -> str:
     """
-    Build optimized prompt for FLAN-T5 with specialized system instructions.
-    This layer's responsibility: Synthesize context into coherent, third-person responses.
+    Build optimized prompt for FLAN-T5-XL with specialized system instructions.
+    This layer's responsibility: Synthesize context into coherent, complete, third-person responses.
     """
     
-    # Build context section
+    # Build context section with more detail
     context_parts = []
-    for doc in context[:4]:  # Top 4 most relevant
+    for idx, doc in enumerate(context[:5], 1):  # Top 5 most relevant
         content = doc.get('content', '')
         metadata = doc.get('metadata', {})
         name = metadata.get('name', 'Unknown')
+        doc_type = metadata.get('@type', 'Information')
         
         if content:
-            context_parts.append(f"{name}: {content}")
+            context_parts.append(f"[{idx}] {name} ({doc_type}):\n{content}")
         elif metadata.get('description'):
-            context_parts.append(f"{name}: {metadata['description']}")
+            context_parts.append(f"[{idx}] {name} ({doc_type}):\n{metadata['description']}")
     
-    context_text = "\n\n".join(context_parts) if context_parts else "No specific context available."
+    context_text = "\n\n".join(context_parts) if context_parts else ""
+    
+    # Handle empty context
+    if not context_text:
+        return f"""{SYSTEM_IDENTITY}
+
+The knowledge base search returned no relevant information for this query.
+
+USER QUESTION: {query}
+
+Provide a brief, honest response explaining that you don't have specific information about this topic in your knowledge base, and suggest what kinds of questions you CAN answer about Harith Kavish (projects, skills, experience, etc.).
+
+Response:"""
     
     # Adjust prompt based on intent - Each intent gets specialized instructions
     if intent == "GREETING":
         # Specialized prompt for greetings - warm but professional
         prompt = f"""{SYSTEM_IDENTITY}
 
-Task: Respond warmly to this greeting: "{query}"
+Task: Respond warmly and professionally to this greeting: "{query}"
 
 Instructions:
-- Be brief (2-3 sentences)
-- Welcome the user
+- Be brief (2-3 sentences maximum)
 - Introduce yourself as Neo AI, Harith Kavish's portfolio assistant
-- Offer to help with questions about his work
+- Offer to help with questions about his projects, skills, and experience
+- Sound enthusiastic and helpful
 
 Response:"""
     
@@ -149,9 +175,26 @@ Response:"""
 Task: Respond appropriately to this farewell: "{query}"
 
 Instructions:
-- Be brief and positive
-- Thank them for their interest
-- Leave a good impression
+- Be brief (1-2 sentences)
+- Thank them for their interest in Harith's work
+- Leave a positive, professional impression
+
+Response:"""
+    
+    elif "who are you" in query.lower() or "what are you" in query.lower() or "neo ai" in query.lower():
+        # Special handling for questions about the assistant itself
+        prompt = f"""{SYSTEM_IDENTITY}
+
+Task: Explain who YOU are (Neo AI) based on this query: "{query}"
+
+KNOWLEDGE BASE ABOUT NEO AI AND HARITH:
+{context_text}
+
+Instructions:
+- Explain you are Neo AI, Harith Kavish's intelligent portfolio assistant
+- Describe your capabilities (answering questions about his work)
+- Mention your architecture (multi-agent RAG system with specialized layers)
+- Keep it conversational but informative (3-4 sentences)
 
 Response:"""
     
@@ -159,22 +202,22 @@ Response:"""
         # Standard RAG prompt - Specialized for information synthesis
         prompt = f"""{SYSTEM_IDENTITY}
 
-Your core competency: Synthesize information from the knowledge base into accurate, detailed responses about Harith Kavish.
-
-SYNTHESIS RULES:
-1. Speak ABOUT Harith in third person (he/his), never as him (I/my)
-2. Use ONLY verified information from the knowledge base below
-3. Provide complete, detailed answers - never truncate lists or skip details
-4. Be specific: Include names, numbers, technologies, and technical details
-5. If the knowledge base lacks information, clearly state "The available information doesn't include..."
-6. Speak naturally and conversationally, but maintain accuracy
-
 KNOWLEDGE BASE ABOUT HARITH KAVISH:
 {context_text}
 
 USER QUESTION: {query}
 
-Synthesized answer about Harith Kavish:"""
+SYNTHESIS INSTRUCTIONS:
+1. Analyze the knowledge base entries above
+2. Extract ALL relevant information that answers the question
+3. Speak ABOUT Harith in third person (he/his)
+4. Be COMPLETE - list ALL items mentioned, don't use "including:" or truncate
+5. Include specific details: project names, technologies, dates, numbers
+6. Organize information clearly (use bullet points if listing multiple items)
+7. If the question asks about multiple things, address each one
+8. Never make up information not in the knowledge base
+
+Comprehensive answer about Harith Kavish:"""
     
     return prompt
 
@@ -193,18 +236,20 @@ async def generate_response(request: GenerateRequest):
         max_tokens = request.max_tokens or MAX_TOKENS
         temperature = request.temperature or TEMPERATURE
         
-        # Generate response
+        # Generate response with improved parameters
         result = text_generator(
             prompt,
             max_new_tokens=max_tokens,
-            min_length=15,
+            min_length=20,  # Ensure meaningful responses
             num_return_sequences=1,
             temperature=temperature,
             do_sample=True,
-            repetition_penalty=1.1,
+            repetition_penalty=1.2,  # Stronger penalty against repetition
             no_repeat_ngram_size=3,
-            top_p=0.92,
-            length_penalty=1.0
+            top_p=0.95,  # Higher for more diverse vocabulary
+            top_k=50,
+            length_penalty=1.2,  # Encourage longer, complete responses
+            early_stopping=False  # Let it finish thoughts
         )
         
         generated_text = result[0]['generated_text']
@@ -215,15 +260,35 @@ async def generate_response(request: GenerateRequest):
         else:
             answer = generated_text.strip()
         
+        # Post-processing: Clean up response
+        answer = answer.strip()
+        
+        # Remove incomplete sentences at the end
+        if answer and not answer[-1] in '.!?':
+            # Find last complete sentence
+            last_period = max(answer.rfind('.'), answer.rfind('!'), answer.rfind('?'))
+            if last_period > len(answer) // 2:  # Only if it's at least halfway through
+                answer = answer[:last_period + 1]
+        
+        # Fallback for very short or empty responses
+        if len(answer) < 10:
+            answer = "I apologize, but I couldn't generate a complete response. Could you please rephrase your question?"
+            confidence = 0.3
+        else:
+            # Calculate confidence based on answer quality metrics
+            has_good_length = 30 < len(answer) < 1000
+            has_complete_sentence = answer[-1] in '.!?'
+            has_no_truncation = "including:" not in answer.lower() and answer.count(',') < len(answer) / 20
+            
+            quality_score = sum([has_good_length, has_complete_sentence, has_no_truncation]) / 3
+            confidence = 0.6 + (quality_score * 0.3)  # 0.6 to 0.9 range
+        
         # Calculate token usage
         tokens_used = len(tokenizer.encode(prompt + answer))
         
-        # Estimate confidence based on answer quality
-        confidence = 0.9 if len(answer) > 20 and len(answer) < 800 else 0.5
-        
         return GenerateResponse(
             response=answer,
-            confidence=confidence,
+            confidence=round(confidence, 3),
             tokens_used=tokens_used,
             model=MODEL_NAME
         )
