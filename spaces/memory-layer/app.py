@@ -29,13 +29,27 @@ app.add_middleware(
 # MongoDB configuration
 MONGO_URI = os.getenv("MONGODB_URI")
 DB_NAME = os.getenv("DB_NAME", "nlweb")
+
+# Three Vector Collections
+ASSISTANT_COLLECTION = os.getenv("ASSISTANT_COLLECTION", "assistant_identity")
+ASSISTANT_INDEX = os.getenv("ASSISTANT_INDEX", "assistant_vector_index")
+
+PORTFOLIO_COLLECTION = os.getenv("PORTFOLIO_COLLECTION", "harith_portfolio")
+PORTFOLIO_INDEX = os.getenv("PORTFOLIO_INDEX", "portfolio_vector_index")
+
+KNOWLEDGE_COLLECTION = os.getenv("KNOWLEDGE_COLLECTION", "general_knowledge")
+KNOWLEDGE_INDEX = os.getenv("KNOWLEDGE_INDEX", "knowledge_vector_index")
+
+# Legacy support (fallback to old collection name)
 COLLECTION_NAME = os.getenv("COLLECTION_NAME", "portfolio_vectors")
-VECTOR_INDEX = os.getenv("VECTOR_INDEX", "vector_index")  # Fixed to match actual index name
+VECTOR_INDEX = os.getenv("VECTOR_INDEX", "vector_index")
+
 HISTORY_COLLECTION = os.getenv("HISTORY_COLLECTION", "conversation_history")
 
 # System purpose for this layer
-MEMORY_MISSION = """This layer manages vector storage and conversation history.
-Specialized for: Vector similarity search, conversation persistence, context retrieval.
+MEMORY_MISSION = """This layer manages three specialized vector databases and conversation history.
+Specialized for: Multi-domain vector similarity search, conversation persistence, context retrieval.
+Three domains: Assistant Identity, Harith Portfolio, General Knowledge.
 No AI model - pure database operations for fast, accurate retrieval."""
 
 # Global MongoDB client
@@ -48,9 +62,21 @@ class VectorSearchRequest(BaseModel):
     top_k: int = 5
     filters: Optional[Dict] = None
 
+class MultiVectorSearchRequest(BaseModel):
+    embedding: List[float]
+    top_k_per_domain: int = 3  # Results per domain
+    domains: Optional[List[str]] = None  # ["assistant", "portfolio", "knowledge"], None = all
+
 class VectorSearchResponse(BaseModel):
     results: List[Dict]
     count: int
+    query_time_ms: float
+
+class MultiVectorSearchResponse(BaseModel):
+    assistant_results: List[Dict]
+    portfolio_results: List[Dict]
+    knowledge_results: List[Dict]
+    total_count: int
     query_time_ms: float
 
 class StoreConversationRequest(BaseModel):
@@ -107,15 +133,16 @@ async def startup_event():
         
         print(f"✓ Connected to MongoDB Atlas")
         print(f"   • Database: {DB_NAME}")
-        print(f"   • Collection: {COLLECTION_NAME}")
-        print(f"   • Vector Index: {VECTOR_INDEX}")
+        print(f"\n   📊 Three Vector Collections:")
+        print(f"   1. {ASSISTANT_COLLECTION} (Index: {ASSISTANT_INDEX})")
+        print(f"      → Assistant identity, capabilities, personality")
+        print(f"   2. {PORTFOLIO_COLLECTION} (Index: {PORTFOLIO_INDEX})")
+        print(f"      → Harith's projects, skills, experience")
+        print(f"   3. {KNOWLEDGE_COLLECTION} (Index: {KNOWLEDGE_INDEX})")
+        print(f"      → General tech/AI knowledge")
+        print(f"\n   • Legacy Collection: {COLLECTION_NAME} (Index: {VECTOR_INDEX})")
         print(f"   • History Collection: {HISTORY_COLLECTION}")
         print("✓ Memory Layer ready!")
-        
-        print(f"✓ Connected to MongoDB: {DB_NAME}")
-        print(f"  - Vector collection: {COLLECTION_NAME}")
-        print(f"  - History collection: {HISTORY_COLLECTION}")
-        print(f"  - Vector index: {VECTOR_INDEX}")
         
     except asyncio.TimeoutError:
         print("✗ MongoDB connection timed out")
@@ -123,8 +150,6 @@ async def startup_event():
     except Exception as e:
         print(f"✗ MongoDB connection failed: {e}")
         mongo_client = None
-    
-    print("✓ Memory Layer ready!")
 
 
 @app.post("/search", response_model=VectorSearchResponse)
@@ -175,6 +200,87 @@ async def vector_search(request: VectorSearchRequest):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Vector search failed: {str(e)}")
+
+
+@app.post("/search/multi", response_model=MultiVectorSearchResponse)
+async def multi_domain_search(request: MultiVectorSearchRequest):
+    """
+    Perform vector similarity search across multiple domains.
+    Returns results from assistant identity, portfolio, and general knowledge collections.
+    """
+    if not mongo_client:
+        raise HTTPException(status_code=503, detail="Database not available")
+    
+    try:
+        start_time = asyncio.get_event_loop().time()
+        
+        # Determine which domains to search
+        domains = request.domains or ["assistant", "portfolio", "knowledge"]
+        
+        # Prepare search tasks
+        search_tasks = []
+        domain_configs = []
+        
+        if "assistant" in domains:
+            domain_configs.append(("assistant", ASSISTANT_COLLECTION, ASSISTANT_INDEX))
+        if "portfolio" in domains:
+            domain_configs.append(("portfolio", PORTFOLIO_COLLECTION, PORTFOLIO_INDEX))
+        if "knowledge" in domains:
+            domain_configs.append(("knowledge", KNOWLEDGE_COLLECTION, KNOWLEDGE_INDEX))
+        
+        # Create search pipelines for each domain
+        async def search_domain(collection_name: str, index_name: str):
+            collection = mongo_client[DB_NAME][collection_name]
+            
+            pipeline = [{
+                "$vectorSearch": {
+                    "index": index_name,
+                    "path": "embedding",
+                    "queryVector": request.embedding,
+                    "numCandidates": min(100, request.top_k_per_domain * 30),
+                    "limit": request.top_k_per_domain
+                }
+            }, {
+                "$project": {
+                    "content": 1,
+                    "metadata": 1,
+                    "score": {"$meta": "vectorSearchScore"},
+                    "_id": 0
+                }
+            }]
+            
+            cursor = collection.aggregate(pipeline)
+            results = await cursor.to_list(length=request.top_k_per_domain)
+            return results
+        
+        # Execute searches in parallel
+        search_results = await asyncio.gather(*[
+            search_domain(config[1], config[2]) for config in domain_configs
+        ])
+        
+        # Map results to domains
+        result_map = {}
+        for idx, (domain_name, _, _) in enumerate(domain_configs):
+            result_map[domain_name] = search_results[idx]
+        
+        # Fill in empty results for non-searched domains
+        assistant_results = result_map.get("assistant", [])
+        portfolio_results = result_map.get("portfolio", [])
+        knowledge_results = result_map.get("knowledge", [])
+        
+        end_time = asyncio.get_event_loop().time()
+        query_time = (end_time - start_time) * 1000
+        
+        return MultiVectorSearchResponse(
+            assistant_results=assistant_results,
+            portfolio_results=portfolio_results,
+            knowledge_results=knowledge_results,
+            total_count=len(assistant_results) + len(portfolio_results) + len(knowledge_results),
+            query_time_ms=round(query_time, 2)
+        )
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Multi-domain search failed: {str(e)}")
 
 
 @app.post("/store", response_model=StoreConversationResponse)
