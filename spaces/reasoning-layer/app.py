@@ -108,64 +108,60 @@ async def startup_event():
 
 def build_prompt(query: str, context: List[Dict], intent: Optional[str] = None) -> str:
     """
-    Build optimized prompt for FLAN-T5 with clean, direct instructions.
-    FLAN-T5 works best with simple, clear task framing.
+    Build RAG-focused prompt for FLAN-T5 - extremely simple format.
+    FLAN-T5 works best with direct question-answer tasks.
     """
     
-    # Build context section
+    # Build context section - clean and simple
     context_parts = []
-    for idx, doc in enumerate(context[:5], 1):  # Top 5 most relevant
+    for doc in context[:5]:  # Top 5 most relevant
         content = doc.get('content', '')
-        metadata = doc.get('metadata', {})
-        name = metadata.get('name', 'Unknown')
-        
         if content:
-            context_parts.append(f"{name}: {content}")
-        elif metadata.get('description'):
-            context_parts.append(f"{name}: {metadata['description']}")
+            context_parts.append(content.strip())
+        elif doc.get('metadata', {}).get('description'):
+            context_parts.append(doc['metadata']['description'].strip())
     
-    context_text = "\n\n".join(context_parts) if context_parts else ""
+    context_text = " ".join(context_parts) if context_parts else ""
     
     # Handle empty context
     if not context_text:
-        return f"""You are Neo AI, Harith Kavish's portfolio assistant. You don't have specific information about "{query}" in your knowledge base. Politely explain this and mention you can answer questions about Harith's projects, skills, and experience."""
+        return f"""Question: {query}
+Answer: I don't have specific information about that in my knowledge base. I'm Neo AI, Harith Kavish's portfolio assistant. I can answer questions about his projects, skills, and experience."""
     
-    # Adjust prompt based on query type
-    if "who are you" in query.lower() or "what are you" in query.lower() or "neo ai" in query.lower():
-        # Questions about the assistant itself
-        prompt = f"""You are Neo AI, Harith Kavish's intelligent portfolio assistant powered by a multi-agent RAG system. Answer this question about yourself: "{query}"
-
-Context about you and Harith:
-{context_text}
-
-Provide a brief, friendly explanation (2-3 sentences) about who you are and what you can help with."""
+    # Adjust prompt based on query type - Use simple QA format
+    query_lower = query.lower().strip()
     
-    elif intent == "GREETING" or query.lower().strip() in ["hi", "hello", "hey", "greetings"]:
-        # Greetings
-        prompt = f"""You are Neo AI, Harith Kavish's portfolio assistant. Respond warmly to: "{query}"
+    if "who are you" in query_lower or "what are you" in query_lower or "neo ai" in query_lower:
+        # Questions about the assistant
+        prompt = f"""Context: {context_text}
 
-Keep it brief (1-2 sentences). Offer to help with questions about Harith's projects, skills, and experience."""
+Question: {query}
+Answer: I am Neo AI, Harith Kavish's intelligent portfolio assistant. I'm powered by a multi-agent RAG system and can answer questions about his work, skills, and projects."""
     
-    elif intent == "FAREWELL":
-        # Farewells
-        prompt = f"""You are Neo AI. Respond professionally to this farewell: "{query}"
+    elif query_lower in ["hi", "hello", "hey", "greetings", "good morning", "good afternoon", "good evening"]:
+        # Simple greetings
+        prompt = f"""Question: {query}
+Answer: Hello! I'm Neo AI, Harith Kavish's assistant. How can I help you learn about his projects and experience?"""
+    
+    elif "projects" in query_lower:
+        # Project-focused queries
+        prompt = f"""Context about Harith Kavish's projects: {context_text}
 
-Keep it brief (1-2 sentences) and positive."""
+Question: {query}
+Answer in complete sentences listing all his projects with their names and technologies:"""
+    
+    elif "who is harith" in query_lower or "tell me about harith" in query_lower:
+        # Biography queries
+        prompt = f"""Context about Harith Kavish: {context_text}
+
+Question: {query}
+Answer in complete sentences describing who he is, his role, and expertise:"""
     
     else:
-        # Standard information queries - Simple and direct
-        prompt = f"""Answer this question about Harith Kavish: {query}
+        # Standard RAG query - simplest possible format
+        prompt = f"""Context: {context_text}
 
-Information from knowledge base:
-{context_text}
-
-Important guidelines:
-- Speak about Harith in third person (he/his)
-- Include ALL relevant details from the knowledge base
-- List specific project names, technologies, and skills
-- Be complete and thorough
-- Only use information provided above
-
+Question: {query}
 Answer:"""
     
     return prompt
@@ -205,17 +201,45 @@ async def generate_response(request: GenerateRequest):
         
         generated_text = result[0]['generated_text']
         
-        # Extract answer (remove prompt if present)
-        if prompt in generated_text:
-            answer = generated_text.replace(prompt, "").strip()
-        else:
-            answer = generated_text.strip()
+        # Extract answer - remove prompt if model echoed it back
+        answer = generated_text
+        if "Answer:" in answer:
+            answer = answer.split("Answer:")[-1].strip()
+        if "Question:" in answer:
+            # Remove everything before the answer
+            parts = answer.split("Answer:")
+            if len(parts) > 1:
+                answer = parts[-1].strip()
+            else:
+                # If no "Answer:" but has "Question:", remove question part
+                answer = answer.split("Question:")[-1].strip()
+        
+        # Clean up any instruction fragments that leaked through
+        instruction_phrases = [
+            "Context:",
+            "Important guidelines:",
+            "Speak about Harith in third person",
+            "Include ALL relevant details",
+            "List specific project names",
+            "Be complete and thorough",
+            "Only use information provided",
+            "- ",  # Remove bullet points that are instruction remnants
+            "Keep it brief",
+            "Provide a brief"
+        ]
+        
+        for phrase in instruction_phrases:
+            if phrase in answer and len(answer) < 200:  # Only clean short responses
+                # This might be an instruction fragment, not a real answer
+                parts = answer.split(phrase)
+                if len(parts[0]) > 20:  # Keep the part before the instruction if it's substantial
+                    answer = parts[0].strip()
         
         # Post-processing: Clean up response
         answer = answer.strip()
         
         # Remove incomplete sentences at the end
-        if answer and not answer[-1] in '.!?':
+        if answer and answer[-1] not in '.!?':
             # Find last complete sentence
             last_period = max(answer.rfind('.'), answer.rfind('!'), answer.rfind('?'))
             if last_period > len(answer) // 2:  # Only if it's at least halfway through
