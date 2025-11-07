@@ -35,7 +35,7 @@ EXECUTION_API = os.getenv("EXECUTION_API", "https://harithkavish-execution-layer
 SAFETY_API = os.getenv("SAFETY_API", "https://harithkavish-monitoring-safety.hf.space")
 
 # Timeouts
-SERVICE_TIMEOUT = 30.0
+SERVICE_TIMEOUT = 60.0  # Increased to 60s for slower models on free tier
 
 # Request/Response Models
 class ChatQuery(BaseModel):

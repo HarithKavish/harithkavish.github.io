@@ -25,9 +25,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Model Configuration - Specialized for reasoning & generation
-# Using larger, more capable model for better responses
-MODEL_NAME = os.getenv("MODEL_NAME", "google/flan-t5-xl")  # 3B params - much better than base/large
+# Model Configuration - Balanced for speed and quality
+# Using FLAN-T5-Large for faster inference on free tier while maintaining quality
+MODEL_NAME = os.getenv("MODEL_NAME", "google/flan-t5-large")  # 780M params - balanced speed/quality
 MAX_TOKENS = int(os.getenv("MAX_TOKENS", "350"))  # Increased for complete answers
 TEMPERATURE = float(os.getenv("TEMPERATURE", "0.8"))  # Slightly higher for more natural language
 
