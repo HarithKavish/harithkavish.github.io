@@ -1,3 +1,13 @@
+---
+title: NLWeb Memory Layer
+emoji: 💾
+colorFrom: green
+colorTo: blue
+sdk: docker
+app_file: app.py
+pinned: false
+---
+
 # Memory Layer
 
 Vector Database and Conversation History Management service for the multi-agent portfolio chatbot.

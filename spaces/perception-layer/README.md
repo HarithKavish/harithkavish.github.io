@@ -1,3 +1,13 @@
+---
+title: NLWeb Perception Layer
+emoji: 🧠
+colorFrom: blue
+colorTo: purple
+sdk: docker
+app_file: app.py
+pinned: false
+---
+
 # Perception Layer
 
 Natural Language Understanding and Embedding Generation service for the multi-agent portfolio chatbot.

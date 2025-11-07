@@ -1,0 +1,54 @@
+# ===================================
+# NLWeb Configuration
+# Optimized for Ollama + MongoDB Atlas
+# ===================================
+
+# ===================================
+# LLM Configuration (Local Ollama)
+# ===================================
+LLM_PROVIDER=ollama
+OLLAMA_BASE_URL=http://localhost:11434
+
+# Choose the lightest model you have (check with: ollama list)
+# Options: llama3.2:3b, phi3:mini, gemma2:2b, mistral:7b
+OLLAMA_MODEL=llama3.2:3b
+
+# ===================================
+# Embedding Model (Local Ollama)
+# ===================================
+EMBEDDING_PROVIDER=ollama
+OLLAMA_EMBEDDING_MODEL=nomic-embed-text
+
+# ===================================
+# Vector Store (MongoDB Atlas)
+# ===================================
+VECTOR_STORE=mongodb
+
+# TODO: Replace with your MongoDB Atlas connection string
+# Get it from: https://cloud.mongodb.com → Connect → Connect your application
+# Format: mongodb+srv://username:password@cluster.xxxxx.mongodb.net/
+MONGODB_URI=mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
+
+MONGODB_DATABASE=nlweb
+MONGODB_COLLECTION=portfolio_vectors
+MONGODB_VECTOR_INDEX=vector_index
+
+# ===================================
+# Server Configuration
+# ===================================
+SERVER_HOST=0.0.0.0
+SERVER_PORT=8000
+DEBUG=true
+
+# ===================================
+# Performance Settings
+# ===================================
+MAX_TOKENS=500
+TEMPERATURE=0.7
+TOP_K=5
+
+# ===================================
+# Optional: Fallback Settings
+# ===================================
+ENABLE_FALLBACK=false
+# If local model fails, don't fallback (keep it simple)

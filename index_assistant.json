@@ -1,0 +1,14 @@
+{
+    "name": "assistant_vector_index",
+    "type": "vectorSearch",
+    "database": "portfolio_db",
+    "collectionName": "assistant_identity",
+    "fields": [
+        {
+            "type": "vector",
+            "path": "embedding",
+            "numDimensions": 384,
+            "similarity": "cosine"
+        }
+    ]
+}

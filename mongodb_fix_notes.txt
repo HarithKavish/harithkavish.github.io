@@ -1,0 +1,13 @@
+# Fix for retriever.py - adds MongoDB support
+
+# Find line ~76 with the bing_search elif block and replace it with proper MongoDB support
+# The line should read:
+#                 elif db_type == "bing_search":
+#                     from retrieval_providers.bing_search_client import BingSearchClient
+#                     _preloaded_modules[db_type] = BingSearchClient
+#                 elif db_type == "mongodb":
+#                     from retrieval_providers.mongodb_client import MongoDBVectorClient
+#                     _preloaded_modules[db_type] = MongoDBVectorClient
+
+# And around line 99 in the _db_type_packages dict, add:
+#     "mongodb": ["pymongo>=4.0.0", "motor>=3.0.0"],

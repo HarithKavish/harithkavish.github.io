@@ -12,7 +12,7 @@ from datetime import datetime
 
 # MongoDB configuration
 MONGO_URI = os.getenv("MONGODB_URI")
-DB_NAME = os.getenv("DB_NAME", "nlweb")
+DB_NAME = os.getenv("DB_NAME", "portfolio_db")
 
 # Collections
 ASSISTANT_COLLECTION = "assistant_identity"
@@ -180,8 +180,15 @@ async def setup_collections():
     print(f"\n2️⃣  Setting up {PORTFOLIO_COLLECTION}...")
     old_portfolio_coll = db["portfolio_vectors"]
     
-    # Copy existing portfolio data to new collection
+    # Try to find existing portfolio data
     existing_docs = await old_portfolio_coll.find({}).to_list(None)
+    
+    if not existing_docs:
+        # Try alternate collection name
+        print("   Trying alternate collection name...")
+        old_portfolio_coll = db["portfolio_data"]
+        existing_docs = await old_portfolio_coll.find({}).to_list(None)
+    
     if existing_docs:
         # Remove _id for re-insertion
         for doc in existing_docs:
@@ -190,7 +197,7 @@ async def setup_collections():
         await portfolio_coll.insert_many(existing_docs)
         print(f"   ✓ Migrated {len(existing_docs)} portfolio documents")
     else:
-        print(f"   ⚠️  No existing portfolio data found")
+        print(f"   ⚠️  No existing portfolio data found, checking current database...")
     
     # 3. Setup General Knowledge Collection
     print(f"\n3️⃣  Setting up {KNOWLEDGE_COLLECTION}...")
