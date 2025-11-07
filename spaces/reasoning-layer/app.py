@@ -25,10 +25,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Model Configuration - Balanced for speed and quality
-# Using FLAN-T5-Large for faster inference on free tier while maintaining quality
+# Model Configuration - Optimized for CPU inference on free tier
+# Using FLAN-T5-Large with reduced token limits for faster inference
 MODEL_NAME = os.getenv("MODEL_NAME", "google/flan-t5-large")  # 780M params - balanced speed/quality
-MAX_TOKENS = int(os.getenv("MAX_TOKENS", "350"))  # Increased for complete answers
+MAX_TOKENS = int(os.getenv("MAX_TOKENS", "256"))  # Reduced from 350 for faster generation
 TEMPERATURE = float(os.getenv("TEMPERATURE", "0.8"))  # Slightly higher for more natural language
 
 # System prompt for this layer's purpose
@@ -232,11 +232,11 @@ async def generate_response(request: GenerateRequest):
         # Build prompt
         prompt = build_prompt(request.query, request.context, request.intent)
         
-        # Generation parameters
+        # Generation parameters - optimized for speed on CPU
         max_tokens = request.max_tokens or MAX_TOKENS
         temperature = request.temperature or TEMPERATURE
         
-        # Generate response with improved parameters
+        # Generate response with CPU-optimized parameters
         result = text_generator(
             prompt,
             max_new_tokens=max_tokens,
@@ -244,12 +244,12 @@ async def generate_response(request: GenerateRequest):
             num_return_sequences=1,
             temperature=temperature,
             do_sample=True,
-            repetition_penalty=1.2,  # Stronger penalty against repetition
+            repetition_penalty=1.15,  # Lighter penalty for faster inference
             no_repeat_ngram_size=3,
-            top_p=0.95,  # Higher for more diverse vocabulary
-            top_k=50,
-            length_penalty=1.2,  # Encourage longer, complete responses
-            early_stopping=False  # Let it finish thoughts
+            top_p=0.9,  # Reduced for faster sampling
+            top_k=40,  # Reduced for faster sampling
+            length_penalty=1.1,  # Lighter penalty
+            early_stopping=True  # Enable early stopping for speed
         )
         
         generated_text = result[0]['generated_text']
