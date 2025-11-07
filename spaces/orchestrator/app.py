@@ -496,6 +496,21 @@ async def widget_javascript():
             border-bottom-left-radius: 4px;
         }
         
+        .timestamp {
+            font-size: 10px;
+            color: rgba(255,255,255,0.7);
+            margin-top: 6px;
+            text-align: right;
+        }
+        
+        .message.bot .timestamp {
+            color: #999;
+        }
+        
+        #portfolio-chatbot.dark-theme .message.bot .timestamp {
+            color: #888;
+        }
+        
         .sources {
             font-size: 11px;
             color: #666;
@@ -690,11 +705,32 @@ async def widget_javascript():
     closeBtn.addEventListener('click', toggleChat);
     clearBtn.addEventListener('click', clearChat);
 
-    // Display message
-    function displayMessage(text, sender, sources = null, saveToHistory = true) {
+    // Display message with timestamp
+    function displayMessage(text, sender, sources = null, saveToHistory = true, responseTime = null) {
         const msgDiv = document.createElement('div');
         msgDiv.className = `message ${sender}`;
         msgDiv.textContent = text;
+
+        // Add timestamp
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('en-IN', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
+            timeZone: 'Asia/Kolkata'
+        });
+        
+        const timestampDiv = document.createElement('div');
+        timestampDiv.className = 'timestamp';
+        
+        if (responseTime && sender === 'bot') {
+            timestampDiv.textContent = `${timeString} • ${responseTime.toFixed(2)}s`;
+        } else {
+            timestampDiv.textContent = timeString;
+        }
+        
+        msgDiv.appendChild(timestampDiv);
 
         if (sources && sources.length > 0) {
             const sourcesDiv = document.createElement('div');
@@ -740,6 +776,8 @@ async def widget_javascript():
         sendBtn.disabled = true;
         showTyping();
 
+        const startTime = performance.now();
+
         try {
             const response = await fetch(`${API_BASE}/chat`, {
                 method: 'POST',
@@ -751,12 +789,30 @@ async def widget_javascript():
             });
 
             const data = await response.json();
+            const endTime = performance.now();
+            const responseTime = (endTime - startTime) / 1000; // Convert to seconds
+            
             hideTyping();
 
-            displayMessage(data.response || 'Sorry, I could not generate a response.', 'bot', data.sources);
+            displayMessage(
+                data.response || 'Sorry, I could not generate a response.', 
+                'bot', 
+                data.sources,
+                true,
+                responseTime
+            );
         } catch (error) {
+            const endTime = performance.now();
+            const responseTime = (endTime - startTime) / 1000;
+            
             hideTyping();
-            displayMessage('Sorry, I encountered an error. Please try again.', 'bot');
+            displayMessage(
+                'Sorry, I encountered an error. Please try again.', 
+                'bot',
+                null,
+                true,
+                responseTime
+            );
             console.error('Chat error:', error);
         } finally {
             input.disabled = false;
