@@ -31,22 +31,8 @@ MODEL_NAME = os.getenv("MODEL_NAME", "google/flan-t5-large")  # 780M params - ba
 MAX_TOKENS = int(os.getenv("MAX_TOKENS", "256"))  # Reduced from 350 for faster generation
 TEMPERATURE = float(os.getenv("TEMPERATURE", "0.8"))  # Slightly higher for more natural language
 
-# System prompt for this layer's purpose
-SYSTEM_IDENTITY = """You are Neo AI, Harith Kavish's intelligent portfolio assistant.
-
-CRITICAL RULES:
-1. ALWAYS speak ABOUT Harith in third person (he/his), NEVER as him (I/my)
-2. Use ONLY information from the provided knowledge base
-3. Give COMPLETE, DETAILED answers - never truncate lists or say "including:"
-4. Be SPECIFIC: mention project names, technologies, skills by name
-5. If asked about yourself (Neo AI), explain you're his assistant
-6. If information is missing, say "I don't have that information" - DO NOT make things up
-
-RESPONSE STYLE:
-- Professional but conversational
-- Detailed and informative
-- Always complete your sentences and lists
-- Focus on Harith's accomplishments and expertise"""
+# System prompt for this layer's purpose - Keep it simple for FLAN-T5
+SYSTEM_IDENTITY = """Neo AI: Harith Kavish's intelligent portfolio assistant. Multi-agent RAG system."""
 
 # Global model
 text_generator = None
@@ -122,102 +108,67 @@ async def startup_event():
 
 def build_prompt(query: str, context: List[Dict], intent: Optional[str] = None) -> str:
     """
-    Build optimized prompt for FLAN-T5-XL with specialized system instructions.
-    This layer's responsibility: Synthesize context into coherent, complete, third-person responses.
+    Build optimized prompt for FLAN-T5 with clean, direct instructions.
+    FLAN-T5 works best with simple, clear task framing.
     """
     
-    # Build context section with more detail
+    # Build context section
     context_parts = []
     for idx, doc in enumerate(context[:5], 1):  # Top 5 most relevant
         content = doc.get('content', '')
         metadata = doc.get('metadata', {})
         name = metadata.get('name', 'Unknown')
-        doc_type = metadata.get('@type', 'Information')
         
         if content:
-            context_parts.append(f"[{idx}] {name} ({doc_type}):\n{content}")
+            context_parts.append(f"{name}: {content}")
         elif metadata.get('description'):
-            context_parts.append(f"[{idx}] {name} ({doc_type}):\n{metadata['description']}")
+            context_parts.append(f"{name}: {metadata['description']}")
     
     context_text = "\n\n".join(context_parts) if context_parts else ""
     
     # Handle empty context
     if not context_text:
-        return f"""{SYSTEM_IDENTITY}
-
-The knowledge base search returned no relevant information for this query.
-
-USER QUESTION: {query}
-
-Provide a brief, honest response explaining that you don't have specific information about this topic in your knowledge base, and suggest what kinds of questions you CAN answer about Harith Kavish (projects, skills, experience, etc.).
-
-Response:"""
+        return f"""You are Neo AI, Harith Kavish's portfolio assistant. You don't have specific information about "{query}" in your knowledge base. Politely explain this and mention you can answer questions about Harith's projects, skills, and experience."""
     
-    # Adjust prompt based on intent - Each intent gets specialized instructions
-    if intent == "GREETING":
-        # Specialized prompt for greetings - warm but professional
-        prompt = f"""{SYSTEM_IDENTITY}
+    # Adjust prompt based on query type
+    if "who are you" in query.lower() or "what are you" in query.lower() or "neo ai" in query.lower():
+        # Questions about the assistant itself
+        prompt = f"""You are Neo AI, Harith Kavish's intelligent portfolio assistant powered by a multi-agent RAG system. Answer this question about yourself: "{query}"
 
-Task: Respond warmly and professionally to this greeting: "{query}"
+Context about you and Harith:
+{context_text}
 
-Instructions:
-- Be brief (2-3 sentences maximum)
-- Introduce yourself as Neo AI, Harith Kavish's portfolio assistant
-- Offer to help with questions about his projects, skills, and experience
-- Sound enthusiastic and helpful
+Provide a brief, friendly explanation (2-3 sentences) about who you are and what you can help with."""
+    
+    elif intent == "GREETING" or query.lower().strip() in ["hi", "hello", "hey", "greetings"]:
+        # Greetings
+        prompt = f"""You are Neo AI, Harith Kavish's portfolio assistant. Respond warmly to: "{query}"
 
-Response:"""
+Keep it brief (1-2 sentences). Offer to help with questions about Harith's projects, skills, and experience."""
     
     elif intent == "FAREWELL":
-        # Specialized prompt for farewells - positive closure
-        prompt = f"""{SYSTEM_IDENTITY}
+        # Farewells
+        prompt = f"""You are Neo AI. Respond professionally to this farewell: "{query}"
 
-Task: Respond appropriately to this farewell: "{query}"
-
-Instructions:
-- Be brief (1-2 sentences)
-- Thank them for their interest in Harith's work
-- Leave a positive, professional impression
-
-Response:"""
-    
-    elif "who are you" in query.lower() or "what are you" in query.lower() or "neo ai" in query.lower():
-        # Special handling for questions about the assistant itself
-        prompt = f"""{SYSTEM_IDENTITY}
-
-Task: Explain who YOU are (Neo AI) based on this query: "{query}"
-
-KNOWLEDGE BASE ABOUT NEO AI AND HARITH:
-{context_text}
-
-Instructions:
-- Explain you are Neo AI, Harith Kavish's intelligent portfolio assistant
-- Describe your capabilities (answering questions about his work)
-- Mention your architecture (multi-agent RAG system with specialized layers)
-- Keep it conversational but informative (3-4 sentences)
-
-Response:"""
+Keep it brief (1-2 sentences) and positive."""
     
     else:
-        # Standard RAG prompt - Specialized for information synthesis
-        prompt = f"""{SYSTEM_IDENTITY}
+        # Standard information queries - Simple and direct
+        prompt = f"""Answer this question about Harith Kavish: {query}
 
-KNOWLEDGE BASE ABOUT HARITH KAVISH:
+Information from knowledge base:
 {context_text}
 
-USER QUESTION: {query}
+Important guidelines:
+- Speak about Harith in third person (he/his)
+- Include ALL relevant details from the knowledge base
+- List specific project names, technologies, and skills
+- Be complete and thorough
+- Only use information provided above
 
-SYNTHESIS INSTRUCTIONS:
-1. Analyze the knowledge base entries above
-2. Extract ALL relevant information that answers the question
-3. Speak ABOUT Harith in third person (he/his)
-4. Be COMPLETE - list ALL items mentioned, don't use "including:" or truncate
-5. Include specific details: project names, technologies, dates, numbers
-6. Organize information clearly (use bullet points if listing multiple items)
-7. If the question asks about multiple things, address each one
-8. Never make up information not in the knowledge base
-
-Comprehensive answer about Harith Kavish:"""
+Answer:"""
+    
+    return prompt
     
     return prompt
 
