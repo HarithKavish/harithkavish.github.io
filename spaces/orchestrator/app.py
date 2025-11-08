@@ -597,9 +597,26 @@ async def widget_javascript():
         
         @media (max-width: 480px) {
             #chat-window {
-                width: calc(100vw - 40px);
-                height: calc(100vh - 120px);
-                right: 20px;
+                width: calc(100vw - 20px);
+                max-width: 100%;
+                height: 400px;
+                max-height: calc(100vh - 100px);
+                right: 10px;
+                bottom: 80px;
+            }
+            
+            #chat-toggle {
+                right: 10px;
+                bottom: 10px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            #chat-window {
+                width: calc(100vw - 30px);
+                height: 420px;
+                max-height: calc(100vh - 110px);
+                right: 15px;
             }
         }
     `;
