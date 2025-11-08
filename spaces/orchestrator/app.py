@@ -962,7 +962,15 @@ async def widget_javascript():
     }
 
     async function sendVoiceMessage(audioBase64) {
-        displayMessage('🎤 Voice message', 'user');
+        // Show temporary voice message indicator
+        const tempMsgId = 'voice-temp-' + Date.now();
+        const tempMsg = document.createElement('div');
+        tempMsg.className = 'message user';
+        tempMsg.id = tempMsgId;
+        tempMsg.innerHTML = '<div class="message-content">🎤 <em>Transcribing...</em></div>';
+        messagesDiv.appendChild(tempMsg);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        
         input.disabled = true;
         sendBtn.disabled = true;
         voiceBtn.disabled = true;
@@ -986,6 +994,16 @@ async def widget_javascript():
             const endTime = performance.now();
             const responseTime = (endTime - startTime) / 1000;
             
+            // Replace temp message with transcribed text
+            const tempElement = document.getElementById(tempMsgId);
+            if (tempElement) {
+                tempElement.remove();
+            }
+            
+            // Show transcribed text with voice indicator
+            const transcribedText = data.query || 'Voice message';
+            displayMessage(`🎤 ${transcribedText}`, 'user');
+            
             hideTyping();
 
             // Play audio response if available
@@ -1003,6 +1021,12 @@ async def widget_javascript():
         } catch (error) {
             const endTime = performance.now();
             const responseTime = (endTime - startTime) / 1000;
+            
+            // Remove temp message on error
+            const tempElement = document.getElementById(tempMsgId);
+            if (tempElement) {
+                tempElement.remove();
+            }
             
             hideTyping();
             displayMessage(
@@ -1022,15 +1046,27 @@ async def widget_javascript():
 
     function playAudioResponse(audioBase64) {
         try {
+            // SpeechT5 returns WAV format at 16kHz
             const audioBlob = base64ToBlob(audioBase64, 'audio/wav');
             const audioUrl = URL.createObjectURL(audioBlob);
             const audio = new Audio(audioUrl);
             
-            audio.play().catch(error => {
-                console.error('Audio playback error:', error);
+            console.log('🔊 Playing audio response...');
+            
+            audio.play().then(() => {
+                console.log('✓ Audio playback started');
+            }).catch(error => {
+                console.error('❌ Audio playback error:', error);
+                // Try alternative approach - create audio element in DOM
+                const audioElement = document.createElement('audio');
+                audioElement.src = audioUrl;
+                audioElement.autoplay = true;
+                audioElement.style.display = 'none';
+                document.body.appendChild(audioElement);
+                audioElement.onended = () => audioElement.remove();
             });
         } catch (error) {
-            console.error('Audio conversion error:', error);
+            console.error('❌ Audio conversion error:', error);
         }
     }
 

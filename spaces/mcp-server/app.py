@@ -70,27 +70,31 @@ async def startup_event():
         print(f"   ✗ STT load failed: {e}")
         stt_pipeline = None
     
-    # TTS: Using ESPnet or lightweight TTS
-    # For CPU, we'll use a simple TTS approach
-    print("   🔊 Loading TTS (ESPnet)...")
+    # TTS: Using lightweight local TTS model (no internet needed)
+    print("   🔊 Loading TTS (SpeechT5)...")
     try:
-        # Using a lightweight TTS model
-        from espnet2.bin.tts_inference import Text2Speech
-        tts_pipeline = Text2Speech.from_pretrained(
-            "espnet/kan-bayashi_ljspeech_vits",
-            device="cpu"
-        )
-        print("   ✓ TTS model loaded")
+        from transformers import SpeechT5Processor, SpeechT5ForTextToSpeech, SpeechT5HifiGan
+        from datasets import load_dataset
+        
+        # Load lightweight TTS models
+        processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
+        model = SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts")
+        vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
+        
+        # Load speaker embeddings
+        embeddings_dataset = load_dataset("Matthijs/cmu-arctic-xvectors", split="validation")
+        speaker_embeddings = torch.tensor(embeddings_dataset[7306]["xvector"]).unsqueeze(0)
+        
+        tts_pipeline = {
+            "processor": processor,
+            "model": model,
+            "vocoder": vocoder,
+            "speaker_embeddings": speaker_embeddings
+        }
+        print("   ✓ TTS (SpeechT5) ready")
     except Exception as e:
-        print(f"   ⚠️  ESPnet TTS failed, using fallback: {e}")
-        # Fallback: Use basic TTS
-        try:
-            from TTS.api import TTS
-            tts_pipeline = TTS(model_name="tts_models/en/ljspeech/tacotron2-DDC", progress_bar=False)
-            print("   ✓ TTS fallback loaded")
-        except Exception as e2:
-            print(f"   ✗ TTS load failed: {e2}")
-            tts_pipeline = None
+        print(f"   ✗ TTS load failed: {e}")
+        tts_pipeline = None
     
     print("✓ MCP Server ready!")
 
@@ -114,60 +118,86 @@ async def speech_to_text(request: STTRequest):
     if not stt_pipeline:
         raise HTTPException(status_code=503, detail="STT model not loaded")
     
+    import tempfile
+    import os
+    
     try:
         # Decode base64 audio
         audio_bytes = base64.b64decode(request.audio_base64)
         
-        # Load audio data
-        audio_data, sample_rate = sf.read(io.BytesIO(audio_bytes))
+        # Save to temporary file (librosa needs a file path)
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.webm') as tmp_file:
+            tmp_file.write(audio_bytes)
+            tmp_path = tmp_file.name
         
-        # Convert to mono if stereo
-        if len(audio_data.shape) > 1:
-            audio_data = audio_data.mean(axis=1)
-        
-        # Run STT
-        result = stt_pipeline(audio_data, return_timestamps=False)
-        
-        text = result["text"].strip()
-        
-        return STTResponse(
-            text=text,
-            confidence=None  # Whisper doesn't provide confidence scores easily
-        )
+        try:
+            # Load audio with librosa (handles WebM and other formats)
+            import librosa
+            audio_data, sample_rate = librosa.load(tmp_path, sr=16000, mono=True)
+            
+            # Run STT
+            result = stt_pipeline(audio_data, return_timestamps=False)
+            
+            text = result["text"].strip()
+            
+            return STTResponse(
+                text=text,
+                confidence=None
+            )
+        finally:
+            # Clean up temp file
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"STT failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"STT processing failed: {str(e)}")
 
 @app.post("/tts", response_model=TTSResponse)
 async def text_to_speech(request: TTSRequest):
-    """Convert text to speech."""
+    """Convert text to speech using SpeechT5."""
     if not tts_pipeline:
         raise HTTPException(status_code=503, detail="TTS model not loaded")
     
+    import traceback
+    
     try:
-        # Generate speech
-        if hasattr(tts_pipeline, '__call__'):  # ESPnet
-            speech = tts_pipeline(request.text)["wav"]
-            sample_rate = 22050
-        else:  # TTS library
-            wav = tts_pipeline.tts(request.text)
-            speech = np.array(wav)
-            sample_rate = 22050
+        print(f"🔊 TTS request for text: {request.text[:50]}...")
         
-        # Convert to bytes
+        # Prepare text input
+        processor = tts_pipeline["processor"]
+        model = tts_pipeline["model"]
+        vocoder = tts_pipeline["vocoder"]
+        speaker_embeddings = tts_pipeline["speaker_embeddings"]
+        
+        # Process text
+        inputs = processor(text=request.text, return_tensors="pt")
+        
+        # Generate speech
+        with torch.no_grad():
+            speech = model.generate_speech(inputs["input_ids"], speaker_embeddings, vocoder=vocoder)
+        
+        # Convert to numpy
+        speech_np = speech.cpu().numpy()
+        
+        # Save to WAV buffer
         buffer = io.BytesIO()
-        sf.write(buffer, speech, sample_rate, format='WAV')
+        sf.write(buffer, speech_np, 16000, format='WAV')
+        buffer.seek(0)
         audio_bytes = buffer.getvalue()
+        
+        print(f"✓ TTS generated {len(audio_bytes)} bytes")
         
         # Encode to base64
         audio_base64 = base64.b64encode(audio_bytes).decode('utf-8')
         
         return TTSResponse(
             audio_base64=audio_base64,
-            sample_rate=sample_rate
+            sample_rate=16000
         )
         
     except Exception as e:
+        print(f"❌ TTS error: {str(e)}")
+        print(f"Traceback: {traceback.format_exc()}")
         raise HTTPException(status_code=500, detail=f"TTS failed: {str(e)}")
 
 @app.get("/health")
@@ -182,7 +212,7 @@ async def health():
             },
             "tts": {
                 "loaded": tts_pipeline is not None,
-                "model": "espnet/kan-bayashi_ljspeech_vits"
+                "model": "microsoft/speecht5_tts (local, offline)"
             }
         }
     }
