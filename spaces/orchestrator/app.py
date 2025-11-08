@@ -10,7 +10,12 @@ from typing import List, Dict, Optional
 import os
 import httpx
 import asyncio
+import logging
 from datetime import datetime
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="Portfolio Chat Orchestrator",
@@ -33,6 +38,7 @@ MEMORY_API = os.getenv("MEMORY_API", "https://harithkavish-memory-layer.hf.space
 REASONING_API = os.getenv("REASONING_API", "https://harithkavish-reasoning-layer.hf.space")
 EXECUTION_API = os.getenv("EXECUTION_API", "https://harithkavish-execution-layer.hf.space")
 SAFETY_API = os.getenv("SAFETY_API", "https://harithkavish-monitoring-safety.hf.space")
+MCP_SERVER_API = os.getenv("MCP_SERVER_API", "https://harithkavish-mcp-server-stt-tts.hf.space")
 
 # Timeouts
 SERVICE_TIMEOUT = 90.0  # Increased to 90s for CPU-based models on free tier
@@ -42,12 +48,15 @@ class ChatQuery(BaseModel):
     query: str
     top_k: int = 5
     session_id: Optional[str] = None
+    voice_mode: bool = False
+    audio_base64: Optional[str] = None
 
 class ChatResponse(BaseModel):
     response: str
     sources: List[Dict]
     query: str
     metadata: Dict
+    audio_base64: Optional[str] = None
 
 
 async def call_service(url: str, endpoint: str, data: dict, timeout: float = SERVICE_TIMEOUT) -> dict:
@@ -71,19 +80,37 @@ async def chat(query: ChatQuery):
     Main chat endpoint - orchestrates all microservices.
     
     Flow:
-    1. Validate input (Safety Layer)
-    2. Generate embedding (Perception Layer)
-    3. Classify intent (Perception Layer)
-    4. Search for context (Memory Layer)
-    5. Generate response (Reasoning Layer)
-    6. Validate output (Safety Layer)
-    7. Store conversation (Memory Layer)
+    1. Handle voice mode (STT if audio input)
+    2. Validate input (Safety Layer)
+    3. Generate embedding (Perception Layer)
+    4. Classify intent (Perception Layer)
+    5. Search for context (Memory Layer)
+    6. Generate response (Reasoning Layer)
+    7. Validate output (Safety Layer)
+    8. Generate voice response (TTS if voice mode)
+    9. Store conversation (Memory Layer)
     """
     
     start_time = datetime.now()
     session_id = query.session_id or f"session_{int(start_time.timestamp())}"
     
     try:
+        # Step 0: Handle voice mode - convert speech to text if needed
+        user_text = query.query
+        if query.voice_mode and query.audio_base64:
+            try:
+                stt_result = await call_service(
+                    MCP_SERVER_API, "/stt",
+                    {"audio_base64": query.audio_base64}
+                )
+                user_text = stt_result.get("text", query.query)
+                # Update query with transcribed text
+                query.query = user_text
+            except Exception as e:
+                logger.error(f"STT failed: {e}")
+                # Fallback to text query if STT fails
+                pass
+        
         # Step 1: Validate input
         validation = await call_service(
             SAFETY_API, "/validate/input",
@@ -198,16 +225,32 @@ async def chat(query: ChatQuery):
         end_time = datetime.now()
         processing_time = (end_time - start_time).total_seconds() * 1000
         
+        # Step 8: Generate voice response if voice mode is enabled
+        response_audio_base64 = None
+        if query.voice_mode:
+            try:
+                tts_result = await call_service(
+                    MCP_SERVER_API, "/tts",
+                    {"text": answer}
+                )
+                response_audio_base64 = tts_result.get("audio_base64")
+            except Exception as e:
+                logger.error(f"TTS failed: {e}")
+                # Continue without audio if TTS fails
+                pass
+        
         return {
             "response": answer,
             "sources": sources,
             "query": query.query,
+            "audio_base64": response_audio_base64,
             "metadata": {
                 "intent": intent,
                 "intent_confidence": round(intent_confidence, 3),
                 "processing_time_ms": round(processing_time, 2),
                 "session_id": session_id,
-                "context_docs_found": len(context_docs)
+                "context_docs_found": len(context_docs),
+                "voice_mode": query.voice_mode
             }
         }
     
@@ -332,6 +375,21 @@ async def widget_javascript():
         
         #portfolio-chatbot.dark-theme #chat-input::placeholder {
             color: #888;
+        }
+        
+        #portfolio-chatbot.dark-theme #voice-btn {
+            color: #9d9dff;
+            border-color: #9d9dff;
+        }
+        
+        #portfolio-chatbot.dark-theme #voice-btn:hover {
+            background: rgba(157, 157, 255, 0.1);
+        }
+        
+        #portfolio-chatbot.dark-theme #voice-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #764ba2;
         }
         
         #portfolio-chatbot.dark-theme #chat-messages::-webkit-scrollbar-thumb {
@@ -551,6 +609,51 @@ async def widget_javascript():
             border-color: #667eea;
         }
         
+        #voice-btn {
+            padding: 12px;
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-right: 8px;
+        }
+        
+        #voice-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: scale(1.05);
+        }
+        
+        #voice-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #764ba2;
+            animation: pulse 1.5s infinite;
+        }
+        
+        #voice-btn.recording {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: white;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
+            }
+        }
+        
         #chat-send {
             padding: 12px 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -667,6 +770,7 @@ async def widget_javascript():
                 </div>
                 <div id="chat-messages" role="log" aria-live="polite"></div>
                 <div id="chat-input-container">
+                    <button id="voice-btn" title="Toggle voice mode" aria-label="Voice mode">🎙️</button>
                     <input 
                         id="chat-input" 
                         type="text" 
@@ -692,9 +796,13 @@ async def widget_javascript():
     const messagesDiv = document.getElementById('chat-messages');
     const input = document.getElementById('chat-input');
     const sendBtn = document.getElementById('chat-send');
+    const voiceBtn = document.getElementById('voice-btn');
 
     let isOpen = false;
     let isFirstOpen = true;
+    let voiceMode = false;
+    let mediaRecorder = null;
+    let audioChunks = [];
 
     // Toggle chat window
     function toggleChat() {
@@ -783,6 +891,160 @@ async def widget_javascript():
         if (typing) typing.remove();
     }
 
+    // Voice mode functions
+    async function toggleVoiceMode() {
+        voiceMode = !voiceMode;
+        
+        if (voiceMode) {
+            voiceBtn.classList.add('active');
+            input.placeholder = 'Click mic to speak or type your message...';
+            
+            try {
+                // Request microphone permission
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                stream.getTracks().forEach(track => track.stop()); // Stop immediately, we'll start when needed
+            } catch (error) {
+                console.error('Microphone access denied:', error);
+                alert('Microphone access is required for voice mode. Please enable it in your browser settings.');
+                voiceMode = false;
+                voiceBtn.classList.remove('active');
+                input.placeholder = 'Ask me anything...';
+            }
+        } else {
+            voiceBtn.classList.remove('active', 'recording');
+            input.placeholder = 'Ask me anything...';
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+            }
+        }
+    }
+
+    async function startRecording() {
+        if (!voiceMode) return;
+        
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            
+            mediaRecorder.ondataavailable = (event) => {
+                audioChunks.push(event.data);
+            };
+            
+            mediaRecorder.onstop = async () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const reader = new FileReader();
+                
+                reader.onloadend = async () => {
+                    const base64Audio = reader.result.split(',')[1];
+                    await sendVoiceMessage(base64Audio);
+                };
+                
+                reader.readAsDataURL(audioBlob);
+                stream.getTracks().forEach(track => track.stop());
+            };
+            
+            mediaRecorder.start();
+            voiceBtn.classList.add('recording');
+            input.placeholder = 'Listening... Click mic to stop';
+        } catch (error) {
+            console.error('Recording error:', error);
+            alert('Failed to start recording. Please check your microphone.');
+        }
+    }
+
+    function stopRecording() {
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+            mediaRecorder.stop();
+            voiceBtn.classList.remove('recording');
+            input.placeholder = voiceMode ? 'Click mic to speak or type your message...' : 'Ask me anything...';
+        }
+    }
+
+    async function sendVoiceMessage(audioBase64) {
+        displayMessage('🎤 Voice message', 'user');
+        input.disabled = true;
+        sendBtn.disabled = true;
+        voiceBtn.disabled = true;
+        showTyping();
+
+        const startTime = performance.now();
+
+        try {
+            const response = await fetch(`${API_BASE}/chat`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    query: '',
+                    voice_mode: true,
+                    audio_base64: audioBase64,
+                    top_k: 5
+                })
+            });
+
+            const data = await response.json();
+            const endTime = performance.now();
+            const responseTime = (endTime - startTime) / 1000;
+            
+            hideTyping();
+
+            // Play audio response if available
+            if (data.audio_base64) {
+                playAudioResponse(data.audio_base64);
+            }
+
+            displayMessage(
+                data.response || 'Sorry, I could not generate a response.', 
+                'bot', 
+                data.sources,
+                true,
+                responseTime
+            );
+        } catch (error) {
+            const endTime = performance.now();
+            const responseTime = (endTime - startTime) / 1000;
+            
+            hideTyping();
+            displayMessage(
+                'Sorry, I encountered an error. Please try again.', 
+                'bot',
+                null,
+                true,
+                responseTime
+            );
+            console.error('Voice chat error:', error);
+        } finally {
+            input.disabled = false;
+            sendBtn.disabled = false;
+            voiceBtn.disabled = false;
+        }
+    }
+
+    function playAudioResponse(audioBase64) {
+        try {
+            const audioBlob = base64ToBlob(audioBase64, 'audio/wav');
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
+            
+            audio.play().catch(error => {
+                console.error('Audio playback error:', error);
+            });
+        } catch (error) {
+            console.error('Audio conversion error:', error);
+        }
+    }
+
+    function base64ToBlob(base64, mimeType) {
+        const byteCharacters = atob(base64);
+        const byteArrays = [];
+        
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteArrays.push(byteCharacters.charCodeAt(i));
+        }
+        
+        return new Blob([new Uint8Array(byteArrays)], { type: mimeType });
+    }
+
     // Send message
     async function sendMessage() {
         const message = input.value.trim();
@@ -792,6 +1054,7 @@ async def widget_javascript():
         input.value = '';
         input.disabled = true;
         sendBtn.disabled = true;
+        voiceBtn.disabled = true;
         showTyping();
 
         const startTime = performance.now();
@@ -802,6 +1065,7 @@ async def widget_javascript():
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     query: message,
+                    voice_mode: voiceMode,
                     top_k: 5
                 })
             });
@@ -811,6 +1075,11 @@ async def widget_javascript():
             const responseTime = (endTime - startTime) / 1000; // Convert to seconds
             
             hideTyping();
+
+            // Play audio response if voice mode is enabled and audio is available
+            if (voiceMode && data.audio_base64) {
+                playAudioResponse(data.audio_base64);
+            }
 
             displayMessage(
                 data.response || 'Sorry, I could not generate a response.', 
@@ -835,6 +1104,7 @@ async def widget_javascript():
         } finally {
             input.disabled = false;
             sendBtn.disabled = false;
+            voiceBtn.disabled = false;
             input.focus();
         }
     }
@@ -863,6 +1133,28 @@ async def widget_javascript():
         }
     });
 
+    // Voice button - toggle voice mode
+    voiceBtn.addEventListener('click', async () => {
+        if (!voiceMode) {
+            // Enable voice mode
+            await toggleVoiceMode();
+        } else {
+            // If already in voice mode, toggle recording
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                stopRecording();
+            } else {
+                await startRecording();
+            }
+        }
+    });
+
+    // Double-click to disable voice mode
+    voiceBtn.addEventListener('dblclick', () => {
+        if (voiceMode) {
+            toggleVoiceMode();
+        }
+    });
+
     // Expose API for external control
     window.PortfolioChatbot = {
         open: () => { if (!isOpen) toggleChat(); },
@@ -871,7 +1163,8 @@ async def widget_javascript():
         sendMessage: (msg) => {
             input.value = msg;
             sendMessage();
-        }
+        },
+        toggleVoiceMode: toggleVoiceMode
     };
 
     console.log('✅ Portfolio Chatbot Widget loaded successfully!');
