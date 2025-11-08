@@ -364,7 +364,8 @@ async def widget_javascript():
             bottom: 90px;
             right: 20px;
             width: 380px;
-            height: 550px;
+            height: 450px;
+            max-height: calc(100vh - 120px);
             background: white;
             border-radius: 16px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.25);
