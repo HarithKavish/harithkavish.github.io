@@ -177,7 +177,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Load widget script dynamically (NEW MULTI-AGENT ORCHESTRATOR)
     const widgetScript = document.createElement('script');
-    widgetScript.src = 'https://harithkavish-harithkavish-nlweb-orchestrator.hf.space/widget.js';
+    widgetScript.src = 'https://harithkavish-nlweb-portfolio-chat.hf.space/widget.js';
     widgetScript.async = true;
     widgetScript.defer = true;
 
