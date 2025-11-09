@@ -176,8 +176,9 @@ window.addEventListener('DOMContentLoaded', () => {
     window.NeoAIWidgetLoaded = true;
 
     // Load widget script dynamically (NEW MULTI-AGENT ORCHESTRATOR)
+    // Add cache buster to ensure latest version
     const widgetScript = document.createElement('script');
-    widgetScript.src = 'https://harithkavish-nlweb-portfolio-chat.hf.space/widget.js';
+    widgetScript.src = 'https://harithkavish-nlweb-portfolio-chat.hf.space/widget.js?v=' + Date.now();
     widgetScript.async = true;
     widgetScript.defer = true;
 

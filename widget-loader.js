@@ -14,8 +14,9 @@
     window.NeoAIWidgetLoaded = true;
 
     // Load the widget from HuggingFace Space (Multi-Agent Orchestrator)
+    // Add cache buster to ensure latest version
     const widgetScript = document.createElement('script');
-    widgetScript.src = 'https://harithkavish-nlweb-portfolio-chat.hf.space/widget.js';
+    widgetScript.src = 'https://harithkavish-nlweb-portfolio-chat.hf.space/widget.js?v=' + Date.now();
     widgetScript.async = true;
     widgetScript.defer = true;
 
