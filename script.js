@@ -54,14 +54,20 @@ function toggleWebsites(event) {
     const btn = document.getElementById('websitesToggleBtn');
     const websitesSection = document.getElementById('websitesSection');
     const websitesSection2 = document.getElementById('websitesSection2');
+    const websitesSectionFrontend = document.getElementById('websitesSectionFrontend');
     const websitesHeading = document.getElementById('websitesHeading');
     const websitesHeading2 = document.getElementById('websitesHeading2');
+    const websitesHeadingFrontend = document.getElementById('websitesHeadingFrontend');
     let isHidden = true;
     if (websitesSection && btn && websitesSection2 && websitesHeading && websitesHeading2) {
         isHidden = websitesSection.classList.toggle('websites-hidden');
         websitesSection2.classList.toggle('websites-hidden');
         websitesHeading.classList.toggle('websites-hidden');
         websitesHeading2.classList.toggle('websites-hidden');
+        if (websitesSectionFrontend && websitesHeadingFrontend) {
+            websitesSectionFrontend.classList.toggle('websites-hidden');
+            websitesHeadingFrontend.classList.toggle('websites-hidden');
+        }
         showStatusInfo(!isHidden);
         if (!isHidden) {
             btn.classList.add('expanded');
@@ -120,8 +126,12 @@ function showStatusInfo(show) {
 // Initial call to show/hide status info based on current visibility of websites section
 window.addEventListener('DOMContentLoaded', () => {
     const websitesSection = document.getElementById('websitesSection');
-    const isHidden = websitesSection.classList.contains('websites-hidden');
-    showStatusInfo(!isHidden);
+    const websitesSectionFrontend = document.getElementById('websitesSectionFrontend');
+    const websitesSection2 = document.getElementById('websitesSection2');
+    const anyVisible = [websitesSection, websitesSectionFrontend, websitesSection2]
+        .filter(Boolean)
+        .some(sec => !sec.classList.contains('websites-hidden'));
+    showStatusInfo(anyVisible);
 });
 
 function updateDetectObjectStatus() {
