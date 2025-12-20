@@ -330,7 +330,11 @@
                 });
                 HarithShell.renderFooter({
                     target: '#sharedFooter',
-                    text: 'Harith Kavish'
+                    text: 'Harith Kavish',
+                    links: [
+                        { href: '/privacy-policy.html', label: 'Privacy Policy' },
+                        { href: '/terms-of-service.html', label: 'Terms of Service' }
+                    ]
                 });
             }
             initGoogleSignInButton();
