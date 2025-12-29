@@ -1,0 +1,46 @@
+
+# Deploy to GitHub Pages from main branch
+# See: https://docs.github.com/en/actions/guides/deploying-to-github-pages
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies (if any)
+        run: |
+          if [ -f package.json ]; then npm ci; fi
+
+      - name: Build static site (if needed)
+        run: |
+          if [ -f package.json ]; then npm run build || true; fi
+
+      - name: Copy site files
+        run: |
+          mkdir -p public
+          cp -r * public/
+          rm -rf public/.git public/.github public/.venv || true
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
+          force_orphan: true
