@@ -161,7 +161,7 @@ function initUI() {
     if (els.startChatForm) els.startChatForm.addEventListener('submit', handleStartChat);
     els.syncBtn = document.getElementById('sync-drive');
     els.syncBtn?.addEventListener('click', handleSyncClick);
-    
+
     // Back button for mobile
     const backButton = document.getElementById('back-button');
     if (backButton) {
@@ -169,7 +169,7 @@ function initUI() {
             setPeer(null);
         });
     }
-    
+
     toggleAuthButtons();
 }
 
@@ -181,12 +181,12 @@ function setPeer(email) {
         els.peerEmailInput.value = email || '';
     }
     renderMessages();
-    
+
     // Show/hide mobile panels
     const isMobile = window.innerWidth <= 900;
     const layout = document.querySelector('.layout');
     const backButton = document.getElementById('back-button');
-    
+
     if (email) {
         localStorage.setItem('chat-app-peer', email);
         if (isMobile && layout) {
@@ -523,7 +523,7 @@ window.addEventListener('beforeunload', () => {
 });
 
 // Global handler for Google sign-in from shared header (same-page signin)
-window.handleGoogleSignIn = function() {
+window.handleGoogleSignIn = function () {
     // Get the user from localStorage (set by the header)
     try {
         const sharedRaw = localStorage.getItem('harith_google_user');
@@ -534,7 +534,18 @@ window.handleGoogleSignIn = function() {
                 name: sharedUser.name,
                 picture: sharedUser.picture,
                 provider: 'google'
-            });
+            });            // Trigger Drive sync to load synced messages after sign-in
+            setTimeout(() => {
+                // First try with existing cached token
+                if (state.drive.accessToken) {
+                    bootstrapDriveSync().catch(err => console.debug('Silent sync failed:', err));
+                } else {
+                    // Request new token if not cached
+                    requestDriveToken()
+                        .then(() => bootstrapDriveSync())
+                        .catch(err => console.debug('Drive sync after sign-in failed:', err));
+                }
+            }, 500);
         }
     } catch (err) {
         console.warn('Failed to handle Google sign-in:', err);
@@ -554,6 +565,18 @@ window.addEventListener('storage', (event) => {
                     picture: sharedUser.picture,
                     provider: 'google'
                 });
+                // After sign-in, trigger Drive sync to load synced messages
+                setTimeout(() => {
+                    // First try with existing cached token
+                    if (state.drive.accessToken) {
+                        bootstrapDriveSync().catch(err => console.debug('Silent sync failed:', err));
+                    } else {
+                        // Request new token if not cached
+                        requestDriveToken()
+                            .then(() => bootstrapDriveSync())
+                            .catch(err => console.debug('Drive sync after sign-in failed:', err));
+                    }
+                }, 500);
             } catch (err) {
                 console.warn('Failed to sync user from shared storage:', err);
             }
@@ -579,7 +602,7 @@ function main() {
     console.log('Shared user on restore:', sharedUser ? 'Found' : 'Not found');
 
     initUI();
-    
+
     // Render recent chats on page load
     renderRecentChats().catch(err => console.warn('Failed to render recent chats on load:', err));
 
