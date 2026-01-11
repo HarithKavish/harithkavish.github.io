@@ -218,6 +218,19 @@ function showStatusInfo(show) {
     console.log('✅ Neo AI widget auto-loader initialized');
 })();
 
+// Dark Mode Toggle Handler
+function setupDarkModeToggle() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    if (!darkModeToggle) return;
+    
+    darkModeToggle.addEventListener('click', () => {
+        const isDark = document.body.classList.toggle('dark-mode');
+        document.documentElement.classList.toggle('dark-mode', isDark);
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        darkModeToggle.textContent = isDark ? '☀️' : '🌙';
+    });
+}
+
 // DOMContentLoaded Initialization
 document.addEventListener('DOMContentLoaded', () => {
     if (window.HarithShell) {
@@ -238,6 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     initGoogleSignInButton();
+    setupDarkModeToggle();
     sortConnectButtons();
     updateSkinNetStatus();
     updateDetectObjectStatus();
