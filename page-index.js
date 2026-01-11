@@ -222,7 +222,7 @@ function showStatusInfo(show) {
 function setupDarkModeToggle() {
     const darkModeToggle = document.getElementById('darkModeToggle');
     if (!darkModeToggle) return;
-    
+
     darkModeToggle.addEventListener('click', () => {
         const isDark = document.body.classList.toggle('dark-mode');
         document.documentElement.classList.toggle('dark-mode', isDark);
