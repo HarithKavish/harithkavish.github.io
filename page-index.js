@@ -223,11 +223,19 @@ function setupDarkModeToggle() {
     const darkModeToggle = document.getElementById('darkModeToggle');
     if (!darkModeToggle) return;
 
+    // Initialize icon based on current state
+    const isDark = document.body.classList.contains('dark-mode') || localStorage.getItem('theme') === 'dark';
+    if (isDark) {
+        document.body.classList.add('dark-mode');
+        document.documentElement.classList.add('dark-mode');
+    }
+    darkModeToggle.textContent = isDark ? '☀️' : '🌙';
+
     darkModeToggle.addEventListener('click', () => {
-        const isDark = document.body.classList.toggle('dark-mode');
-        document.documentElement.classList.toggle('dark-mode', isDark);
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        darkModeToggle.textContent = isDark ? '☀️' : '🌙';
+        const isDarkNow = document.body.classList.toggle('dark-mode');
+        document.documentElement.classList.toggle('dark-mode', isDarkNow);
+        localStorage.setItem('theme', isDarkNow ? 'dark' : 'light');
+        darkModeToggle.textContent = isDarkNow ? '☀️' : '🌙';
     });
 }
 
