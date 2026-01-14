@@ -61,27 +61,30 @@ function renderSignedInButton(user) {
 
     // Use a unique ID for the dropdown logic
     const dropdownId = 'userProfileDropdown';
-    
+
+    // Set positioning context for absolute dropdown
+    googleButtonTarget.style.position = 'relative';
+
+    // Fix: Dropdown is now a sibling, not a child of the button (which is invalid HTML)
     googleButtonTarget.innerHTML = `
         <button type="button" class="signed-in-button" aria-label="Signed in as ${user.name}" aria-expanded="false" aria-controls="${dropdownId}">
             <img src="${user.picture || 'https://www.gravatar.com/avatar/?d=mp'}" alt="${user.name} avatar"
                 class="signed-in-button__avatar" loading="lazy" />
+        </button>
             
-            <div id="${dropdownId}" class="user-dropdown-menu">
-                <div class="user-dropdown-header">
-                    <span class="user-dropdown-name">${user.name}</span>
-                    <span class="user-dropdown-email">${user.email}</span>
-                </div>
-                <button type="button" class="user-dropdown-action" id="logoutBtn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                        <polyline points="16 17 21 12 16 7"></polyline>
-                        <line x1="21" y1="12" x2="9" y2="12"></line>
-                    </svg>
-                    Sign Out
-                </button>
+        <div id="${dropdownId}" class="user-dropdown-menu">
+            <div class="user-dropdown-header">
+                <span class="user-dropdown-name">${user.name}</span>
             </div>
-        </button>`;
+            <button type="button" class="user-dropdown-action" id="logoutBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                Sign Out
+            </button>
+        </div>`;
 
     const signInBtn = googleButtonTarget.querySelector('.signed-in-button');
     const dropdown = document.getElementById(dropdownId);
@@ -89,22 +92,23 @@ function renderSignedInButton(user) {
 
     // Toggle dropdown on avatar click
     signInBtn?.addEventListener('click', (e) => {
-        // Prevent closing when clicking inside the dropdown
-        if (e.target.closest('.user-dropdown-menu')) return;
-        
+        e.stopPropagation(); // Stop propagation to prevent immediate close
         const isExpanded = signInBtn.getAttribute('aria-expanded') === 'true';
         signInBtn.setAttribute('aria-expanded', !isExpanded);
         signInBtn.classList.toggle('active');
         dropdown.classList.toggle('show');
     });
 
+    // Prevent dropdown click from closing itself
+    dropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
     // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!signInBtn.contains(e.target)) {
-            signInBtn.setAttribute('aria-expanded', 'false');
-            signInBtn.classList.remove('active');
-            dropdown.classList.remove('show');
-        }
+    document.addEventListener('click', () => {
+        signInBtn.setAttribute('aria-expanded', 'false');
+        signInBtn.classList.remove('active');
+        dropdown.classList.remove('show');
     });
 
     // Logout Handler
