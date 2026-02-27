@@ -1,1 +1,74 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.Python
+env/
+
+# VS Code
+.vscode/
+
+# Playwright / agent state
+.playwright-mcp/
+.agent-state.json
+
+# Node
+node_modules/
+dist/
+build/
+
+# Logs
+debug.log
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Archives
+*.zip
+
+# Environment files
+*.env
+.env.local
+.env.*.local
+
+# Repo-specific
+harithkavish_github_io/.git_disabled/
 spaces/reasoning-layer
+
+# GitHub memory DB (generated/vector DB files)
+.github/memory/
+.github/memory/vectordb/
+.github/memory/vectordb/**
+.github/memory/**/data/**
+.github/memory/**/*.lance
+
+# Large model/checkpoint outputs
+neo-ai/checkpoints/
+neo-ai/checkpoints_demo/
+neo-ai/checkpoints_distil/
+models/
+
+# Python packaging/build
+pip-wheel-metadata/
+*.egg-info/
+build/
+
+# SQLite / DB caches
+*.sqlite
+*.db
+
+# caches and temp
+.cache/
+tmp/
+temp/
+
+# platform-specific
+Thumbs.db
+.DS_Store
+
+# archives and bundles
+mcp-registry-mcp-server.zip
+

@@ -16,44 +16,44 @@
     <meta property="og:description"
         content="Gateway to AI projects, tools, APIs, and social profiles by Harith Kavish.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://harithkavish.github.io/">
-    <meta property="og:image" content="https://harithkavish.github.io/favicon.svg">
+    <meta property="og:url" content="https://harithkavish.com/">
+    <meta property="og:image" content="https://harithkavish.com/favicon.svg">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@harithkavish">
     <meta name="twitter:title" content="Harith Kavish Website">
     <meta name="twitter:description" content="Explore AI projects, tools, and connect with Harith Kavish.">
-    <meta name="twitter:image" content="https://harithkavish.github.io/favicon.svg">
+    <meta name="twitter:image" content="https://harithkavish.com/favicon.svg">
 
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="manifest" href="site.webmanifest">
     <title>Harith Kavish Website</title>
 
     <!-- Harith Design System v1.0.0 -->
-    <link rel="stylesheet" href="https://harithkavish.github.io/harith-design-system/v1.0.0/tokens.css">
-    <link rel="stylesheet" href="https://harithkavish.github.io/harith-design-system/v1.0.0/base.css">
-    <link rel="stylesheet" href="https://harithkavish.github.io/harith-design-system/v1.0.0/components.css">
-    <link rel="stylesheet" href="https://harithkavish.github.io/harith-design-system/v1.0.0/utils.css">
+    <link rel="stylesheet" href="/harith-design-system/v1.0.0/tokens.css">
+    <link rel="stylesheet" href="/harith-design-system/v1.0.0/base.css">
+    <link rel="stylesheet" href="/harith-design-system/v1.0.0/components.css">
+    <link rel="stylesheet" href="/harith-design-system/v1.0.0/utils.css">
     <!-- ✅ Schema.org JSON-LD Metadata -->
     <script type="application/ld+json">
                 {
                     "@context": "https://schema.org",
                     "@type": "WebSite",
                     "name": "Harith Kavish",
-                    "url": "https://harithkavish.github.io",
+                    "url": "https://harithkavish.com",
                     "description": "A gateway to projects, tools, APIs, and profiles by Harith Kavish.",
                     "inLanguage": "en",
                     "publisher": {
                         "@type": "Organization",
                         "name": "Harith Kavish",
-                        "url": "https://harithkavish.github.io",
-                        "logo": "https://harithkavish.github.io/favicon.svg"
+                        "url": "https://harithkavish.com",
+                        "logo": "https://harithkavish.com/favicon.svg"
                     },
                     "creator": {
                         "@type": "Person",
                         "name": "Harith Kavish",
-                        "url": "https://harithkavish.github.io/HarithKavish",
+                        "url": "https://harithkavish.com/HarithKavish",
                         "sameAs": [
                             "https://www.instagram.com/harithkavish/",
                             "https://x.com/harithkavish",
@@ -79,7 +79,7 @@
                     ],
                     "potentialAction": {
                         "@type": "SearchAction",
-                        "target": "https://harithkavish.github.io/?q={search_term_string}",
+                        "target": "https://harithkavish.com/?q={search_term_string}",
                         "query-input": "required name=search_term_string"
                     }
                 }
@@ -118,13 +118,13 @@
                             "@type": "ListItem",
                             "position": 5,
                             "name": "SkinNet Analyzer",
-                            "item": "https://harithkavish.github.io/SkinNet-Analyzer/"
+                            "item": "https://harithkavish.com/SkinNet-Analyzer/"
                         },
                         {
                             "@type": "ListItem",
                             "position": 6,
                             "name": "Object Detector",
-                            "item": "https://harithkavish.github.io/Multi-Object-Detection-using-YOLO/"
+                            "item": "https://harithkavish.com/Multi-Object-Detection-using-YOLO/"
                         }
                     ]
                 }
@@ -245,11 +245,49 @@
     <harith-footer></harith-footer>
 
     <!-- Harith Design System Modules -->
-    <script src="https://harithkavish.github.io/harith-design-system/v1.0.0/theme-toggle.js"></script>
-    <script src="https://harithkavish.github.io/harith-design-system/v1.0.0/harith-shell.js"></script>
+    <script src="/harith-design-system/v1.0.0/theme-toggle.js"></script>
+    <script src="/harith-design-system/v1.0.0/harith-shell.js"></script>
     <script src="https://accounts.google.com/gsi/client" async></script>
     <!-- Page-specific logic -->
     <script src="page-index.js"></script>
+    <!-- Fallback theme handler: ensures toggle works if external script fails -->
+    <script>
+        (function(){
+            const KEY = 'theme';
+            function applyTheme(theme){
+                theme = (theme || '').toString().toLowerCase() === 'dark' ? 'dark' : 'light';
+                document.documentElement.classList.toggle('dark-mode', theme === 'dark');
+                if(document.body) document.body.classList.toggle('dark-mode', theme === 'dark');
+                try{ localStorage.setItem(KEY, theme); }catch(e){}
+                const btn = document.getElementById('darkModeToggle');
+                if(btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+            }
+            function detect(){
+                try{
+                    const saved = localStorage.getItem(KEY);
+                    if(saved) return saved.toLowerCase();
+                }catch(e){}
+                return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.addEventListener('DOMContentLoaded', function(){
+                // Initialize only if no theme class present
+                const initial = detect();
+                applyTheme(initial);
+                const btn = document.getElementById('darkModeToggle');
+                if(btn) btn.addEventListener('click', function(){
+                    const current = document.documentElement.classList.contains('dark-mode') ? 'dark' : 'light';
+                    applyTheme(current === 'dark' ? 'light' : 'dark');
+                });
+                // Sync system preference changes
+                if(window.matchMedia){
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                        // Only change if user hasn't explicitly set a preference
+                        try{ if(!localStorage.getItem(KEY)) applyTheme(e.matches ? 'dark' : 'light'); }catch(e){}
+                    });
+                }
+            });
+        })();
+    </script>
 </body>
 
 </html>
