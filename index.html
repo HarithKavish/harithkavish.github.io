@@ -1,249 +1,293 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Solar System - Our Cosmic Neighborhood</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta name="description"
+        content="Explore AI projects, tools, and APIs by Harith Kavish. Connect across Instagram, GitHub, LinkedIn, and more.">
+    <meta name="keywords"
+        content="Harith Kavish, SkinNet Analyzer, AI projects, machine learning, object detection, portfolio, developer, full stack">
+    <meta name="author" content="Harith Kavish">
+    <meta name="theme-color" content="#38bdf8">
+
+    <!-- Open Graph (Facebook, LinkedIn) -->
+    <meta property="og:title" content="Harith Kavish Website">
+    <meta property="og:description"
+        content="Gateway to AI projects, tools, APIs, and social profiles by Harith Kavish.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://harithkavish.com/">
+    <meta property="og:image" content="https://harithkavish.com/favicon.svg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@harithkavish">
+    <meta name="twitter:title" content="Harith Kavish Website">
+    <meta name="twitter:description" content="Explore AI projects, tools, and connect with Harith Kavish.">
+    <meta name="twitter:image" content="https://harithkavish.com/favicon.svg">
+
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="site.webmanifest">
+    <title>Harith Kavish Website</title>
+
+    <!-- Harith Design System v1.0.0 -->
+    <link rel="stylesheet" href="/harith-design-system/v1.0.0/tokens.css">
+    <link rel="stylesheet" href="/harith-design-system/v1.0.0/base.css">
+    <link rel="stylesheet" href="/harith-design-system/v1.0.0/components.css">
+    <link rel="stylesheet" href="/harith-design-system/v1.0.0/utils.css">
+    <!-- ✅ Schema.org JSON-LD Metadata -->
+    <script type="application/ld+json">
+                {
+                    "@context": "https://schema.org",
+                    "@type": "WebSite",
+                    "name": "Harith Kavish",
+                    "url": "https://harithkavish.com",
+                    "description": "A gateway to projects, tools, APIs, and profiles by Harith Kavish.",
+                    "inLanguage": "en",
+                    "publisher": {
+                        "@type": "Organization",
+                        "name": "Harith Kavish",
+                        "url": "https://harithkavish.com",
+                        "logo": "https://harithkavish.com/favicon.svg"
+                    },
+                    "creator": {
+                        "@type": "Person",
+                        "name": "Harith Kavish",
+                        "url": "https://harithkavish.com/HarithKavish",
+                        "sameAs": [
+                            "https://www.instagram.com/harithkavish/",
+                            "https://x.com/harithkavish",
+                            "https://github.com/HarithKavish",
+                            "https://www.facebook.com/harithkavish",
+                            "https://huggingface.co/harithkavish",
+                            "https://www.youtube.com/@harithkavish",
+                            "https://www.linkedin.com/in/harithkavish/",
+                            "https://hub.docker.com/u/harithkavish",
+                            "https://discord.com/users/harithkavish"
+                        ]
+                    },
+                    "sameAs": [
+                        "https://www.instagram.com/harithkavish/",
+                        "https://x.com/harithkavish",
+                        "https://github.com/HarithKavish",
+                        "https://www.facebook.com/harithkavish",
+                        "https://huggingface.co/harithkavish",
+                        "https://www.youtube.com/@harithkavish",
+                        "https://www.linkedin.com/in/harithkavish/",
+                        "https://hub.docker.com/u/harithkavish",
+                        "https://discord.com/users/harithkavish"
+                    ],
+                    "potentialAction": {
+                        "@type": "SearchAction",
+                        "target": "https://harithkavish.com/?q={search_term_string}",
+                        "query-input": "required name=search_term_string"
+                    }
+                }
+    </script>
+    <!-- ✅ BreadcrumbList Schema -->
+    <script type="application/ld+json">
+                {
+                    "@context": "https://schema.org",
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                        {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": "Home",
+                            "item": "https://harithkavish.github.io/"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 2,
+                            "name": "About Me",
+                            "item": "https://harithkavish.github.io/HarithKavish/"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 3,
+                            "name": "Converse",
+                            "item": "https://harithkavish.github.io/converse/"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 4,
+                            "name": "AI Lab",
+                            "item": "https://harithkavish.github.io/ai-lab/" 
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 5,
+                            "name": "SkinNet Analyzer",
+                            "item": "https://harithkavish.com/SkinNet-Analyzer/"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 6,
+                            "name": "Object Detector",
+                            "item": "https://harithkavish.com/Multi-Object-Detection-using-YOLO/"
+                        }
+                    ]
+                }
+    </script>
 </head>
+
 <body>
-    <header class="header">
-        <div class="container">
-            <h1>THE SOLAR SYSTEM</h1>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="#intro">Introduction</a></li>
-                    <li><a href="#planets">Planets</a></li>
-                    <li><a href="#dwarf-planets">Dwarf Planets</a></li>
-                    <li><a href="#moons">Moons</a></li>
-                    <li><a href="#asteroids">Asteroids & Comets</a></li>
-                    <li><a href="#space-stations">Space Stations</a></li>
-                    <li><a href="#future">Future Exploration</a></li>
-                </ul>
-            </nav>
+    <harith-header 
+        site-title="Harith Kavish" 
+        site-tagline="AI-Driven Systems Architect & Creative Director" 
+        google-client-id="235284376269-a8bgbs53t4jp8j82s38dbu621l47484o.apps.googleusercontent.com">
+    </harith-header>
+
+    <main>
+        <div class="main-center">
+            <div class="intro">
+                <p class="tagline">AI-Driven Systems Architect & Creative Director</p>
+                <p class="subtitle">Building intelligent applications and sharing knowledge.</p>
+            </div>
+            <div class="center-buttons">
+                <a href="https://harithkavish.github.io/HarithKavish/" class="portfolio-btn external-link-btn">About
+                    Me</a>
+                <button class="websites-toggle-btn" onclick="toggleWebsites(event)" id="websitesToggleBtn"
+                    aria-expanded="false">My
+                    Applications</button>
+                <div id="skinnet-status-info" style="display:none;">
+                    <span class="status-dot online" style="margin-right:0.3em;"></span>Online &nbsp;
+                    <span class="status-dot unknown" style="margin-right:0.3em;"></span>Unreachable &nbsp;
+                    <span class="status-dot offline" style="margin-right:0.3em;"></span>Offline
+                </div>
+                <h4 class="section-heading websites-hidden" id="websitesHeading"
+                    style="margin-bottom:-2em; margin-top:0.5em;">Full Stack
+                    Applications</h4>
+                <div class="footer-buttons websites-hidden" id="websitesSection">
+                    <a href="https://harithkavish.github.io/SkinNet-Analyzer/" class="footer-btn" id="skinnet-btn">
+                        <span class="status-dot" id="skinnet-status-dot"></span>
+                        SkinNet Analyzer
+                    </a>
+                    <a href="https://harithkavish.github.io/converse/" class="footer-btn" id="chat-btn">
+                        <span class="status-dot online" aria-label="Online"></span>
+                        Converse
+                    </a>
+                    <a href="https://harithkavish.github.io/ai-lab/" class="footer-btn" id="ai-chat-btn">
+                        <span class="status-dot online" aria-label="Online"></span>
+                        AI Lab
+                    </a>
+                </div>
+                <h4 class="section-heading websites-hidden" id="websitesHeading2"
+                    style="margin-bottom:-2em; margin-top:0em;">Backend Applications</h4>
+                <div class="footer-buttons websites-hidden" id="websitesSection2">
+                    <a href="https://harithkavish.github.io/Multi-Object-Detection-using-YOLO/" class="footer-btn"
+                        id="detectobject-btn">
+                        <span class="status-dot" id="detectobject-status-dot"></span>
+                        Object Detector
+                    </a>
+                    <!-- Add more website links here as needed -->
+                </div>
+                <button class="connect-toggle-btn" onclick="toggleConnect(event)" id="connectToggleBtn"
+                    aria-expanded="false">Connect with me</button>
+                <div class="footer-buttons connect-hidden" id="connectSection">
+                    <a href="https://www.instagram.com/harithkavish/" target="_blank" class="footer-btn">
+                        <img src="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png"
+                            alt="Instagram" class="btn-icon" loading="lazy" />
+                        Instagram
+                    </a>
+                    <a href="https://x.com/harithkavish" target="_blank" class="footer-btn">
+                        <img src="https://abs.twimg.com/favicons/twitter.3.ico" alt="X" class="btn-icon"
+                            loading="lazy" />
+                        X
+                    </a>
+                    <a href="https://github.com/HarithKavish" target="_blank" class="footer-btn">
+                        <img src="https://github.githubassets.com/favicons/favicon.svg" alt="GitHub" class="btn-icon"
+                            loading="lazy" />
+                        GitHub
+                    </a>
+                    <a href="https://www.facebook.com/harithkavish" target="_blank" class="footer-btn">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
+                            alt="Facebook" class="btn-icon" loading="lazy" />
+                        Facebook
+                    </a>
+                    <a href="https://huggingface.co/harithkavish" target="_blank" class="footer-btn">
+                        <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="HuggingFace"
+                            class="btn-icon" loading="lazy" />
+                        HuggingFace
+                    </a>
+                    <a href="https://www.youtube.com/@harithkavish" target="_blank" class="footer-btn">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png"
+                            alt="YouTube" class="btn-icon" loading="lazy" />
+                        YouTube
+                    </a>
+                    <a href="https://www.linkedin.com/in/harithkavish/" target="_blank" class="footer-btn">
+                        <img src="https://static.licdn.com/scds/common/u/images/logos/favicons/v1/favicon.ico"
+                            alt="LinkedIn" class="btn-icon" loading="lazy" />
+                        LinkedIn
+                    </a>
+                    <a href="https://hub.docker.com/u/harithkavish" target="_blank" class="footer-btn">
+                        <img src="https://www.docker.com/favicon.ico" alt="DockerHub" class="btn-icon" loading="lazy" />
+                        DockerHub
+                    </a>
+                    <a href="https://discord.com/users/harithkavish" target="_blank" class="footer-btn">
+                        <img src="https://static.vecteezy.com/system/resources/previews/006/892/625/original/discord-logo-icon-editorial-free-vector.jpg"
+                            alt="Discord" class="btn-icon discord" loading="lazy" />
+                        Discord
+                    </a>
+                </div>
+            </div>
         </div>
-    </header>
 
-    <main class="main-content">
-        <section id="intro" class="intro-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Our Cosmic Neighborhood</h2>
-                    <p>The solar system is the collection of eight planets, their moons, dwarf planets, comets, asteroids, and other objects that orbit the Sun. It formed 4.6 billion years ago from the gravitational collapse of a giant molecular cloud. The Sun, which contains nearly all the solar system's mass, is the central star and source of light and heat.</p>
-                </div>
-                <div class="solar-system-diagram">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Solar_system_planets_20090214.png/800px-Solar_system_planets_20090214.png" alt="Solar System Diagram" class="diagram-image">
-                    <div class="planet-circles">
-                        <div class="circle planet mercury" data-name="Mercury"></div>
-                        <div class="circle planet venus" data-name="Venus"></div>
-                        <div class="circle planet earth" data-name="Earth"></div>
-                        <div class="circle planet mars" data-name="Mars"></div>
-                        <div class="circle planet jupiter" data-name="Jupiter"></div>
-                        <div class="circle planet saturn" data-name="Saturn"></div>
-                        <div class="circle planet uranus" data-name="Uranus"></div>
-                        <div class="circle planet neptune" data-name="Neptune"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="planets" class="planets-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>The Eight Planets</h2>
-                    <p>Each planet has unique characteristics that make it special. Below is an overview of each planet in our solar system.</p>
-                </div>
-                <div class="planet-grid">
-                    <div class="planet-card">
-                        <div class="planet-icon mercury"></div>
-                        <h3>Mercury</h3>
-                        <p>Mercury is the closest planet to the Sun and the smallest in the solar system. It has no atmosphere and extreme temperature variations, ranging from 430°C (806°F) during the day to -180°C (-292°F) at night.</p>
-                    </div>
-                    <div class="planet-card">
-                        <div class="planet-icon venus"></div>
-                        <h3>Venus</h3>
-                        <p>Venus is the second planet from the Sun and is often called Earth's "sister planet" due to their similar size and composition. Its thick atmosphere is composed mainly of carbon dioxide, creating a runaway greenhouse effect.</p>
-                    </div>
-                    <div class="planet-card">
-                        <div class="planet-icon earth"></div>
-                        <h3>Earth</h3>
-                        <p>Earth is the third planet from the Sun and the only known planet to support life. It is characterized by its liquid water, diverse ecosystems, and unique atmosphere.</p>
-                    </div>
-                    <div class="planet-card">
-                        <div class="planet-icon mars"></div>
-                        <h3>Mars</h3>
-                        <p>Mars is the fourth planet from the Sun and often referred to as the "Red Planet" due to its reddish appearance caused by iron oxide on its surface. It has the tallest volcano in the solar system, Olympus Mons.</p>
-                    </div>
-                    <div class="planet-card">
-                        <div class="planet-icon jupiter"></div>
-                        <h3>Jupiter</h3>
-                        <p>Jupiter is the fifth planet from the Sun and the largest in the solar system. It is a gas giant with a Great Red Spot, a massive storm that has raged for centuries. Jupiter has at least 95 known moons.</p>
-                    </div>
-                    <div class="planet-card">
-                        <div class="planet-icon saturn"></div>
-                        <h3>Saturn</h3>
-                        <p>Saturn is the sixth planet from the Sun and is famous for its extensive ring system, composed primarily of ice particles and rock debris. It is the second-largest planet in the solar system.</p>
-                    </div>
-                    <div class="planet-card">
-                        <div class="planet-icon uranus"></div>
-                        <h3>Uranus</h3>
-                        <p>Uranus is the seventh planet from the Sun and is distinguished by its extreme axial tilt, which causes it to rotate on its side. It has a blue-green appearance due to methane in its atmosphere.</p>
-                    </div>
-                    <div class="planet-card">
-                        <div class="planet-icon neptune"></div>
-                        <h3>Neptune</h3>
-                        <p>Neptune is the eighth and farthest planet from the Sun. It is a gas giant with winds that reach speeds of up to 2,100 km/h (1,300 mph). Neptune is known for its deep blue color and faint rings.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="dwarf-planets" class="dwarf-planets-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Dwarf Planets</h2>
-                    <p>Dwarf planets are smaller than planets but meet most of the criteria to be considered a planet. They are not in orbit around the Sun, nor have they "cleared the neighborhood" around their orbits.</p>
-                </div>
-                <div class="dwarf-planets-grid">
-                    <div class="dwarf-planet-card">
-                        <div class="dwarf-icon pluto"></div>
-                        <h3>Pluto</h3>
-                        <p>Pluto is the largest known dwarf planet in the Kuiper Belt. It was once considered the ninth planet but was reclassified in 2006 due to its size and orbit. Pluto has five known moons, the largest being Charon.</p>
-                    </div>
-                    <div class="dwarf-planet-card">
-                        <div class="dwarf-icon eris"></div>
-                        <h3>Eris</h3>
-                        <p>Eris is a dwarf planet located in the scattered disk region of the solar system. It is slightly smaller than Pluto but has a similar composition. Eris is notable for being the most distant known dwarf planet.</p>
-                    </div>
-                    <div class="dwarf-planet-card">
-                        <div class="dwarf-icon haumea"></div>
-                        <h3>Haumea</h3>
-                        <p>Haumea is an elongated, fast-rotating dwarf planet located in the Kuiper Belt. It is known for its high albedo, reflecting sunlight brightly, and its rapid rotation, which takes only about 4 hours.</p>
-                    </div>
-                    <div class="dwarf-planet-card">
-                        <div class="dwarf-icon makemake"></div>
-                        <h3>Makemake</h3>
-                        <p>Makemake is another dwarf planet in the Kuiper Belt. It has a bright surface and is relatively large compared to other known Kuiper Belt objects. Makemake has no known moons and a surface temperature of around -238°C (-396°F).</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="moons" class="moons-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Moons of the Solar System</h2>
-                    <p>Moons, or natural satellites, are celestial bodies that orbit planets. Our solar system has at least 200+ known moons, with Jupiter and Saturn having the most.</p>
-                </div>
-                <div class="moon-grid">
-                    <div class="moon-card">
-                        <div class="moon-icon earth-moon"></div>
-                        <h3>Earth's Moon</h3>
-                        <p>The Moon is Earth's only natural satellite. It is the fifth largest moon in the solar system and the largest relative to its planet. The Moon plays a significant role in Earth's tides and stabilizes Earth's axial tilt.</p>
-                    </div>
-                    <div class="moon-card">
-                        <div class="moon-icon jupiter-io"></div>
-                        <h3>Jupiter's Io</h3>
-                        <p>Io is the third-largest moon of Jupiter and is known for its volcanic activity. It has more volcanoes than any other body in the solar system, driven by tidal forces from Jupiter's gravity.</p>
-                    </div>
-                    <div class="moon-card">
-                        <div class="moon-icon jupiter-europa"></div>
-                        <h3>Jupiter's Europa</h3>
-                        <p>Europa is the second-largest moon of Jupiter and is notable for its icy surface and subsurface ocean, which could potentially harbor life. Its surface is covered by a layer of ice that is believed to be about 15-25 km thick.</p>
-                    </div>
-                    <div class="moon-card">
-                        <div class="moon-icon saturn-titan"></div>
-                        <h3>Saturn's Titan</h3>
-                        <p>Titan is the largest moon of Saturn and the second-largest in the solar system. It has a thick atmosphere and liquid methane lakes on its surface, making it one of the most Earth-like bodies in the solar system.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="asteroids" class="asteroids-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Asteroids and Comets</h2>
-                    <p>Asteroids are rocky bodies that orbit the Sun, primarily located in the asteroid belt between Mars and Jupiter. Comets are icy bodies that release gas and dust when near the Sun, forming a visible tail.</p>
-                </div>
-                <div class="asteroid-comet-grid">
-                    <div class="asteroid-card">
-                        <div class="asteroid-icon"></div>
-                        <h3>Asteroids</h3>
-                        <p>There are millions of asteroids in the solar system, with the largest, Ceres, being a dwarf planet. Asteroids vary in size from small rocks to objects over 500 km in diameter. They are remnants from the formation of the solar system.</p>
-                    </div>
-                    <div class="comet-card">
-                        <div class="comet-icon"></div>
-                        <h3>Comets</h3>
-                        <p>Comets are composed of ice, dust, and rocky material. When they approach the Sun, they heat up and release gas and dust, forming a coma and tail. Comets originate from the Oort Cloud and Kuiper Belt.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="space-stations" class="space-stations-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Human Space Stations</h2>
-                    <p>Human space stations are artificial satellites designed for human habitation. They provide a platform for scientific research and testing of technologies in space.</p>
-                </div>
-                <div class="space-station-grid">
-                    <div class="space-station-card">
-                        <div class="station-icon skylab"></div>
-                        <h3>Skylab</h3>
-                        <p>Skylab was the first U.S. space station, launched in 1973. It served as a laboratory for astronomy, Earth observation, and medical experiments. Skylab was deorbited in 1979.</p>
-                    </div>
-                    <div class="space-station-card">
-                        <div class="station-icon mir"></div>
-                        <h3>Mir</h3>
-                        <p>Mir was the first modular space station and operated from 1986 to 2001. It hosted multiple expeditions and was a key platform for international cooperation in space exploration.</p>
-                    </div>
-                    <div class="space-station-card">
-                        <div class="station-icon iss"></div>
-                        <h3>International Space Station (ISS)</h3>
-                        <p>The ISS is a collaborative project involving NASA, Roscosmos, JAXA, ESA, and CSA. It has been continuously occupied since 2000 and serves as a microgravity laboratory for scientific research.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="future" class="future-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Future Exploration of the Solar System</h2>
-                    <p>Exploration of the solar system continues to expand with new missions and technologies. Here are some upcoming and planned missions.</p>
-                </div>
-                <div class="future-missions">
-                    <div class="mission-card">
-                        <h3>NASA's Artemis Program</h3>
-                        <p>The Artemis program aims to return humans to the Moon, including the first woman and person of color, and eventually to Mars. Artemis III is planned for 2026.</p>
-                    </div>
-                    <div class="mission-card">
-                        <h3>ESA's Juice Mission</h3>
-                        <p>The Juice mission (JUpiter ICy moons Explorer) will study Jupiter's moons Ganymede, Callisto, and Europa, focusing on their potential habitability.</p>
-                    </div>
-                    <div class="mission-card">
-                        <h3>NASA's Europa Clipper</h3>
-                        <p>The Europa Clipper mission will investigate Europa's ocean and potential habitability. Launch is planned for 2024.</p>
-                    </div>
-                    <div class="mission-card">
-                        <h3>China's Tianwen-3 Mission</h3>
-                        <p>This mission aims to return samples from Mars and conduct further exploration of the Red Planet. It is planned for the late 2020s.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- Legal Links -->
+        <div style="text-align: center; padding: 24px; margin-top: 24px; border-top: 1px solid var(--border);">
+            <a href="privacy-policy.html" style="color: var(--accent); text-decoration: none; margin: 0 12px;">Privacy
+                Policy</a>
+            <span style="color: var(--muted);">•</span>
+            <a href="terms-of-service.html" style="color: var(--accent); text-decoration: none; margin: 0 12px;">Terms
+                of Service</a>
+        </div>
     </main>
+    <harith-footer></harith-footer>
 
-    <footer class="footer">
-        <div class="container">
-            <p>© 2023 The Solar System Explorer. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+    <!-- Harith Design System Modules -->
+    <script src="/harith-design-system/v1.0.0/theme-toggle.js"></script>
+    <script src="/harith-design-system/v1.0.0/harith-shell.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <!-- Page-specific logic -->
+    <script src="page-index.js"></script>
+    <!-- Fallback theme handler: ensures toggle works if external script fails -->
+    <script>
+        (function(){
+            const KEY = 'theme';
+            function applyTheme(theme){
+                theme = (theme || '').toString().toLowerCase() === 'dark' ? 'dark' : 'light';
+                document.documentElement.classList.toggle('dark-mode', theme === 'dark');
+                if(document.body) document.body.classList.toggle('dark-mode', theme === 'dark');
+                try{ localStorage.setItem(KEY, theme); }catch(e){}
+                const btn = document.getElementById('darkModeToggle');
+                if(btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+            }
+            function detect(){
+                try{
+                    const saved = localStorage.getItem(KEY);
+                    if(saved) return saved.toLowerCase();
+                }catch(e){}
+                return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.addEventListener('DOMContentLoaded', function(){
+                // Initialize only if no theme class present
+                const initial = detect();
+                applyTheme(initial);
+                const btn = document.getElementById('darkModeToggle');
+                if(btn) btn.addEventListener('click', function(){
+                    const current = document.documentElement.classList.contains('dark-mode') ? 'dark' : 'light';
+                    applyTheme(current === 'dark' ? 'light' : 'dark');
+                });
+                // Sync system preference changes
+                if(window.matchMedia){
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                        // Only change if user hasn't explicitly set a preference
+                        try{ if(!localStorage.getItem(KEY)) applyTheme(e.matches ? 'dark' : 'light'); }catch(e){}
+                    });
+                }
+            });
+        })();
+    </script>
 </body>
+
 </html>

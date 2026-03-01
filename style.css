@@ -1,360 +1,770 @@
 :root {
-    --primary-color: #1a237e;
-    --secondary-color: #3a4a8a;
-    --accent-color: #4cc9f0;
-    --light-color: #f8f9fa;
-    --dark-color: #212529;
-    --success-color: #4cc9f0;
-    --warning-color: #ffc107;
-    --danger-color: #dc3545;
-    --text-color: #212529;
-    --text-light: #6c757d;
-    --transition-speed: 0.3s;
+    --shell-bg-light: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff9c4 100%);
+    --shell-bg-dark: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+    --shell-text-light: #222;
+    --shell-text-dark: #e0e0e0;
+    --shell-header-bg-light: rgba(255, 255, 255, 0.52);
+    --shell-header-bg-dark: rgba(18, 18, 20, 0.55);
+    --shell-footer-bg-light: rgba(255, 255, 255, 0.5);
+    --shell-footer-bg-dark: rgba(18, 18, 20, 0.55);
+    --shell-nav-link-color: #111;
+    --shell-nav-link-color-dark: #f3f4f6;
+    --shell-border: 1px solid rgba(255, 255, 255, 0.4);
+    --shell-border-dark: 1px solid rgba(255, 255, 255, 0.22);
 }
 
-* {
+body {
+    --main-horizontal-padding: 2rem;
+    --btn-icon-margin: 6px;
+    --btn-radius: 12px;
+    --btn-bg: rgba(255, 255, 255, 0.6);
+    --btn-color: #111;
+    --btn-hover-bg: rgba(255, 255, 255, 0.8);
+    --btn-hover-color: #000;
+    --discord-bg: #5865F2;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
+    padding: 0;
+    background: var(--shell-bg-light);
+    color: var(--shell-text-light);
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Shared header shell that can be mounted on any page */
+.shared-header {
+    background: var(--shell-header-bg-light);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: var(--shell-border);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    padding: 0.25rem 1.25rem;
+    box-sizing: border-box;
+}
+
+.shared-header__inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Open Sans', sans-serif;
-    line-height: 1.6;
-    color: var(--text-color);
-    background-color: #f5f7fa;
-    overflow-x: hidden;
-}
-
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.header {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 2rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.header h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    text-align: center;
-}
-
-.main-nav ul {
+.shared-brand {
     display: flex;
-    justify-content: center;
-    list-style: none;
-    gap: 2rem;
+    align-items: center;
+    gap: 0.35rem;
 }
 
-.main-nav a {
-    color: white;
-    text-decoration: none;
+.shared-brand__name {
+    font-weight: 600;
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+}
+
+/* nav hidden when empty */
+.shared-nav {
+    display: none;
+}
+
+.shared-nav-link {
+    font-size: 0.9rem;
     font-weight: 500;
-    transition: color var(--transition-speed) ease;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.45);
+    color: var(--shell-nav-link-color);
+    border: none;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-.main-nav a:hover {
-    color: var(--accent-color);
+.shared-nav-link:hover,
+.shared-nav-link:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 18px rgba(56, 189, 248, 0.25);
+    background: rgba(255, 255, 255, 0.7);
+    color: #111;
 }
 
-.main-nav a.active {
-    color: var(--accent-color);
-    font-weight: 700;
-}
-
-.main-content {
-    padding: 3rem 0;
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 3rem;
-}
-
-.section-header h2 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: var(--primary-color);
-}
-
-.section-header p {
-    font-size: 1.1rem;
-    color: var(--text-light);
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.solar-system-diagram {
-    text-align: center;
-    margin: 3rem 0;
-}
-
-.diagram-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    transition: transform var(--transition-speed) ease;
-}
-
-.diagram-image:hover {
-    transform: scale(1.05);
-}
-
-.planet-circles {
-    position: relative;
-    height: 300px;
-    margin: 2rem 0;
-}
-
-.circle {
-    position: absolute;
+#darkModeToggle {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
     border-radius: 50%;
-    border: 2px solid transparent;
-    animation: orbit 30s linear infinite;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.circle.planet {
-    background-color: var(--accent-color);
+.shared-header__actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
 }
 
-.circle.mercury {
-    width: 15px;
-    height: 15px;
+.google-button-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.g_id_signin {
+    display: flex;
+}
+
+.signed-in-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+    font-weight: 500;
+    color: var(--shell-nav-link-color);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.signed-in-button:hover,
+.signed-in-button:focus-visible {
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.signed-in-button__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+.signed-in-button__name {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+#darkModeToggle:hover {
+    background: rgba(255, 255, 255, 0.5);
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    color: #111;
+    margin: 0;
+}
+
+main {
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
+    padding-left: var(--main-horizontal-padding);
+    padding-right: var(--main-horizontal-padding);
+    min-height: calc(100vh - 9rem);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+}
+
+.center-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    margin: 2.5rem 0 1.5rem 0;
+}
+
+.portfolio-btn,
+.footer-btn {
+    flex: 0 1 auto;
+    min-width: 120px;
+    max-width: 220px;
+    margin: 0.3rem 0.2rem;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    color: var(--btn-color);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.5rem 1.25rem;
+    border-radius: var(--btn-radius);
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.portfolio-btn:hover,
+.footer-btn:hover,
+.portfolio-btn:hover,
+.connect-toggle-btn:hover,
+.websites-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--btn-hover-color);
+    transform: translateY(-4px) scale(1.08);
+    border-color: rgba(56, 189, 248, 0.6);
+    box-shadow: 0 12px 40px rgba(56, 189, 248, 0.3), 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.btn-icon {
+    vertical-align: middle;
+    margin-right: var(--btn-icon-margin);
+    border-radius: var(--btn-radius);
+    width: 18px;
+    height: 18px;
+    background: transparent;
+}
+
+.btn-icon.discord {
+    background: var(--discord-bg);
+}
+
+.shared-footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--shell-footer-bg-light);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: var(--shell-border);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.12);
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0.75rem 1.2rem;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+.shared-footer__inner {
+    width: min(1200px, 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.shared-footer__copy {
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.shared-footer__links {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.shared-footer__links a {
+    color: #38bdf8;
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.shared-footer__links a:hover,
+.shared-footer__links a:focus-visible {
+    opacity: 0.75;
+}
+
+.gh-pages-link {
+    color: #38bdf8;
+    text-decoration: underline;
+    padding: 0.45rem 1.1rem;
+}
+
+.main-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.intro {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    max-width: 600px;
+}
+
+.tagline {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #111;
+    margin: 0 0 0.5rem 0;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #555;
+    margin: 0;
+}
+
+.connect-hidden {
+    display: none !important;
+}
+
+.connect-toggle-btn,
+.websites-toggle-btn {
+    flex: 0 1 auto;
+    min-width: 120px;
+    max-width: 220px;
+    margin: 0.3rem 0.2rem;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    color: #111;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.5rem 1.25rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+}
+
+/* --- Toggle Arrow Logic --- */
+.connect-toggle-btn::before,
+.websites-toggle-btn::before {
+    content: '>';
+    position: absolute;
+    left: 0.3em;
     top: 50%;
-    left: 10%;
-    animation-delay: 0s;
+    font-size: 1.1em;
+    color: #38bdf8;
+    opacity: 0;
+    transform: translateY(-50%) rotate(0deg);
+    transition: opacity 0.2s, color 0.2s, transform 0.2s;
+    pointer-events: none;
+    display: block;
 }
 
-.circle.venus {
-    width: 25px;
-    height: 25px;
-    top: 50%;
-    left: 30%;
-    animation-delay: 1s;
-}
-
-.circle.earth {
-    width: 30px;
-    height: 30px;
-    top: 50%;
-    left: 50%;
-    animation-delay: 2s;
-}
-
-.circle.mars {
-    width: 20px;
-    height: 20px;
-    top: 50%;
-    left: 70%;
-    animation-delay: 3s;
-}
-
-.circle.jupiter {
-    width: 50px;
-    height: 50px;
-    top: 50%;
-    left: 90%;
-    animation-delay: 4s;
-}
-
-.circle.saturn {
-    width: 40px;
-    height: 40px;
-    top: 50%;
-    left: 95%;
-    animation-delay: 5s;
-}
-
-.circle.uranus {
-    width: 35px;
-    height: 35px;
-    top: 50%;
-    left: 85%;
-    animation-delay: 6s;
-}
-
-.circle.neptune {
-    width: 30px;
-    height: 30px;
-    top: 50%;
-    left: 75%;
-    animation-delay: 7s;
-}
-
-@keyframes orbit {
-    0% {
-        transform: translateX(0) rotate(0deg);
-    }
-    100% {
-        transform: translateX(100%) rotate(360deg);
-    }
-}
-
-.planet-grid, .dwarf-planets-grid, .moon-grid, .asteroid-comet-grid, .space-station-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.planet-card, .dwarf-planet-card, .moon-card, .asteroid-card, .comet-card, .space-station-card {
-    background-color: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
-}
-
-.planet-card:hover, .dwarf-planet-card:hover, .moon-card:hover, .asteroid-card:hover, .comet-card:hover, .space-station-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-
-.planet-icon, .dwarf-icon, .moon-icon, .asteroid-icon, .comet-icon, .station-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    color: var(--primary-color);
-    opacity: 0.8;
-    transition: opacity var(--transition-speed) ease;
-}
-
-.planet-card:hover .planet-icon, .dwarf-planet-card:hover .dwarf-icon, .moon-card:hover .moon-icon,
-.asteroid-card:hover .asteroid-icon, .comet-card:hover .comet-icon, .space-station-card:hover .station-icon {
+.connect-toggle-btn:hover:not(.expanded)::before,
+.websites-toggle-btn:hover:not(.expanded)::before {
     opacity: 1;
 }
 
-.planet-icon.mercury { color: #b8b8b8; }
-.planet-icon.venus { color: #e6e6e6; }
-.planet-icon.earth { color: #0066cc; }
-.planet-icon.mars { color: #cc0000; }
-.planet-icon.jupiter { color: #d4af37; }
-.planet-icon.saturn { color: #d4af37; background-color: #f5f5f5; }
-.planet-icon.uranus { color: #87ceeb; }
-.planet-icon.neptune { color: #4682b4; }
-
-.dwarf-icon.pluto { color: #999; }
-.dwarf-icon.eris { color: #666; }
-.dwarf-icon.haumea { color: #e6e6e6; }
-.dwarf-icon.makemake { color: #ccc; }
-
-.moon-icon.earth-moon { color: #ccc; }
-.moon-icon.jupiter-io { color: #ffd700; }
-.moon-icon.jupiter-europa { color: #87ceeb; }
-.moon-icon.saturn-titan { color: #666; }
-
-.asteroid-icon, .comet-icon { color: #888; }
-
-.station-icon.skylab { color: #ff6b6b; }
-.station-icon.mir { color: #ff9500; }
-.station-icon.iss { color: #008080; }
-
-.future-missions {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+.connect-toggle-btn.expanded::before,
+.websites-toggle-btn.expanded::before {
+    content: '\2228';
+    /* Unicode for wide down arrow */
+    opacity: 0;
 }
 
-.footer {
-    background-color: var(--primary-color);
-    color: white;
-    text-align: center;
-    padding: 2rem 0;
-    margin-top: 3rem;
+.connect-toggle-btn.expanded:hover::before,
+.websites-toggle-btn.expanded:hover::before {
+    content: '\2228';
+    opacity: 1;
 }
 
-@media (max-width: 768px) {
-    .header h1 {
-        font-size: 2rem;
-    }
-
-    .main-nav ul {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .planet-grid, .dwarf-planets-grid, .moon-grid, .asteroid-comet-grid, .space-station-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .future-missions {
-        grid-template-columns: 1fr;
-    }
+.websites-hidden {
+    display: none !important;
 }
 
-@media (max-width: 480px) {
-    .header h1 {
-        font-size: 1.8rem;
-    }
-
-    .section-header h2 {
-        font-size: 1.5rem;
-    }
+.footer-buttons {
+    margin: 1rem auto 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 10;
+    padding: 0.5rem 1rem;
 }
 
-.planet-icon {
+.connect-hidden {
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+.external-link-btn {
+    position: relative;
+}
+
+.external-link-btn::before {
+    content: '\2197';
+    /* Unicode for ↗ */
+    position: absolute;
+    right: 0.1em;
+    top: -0.4em;
+    font-size: 1.3em;
+    color: #38bdf8;
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s;
+    pointer-events: none;
+    display: block;
+}
+
+.external-link-btn:hover::before,
+.external-link-btn:focus::before {
+    opacity: 1;
+}
+
+.footer-btn {
+    position: relative;
+}
+
+.footer-btn::before {
+    content: '\2197';
+    /* Unicode for ↗ */
+    position: absolute;
+    right: 0.1em;
+    top: -0.4em;
+    font-size: 1.3em;
+    color: #38bdf8;
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s;
+    pointer-events: none;
+    display: block;
+}
+
+.footer-btn:hover::before,
+.footer-btn:focus::before {
+    opacity: 1;
+}
+
+.status-dot {
     display: inline-block;
-    width: 40px;
-    height: 40px;
+    width: 0.7em;
+    height: 0.7em;
     border-radius: 50%;
-    margin: 0 auto 1rem;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+    margin-right: 0.5em;
+    vertical-align: middle;
+    background: #bbb;
+    box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.12);
+    transition: background 0.2s;
 }
 
-.planet-icon.mercury { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23b8b8b8"/><path d="M50 30 L50 70" stroke="%23000" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23000" stroke-width="2"/></svg>'); }
-.planet-icon.venus { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23e6e6e6"/><path d="M50 30 L50 70" stroke="%23000" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23000" stroke-width="2"/><circle cx="50" cy="50" r="15" fill="%23ffd700"/></svg>'); }
-.planet-icon.earth { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%230066cc"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/><circle cx="50" cy="50" r="10" fill="%23fff"/></svg>'); }
-.planet-icon.mars { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23cc0000"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/><path d="M50 50 L55 55 L50 60 L45 55 Z" fill="%23fff"/></svg>'); }
-.planet-icon.jupiter { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23d4af37"/><path d="M50 30 L50 70" stroke="%23000" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23000" stroke-width="2"/><circle cx="50" cy="50" r="10" fill="%23000"/></svg>'); }
-.planet-icon.saturn { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23f5f5f5"/><circle cx="50" cy="50" r="35" fill="%23d4af37"/><path d="M50 30 L50 70" stroke="%23000" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23000" stroke-width="2"/></svg>'); }
-.planet-icon.uranus { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%2387ceeb"/><path d="M50 30 L50 70" stroke="%23000" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23000" stroke-width="2"/><circle cx="50" cy="50" r="10" fill="%23fff"/></svg>'); }
-.planet-icon.neptune { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%234682b4"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/><path d="M50 50 L55 55 L50 60 L45 55 Z" fill="%23fff"/></svg>'); }
-
-.dwarf-icon.pluto { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23999"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/></svg>'); }
-.dwarf-icon.eris { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23666"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/></svg>'); }
-.dwarf-icon.haumea { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23e6e6e6"/><path d="M50 30 L50 70" stroke="%23000" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23000" stroke-width="2"/><path d="M50 50 L55 55 L50 60 L45 55 Z" fill="%23000"/></svg>'); }
-.dwarf-icon.makemake { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23ccc"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/></svg>'); }
-
-.moon-icon.earth-moon { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23ccc"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/></svg>'); }
-.moon-icon.jupiter-io { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23ffd700"/><path d="M50 30 L50 70" stroke="%23000" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23000" stroke-width="2"/><circle cx="50" cy="50" r="10" fill="%23000"/></svg>'); }
-.moon-icon.jupiter-europa { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%2387ceeb"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/><path d="M50 50 L55 55 L50 60 L45 55 Z" fill="%23fff"/></svg>'); }
-.moon-icon.saturn-titan { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23666"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/><path d="M50 50 L55 55 L50 60 L45 55 Z" fill="%23fff"/></svg>'); }
-
-.asteroid-icon, .comet-icon {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="%23888"/></svg>');
+.status-dot.online {
+    background: #22c55e;
 }
 
-.comet-icon {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="%23888"/><path d="M50 10 L60 30 L90 30 L70 50 L90 70 L60 90 L50 50 L40 90 L10 70 L10 30 L30 30 Z" fill="%23fff"/></svg>');
+.status-dot.offline {
+    background: #ef4444;
 }
 
-.station-icon.skylab { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="30" y="20" width="40" height="60" fill="%23ff6b6b"/><rect x="35" y="25" width="30" height="55" fill="%23ff6b6b"/><rect x="35" y="25" width="30" height="5" fill="%23fff"/></svg>'); }
-.station-icon.mir { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="30" y="20" width="40" height="60" fill="%23ff9500"/><rect x="35" y="25" width="30" height="55" fill="%23ff9500"/><rect x="35" y="25" width="30" height="5" fill="%23fff"/><rect x="45" y="25" width="10" height="55" fill="%23ff9500"/></svg>'); }
-.station-icon.iss { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="30" y="20" width="40" height="60" fill="%23008080"/><rect x="35" y="25" width="30" height="55" fill="%23008080"/><rect x="35" y="25" width="30" height="5" fill="%23fff"/><rect x="45" y="25" width="10" height="55" fill="%23008080"/><rect x="35" y="35" width="20" height="10" fill="%23fff"/></svg>'); }
+.status-dot.unknown {
+    background: #bbb;
+}
 
+/* Dark Mode Styles */
+body.dark-mode {
+    background: var(--shell-bg-dark);
+    color: var(--shell-text-dark);
+}
+
+body.dark-mode .shared-header {
+    background: var(--shell-header-bg-dark);
+    border-bottom: var(--shell-border-dark);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+body.dark-mode .shared-nav-link {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--shell-nav-link-color-dark);
+}
+
+body.dark-mode .shared-nav-link:hover,
+body.dark-mode .shared-nav-link:focus-visible {
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.45);
+}
+
+body.dark-mode #darkModeToggle {
+    background: rgba(50, 50, 50, 0.5);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .shared-footer {
+    background: var(--shell-footer-bg-dark);
+    border-top: var(--shell-border-dark);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.35);
+}
+
+body.dark-mode .shared-footer__copy {
+    color: #e0e0e0;
+}
+
+body.dark-mode .shared-footer__links a {
+    color: #7dd3fc;
+}
+
+body.dark-mode h1 {
+    color: #e0e0e0;
+}
+
+body.dark-mode .tagline {
+    color: #e0e0e0;
+}
+
+body.dark-mode .subtitle {
+    color: #aaa;
+}
+
+body.dark-mode .footer-btn,
+body.dark-mode .portfolio-btn,
+body.dark-mode .connect-toggle-btn,
+body.dark-mode .websites-toggle-btn {
+    background: rgba(50, 50, 50, 0.5);
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .footer-btn:hover,
+body.dark-mode .portfolio-btn:hover,
+body.dark-mode .connect-toggle-btn:hover,
+body.dark-mode .websites-toggle-btn:hover {
+    background: rgba(70, 70, 70, 0.6);
+    color: #fff;
+    border-color: rgba(56, 189, 248, 0.5);
+    box-shadow: 0 12px 40px rgba(56, 189, 248, 0.3), 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode #darkModeToggle {
+    background: rgba(50, 50, 50, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode #darkModeToggle:hover {
+    background: rgba(70, 70, 70, 0.6);
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .section-heading {
+    color: #e0e0e0;
+}
+
+body.dark-mode .footer-buttons {
+    background: rgba(30, 30, 30, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* ===================================
+   Floating Chat Button & Modal
+   =================================== */
+
+.chat-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+.chat-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6);
+}
+
+.chat-button svg {
+    width: 28px;
+    height: 28px;
+}
+
+.chat-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.chat-modal.active {
+    display: flex;
+}
+
+.chat-modal-content {
+    width: 90%;
+    max-width: 900px;
+    height: 80vh;
+    max-height: 700px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+.chat-modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-modal-header h3 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.close-chat-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 32px;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.close-chat-button:hover {
+    transform: scale(1.2);
+}
+
+#chatFrame {
+    flex: 1;
+    border: none;
+    width: 100%;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Dark mode styles for chat button and modal */
+.dark-mode .chat-modal-content {
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+}
+
+.dark-mode .chat-modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.dark-mode .chat-modal-header h3 {
+    color: #ffffff;
+}
+
+.dark-mode .close-chat-button {
+    color: #ffffff;
+}
+
+/* Mobile responsive */
 @media (max-width: 768px) {
-    .planet-grid, .dwarf-planets-grid, .moon-grid {
-        grid-template-columns: 1fr;
+    .chat-button {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .chat-button svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .chat-modal-content {
+        width: 95%;
+        height: 90vh;
+        max-height: none;
+    }
+
+    .chat-modal-header h3 {
+        font-size: 20px;
     }
 }
