@@ -594,7 +594,16 @@ export default function App() {
 
             try {
               const parsed = JSON.parse(payload);
-              if (parsed.done) continue;
+              if (parsed.done) {
+                // Stream complete — mark ALL remaining loading steps as completed.
+                // This is the universal safety net: no matter what workflow or status
+                // patterns the worker sends, nothing stays spinning after completion.
+                statusStepsRef.current = statusStepsRef.current.map(s =>
+                  s.state === 'loading' ? { ...s, state: 'completed' as const } : s
+                );
+                statusDirtyRef.current = true;
+                continue;
+              }
               if (parsed.error) {
                 accumulatedRef.current += `\n[Error: ${parsed.error}]`;
                 needsScrollRef.current = true;
@@ -606,7 +615,13 @@ export default function App() {
                 let displayText: string;
                 let state: 'loading' | 'completed' | 'error';
 
+                // ── Assign stable IDs to known message patterns ──
+                // This allows follow-up messages to UPDATE existing entries
+                // (e.g., "Layer 1/3 done" updates the "⚡ Layer 1/3: ..." entry).
                 const stepMatch = statusText.match(/^Step (\d+)\/(\d+): (.+)$/);
+                const layerStartMatch = statusText.match(/^⚡\s*Layer (\d+)\/(\d+):/);
+                const layerDoneMatch = statusText.match(/^Layer (\d+)\/(\d+)\s+done/);
+
                 if (stepMatch) {
                   stepId = `step-${stepMatch[1]}`;
                   displayText = stepMatch[3];
@@ -616,17 +631,51 @@ export default function App() {
                 } else if (statusText.startsWith('Planner Agent:')) {
                   stepId = 'planner';
                   displayText = statusText.replace('Planner Agent: ', '');
+                } else if (statusText.startsWith('Task Classifier')) {
+                  stepId = 'classifier';
+                  displayText = statusText;
+                } else if (statusText.startsWith('Classifier reasoning')) {
+                  stepId = 'classifier-reason';
+                  displayText = statusText;
+                } else if (layerStartMatch) {
+                  stepId = `layer-${layerStartMatch[1]}`;
+                  displayText = statusText;
+                } else if (layerDoneMatch) {
+                  stepId = `layer-${layerDoneMatch[1]}`;
+                  displayText = statusText;
+                } else if (statusText.startsWith('Execution graph:')) {
+                  stepId = 'execution-graph';
+                  displayText = statusText;
+                } else if (statusText.startsWith('Plan ready')) {
+                  stepId = 'plan-ready';
+                  displayText = statusText;
                 } else {
-                  stepId = `status-${Date.now()}`;
+                  // Fallback: stable ID from content prefix so duplicates can merge
+                  stepId = `status-${statusText.slice(0, 40).replace(/[^a-zA-Z0-9]/g, '-').replace(/-+/g, '-')}`;
                   displayText = statusText;
                 }
 
+                // ── Determine state ──
+                // Priority: error → explicit completion → active work → informational (completed)
                 if (statusText.includes('— Error:') || statusText.includes('— Skipped:')) {
                   state = 'error';
-                } else if (statusText.endsWith('✓') || (stepId === 'planner' && statusText.includes('Plan ready')) || (stepId === 'rephraser' && !statusText.includes('...'))) {
+                } else if (
+                  statusText.endsWith('✓') ||
+                  statusText.includes(' done') ||
+                  (stepId === 'planner' && (statusText.includes('Plan ready') || statusText.includes('Refined plan'))) ||
+                  (stepId === 'rephraser' && !statusText.includes('...'))
+                ) {
                   state = 'completed';
-                } else {
+                } else if (
+                  stepMatch ||                  // Step X/Y in progress
+                  statusText.endsWith('...') ||  // Actively running ("Planning steps...")
+                  layerStartMatch                // Layer starting parallel work
+                ) {
                   state = 'loading';
+                } else {
+                  // Informational messages (classifier results, execution graph, etc.)
+                  // are already done by the time we see them.
+                  state = 'completed';
                 }
 
                 const steps = statusStepsRef.current;
@@ -670,6 +719,15 @@ export default function App() {
     } finally {
       stopFlushing();
       abortRef.current = null;
+
+      // Safety net: mark any remaining loading steps as completed.
+      // The `done` handler above does the same, but this covers edge cases
+      // where the stream ended without a done signal (e.g., abrupt close).
+      // The catch block already marks loading steps as 'error' for failures,
+      // so this only upgrades steps that weren't already handled.
+      statusStepsRef.current = statusStepsRef.current.map(s =>
+        s.state === 'loading' ? { ...s, state: 'completed' as const } : s
+      );
 
       // Final flush: push remaining text + status steps + clear streaming flag → triggers Markdown render
       const finalText = accumulatedRef.current;

@@ -1,0 +1,60 @@
+name: Build Android APK
+
+on:
+    push:
+        paths:
+            - "Core/talk/mobile/**"
+    workflow_dispatch:
+
+jobs:
+    build:
+        name: Build APK
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: Core/talk/mobile
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: npm
+                  cache-dependency-path: Core/talk/mobile/package-lock.json
+
+            - name: Setup Java
+              uses: actions/setup-java@v4
+              with:
+                  distribution: temurin
+                  java-version: 17
+
+            - name: Setup Android SDK
+              uses: android-actions/setup-android@v3
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Generate native Android project
+              run: npx expo prebuild --platform android --clean
+
+            - name: Fix Kotlin/Compose version compatibility
+              run: |
+                  echo "=== Searching ALL gradle/properties/toml files for 1.9.24 ==="
+                  find . \( -name "*.gradle" -o -name "*.properties" -o -name "*.toml" -o -name "*.kts" \) | xargs grep -l "1\.9\.24" 2>/dev/null || echo "No files found"
+                  echo "=== Replacing all occurrences ==="
+                  find . \( -name "*.gradle" -o -name "*.properties" -o -name "*.toml" -o -name "*.kts" \) -exec sed -i 's/1\.9\.24/1.9.25/g' {} +
+                  echo "=== Done ==="
+
+            - name: Build APK with Gradle
+              working-directory: Core/talk/mobile/android
+              run: ./gradlew assembleRelease --no-daemon
+
+            - name: Upload APK artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: jarvis-apk
+                  path: Core/talk/mobile/android/app/build/outputs/apk/release/*.apk
+                  retention-days: 30
