@@ -1,201 +1,140 @@
 :root {
-    --shell-bg-light: linear-gradient(135deg, #87CEEB 0%, #E0F7FA 100%);
-    --shell-bg-dark: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
-    --shell-text-light: #222;
-    --shell-text-dark: #e0e0e0;
-    --shell-header-bg-light: rgba(135, 206, 235, 0.52);
-    --shell-header-bg-dark: rgba(18, 18, 20, 0.55);
-    --shell-footer-bg-light: rgba(135, 206, 235, 0.5);
-    --shell-footer-bg-dark: rgba(18, 18, 20, 0.55);
-    --shell-nav-link-color: #111;
-    --shell-nav-link-color-dark: #f3f4f6;
-    --shell-border: 1px solid rgba(255, 255, 255, 0.4);
-    --shell-border-dark: 1px solid rgba(255, 255, 255, 0.22);
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --dark-color: #2c3e50;
+    --success-color: #27ae60;
+    --transition-speed: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    --main-horizontal-padding: 2rem;
-    --btn-icon-margin: 6px;
-    --btn-radius: 12px;
-    --btn-bg: rgba(255, 255, 255, 0.6);
-    --btn-color: #111;
-    --btn-hover-bg: rgba(255, 255, 255, 0.8);
-    --btn-hover-color: #000;
-    --discord-bg: #5865F2;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: var(--shell-bg-light);
-    color: var(--shell-text-light);
-    min-height: 100vh;
-    position: relative;
+    line-height: 1.6;
+    color: var(--dark-color);
+    background-color: #f9f9f9;
 }
 
-.shared-header {
-    background: var(--shell-header-bg-light);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: var(--shell-border);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    padding: 0.25rem 1.25rem;
-    box-sizing: border-box;
-}
-
-.shared-header__inner {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-.shared-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-}
-
-.shared-brand__name {
-    font-weight: 600;
-    font-size: 1.4rem;
-    letter-spacing: 0.5px;
-}
-
-.shared-nav {
-    display: none;
-}
-
-.shared-nav-link {
-    font-size: 0.9rem;
-    font-weight: 500;
-    padding: 0.45rem 0.9rem;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.45);
-    color: var(--shell-nav-link-color);
-    border: none;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-}
-
-.shared-nav-link:hover,
-.shared-nav-link:focus-visible {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 18px rgba(135, 206, 235, 0.25);
-    background: rgba(255, 255, 255, 0.7);
-    color: #111;
-}
-
-#darkModeToggle {
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.shared-header__actions {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-}
-
-.google-button-wrapper {
-    display: flex;
-    align-items: center;
-}
-
-.g_id_signin {
-    display: flex;
-}
-
-.signed-in-button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 999px;
-    padding: 0.15rem 0.6rem;
-    font-weight: 500;
-    color: var(--shell-nav-link-color);
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-}
-
-.signed-in-button:hover,
-.signed-in-button:focus-visible {
-    background: rgba(255, 255, 255, 0.8);
-    transform: translateY(-1px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.signed-in-button__avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
-}
-
-.signed-in-button__name {
-    display: inline-flex;
-    align-items: center;
-    font-size: 0.95rem;
-    line-height: 1;
-}
-
-#darkModeToggle:hover {
-    background: rgba(255, 255, 255, 0.5);
-    transform: scale(1.1) rotate(15deg);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-}
-
-h1 {
-    font-size: 1.5rem;
-    letter-spacing: 1px;
-    color: #111;
-    margin: 0;
-}
-
-main {
-    text-align: center;
-    width: 100%;
+.container {
+    width: 90%;
+    max-width: 1200px;
     margin: 0 auto;
-    padding-top: 4.5rem;
-    padding-bottom: 4.5rem;
-    padding-left: var(--main-horizontal-padding);
-    padding-right: var(--main-horizontal-padding);
-    min-height: calc(100vh - 9rem);
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
+    padding: 0 15px;
 }
 
-.center-buttons {
+.header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 2rem 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.navbar ul {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    gap
+    list-style: none;
+    gap: 2rem;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--transition-speed);
+    padding: 0.5rem 0;
+}
+
+.navbar a:hover {
+    color: var(--secondary-color);
+}
+
+.section {
+    padding: 3rem 0;
+}
+
+.section h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--secondary-color);
+    font-size: 2rem;
+}
+
+.solar-system-visual, .planets-grid, .dwarf-planets-grid, .moons-grid, .space-objects-grid, .facts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.planet-card, .dwarf-planet-card, .moon-card, .space-object-card, .fact-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.planet-card:hover, .dwarf-planet-card:hover, .moon-card:hover, .space-object-card:hover, .fact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.planet-icon, .dwarf-icon, .moon-icon, .comet-icon, .asteroid-icon {
+    margin-top: 1rem;
+}
+
+.planet-icon-img, .dwarf-icon-img, .moon-icon-img, .comet-icon-img, .asteroid-icon-img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    transition: transform var(--transition-speed);
+}
+
+.planet-card:hover .planet-icon-img, .dwarf-planet-card:hover .dwarf-icon-img, .moon-card:hover .moon-icon-img,
+.comet-card:hover .comet-icon-img, .asteroid-card:hover .asteroid-icon-img {
+    transform: scale(1.1);
+}
+
+.solar-system-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: 3rem;
+}
+
+@media (max-width: 768px) {
+    .navbar ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .section h2 {
+        font-size: 1.8rem;
+    }
+
+    .planets-grid, .dwarf-planets-grid, .moons-grid, .space-objects-grid, .facts-grid {
+        grid-template-columns: 1fr;
+    }
+}
