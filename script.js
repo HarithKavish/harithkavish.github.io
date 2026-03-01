@@ -1,60 +1,56 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Animation for planet cards on scroll
+    const cards = document.querySelectorAll('.planet-card, .dwarf-planet-card, .moon-card');
+
+    function animateCards() {
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+
+            if (rect.top < windowHeight - 100 && rect.bottom > 100) {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }
+        });
+    }
+
+    // Initialize animations
+    cards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    });
+
+    // Animation on scroll
+    window.addEventListener('scroll', animateCards);
+    animateCards();
+
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
 
+            const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
+
             if (targetElement) {
                 window.scrollTo({
                     top: targetElement.offsetTop - 80,
                     behavior: 'smooth'
                 });
             }
-
-            // Update active navbar link
-            document.querySelectorAll('.navbar a').forEach(link => {
-                link.classList.remove('active');
-            });
-            this.classList.add('active');
         });
     });
 
-    // Add hover effects for cards
-    const cards = document.querySelectorAll('.planet-card, .dwarf-planet-card, .satellite-card, .space-object-card, .fact-card');
-
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-10px)';
-            this.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.15)';
-        });
-
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-            this.style.boxShadow = '0 3px 10px rgba(0, 0, 0, 0.1)';
-        });
-    });
-
-    // Add animation to planet images on hover
-    const planetImages = document.querySelectorAll('.planet-image, .dwarf-planet-image');
-
-    planetImages.forEach(image => {
+    // Add hover effects for visual feedback
+    const images = document.querySelectorAll('.planet-image, .dwarf-image, .moon-image');
+    images.forEach(image => {
         image.addEventListener('mouseenter', function() {
-            this.style.transform = 'scale(1.05)';
+            this.style.transform = 'scale(1.03)';
         });
 
         image.addEventListener('mouseleave', function() {
             this.style.transform = 'scale(1)';
         });
     });
-
-    // Add interactive solar system visualization (simplified)
-    const introVisual = document.querySelector('.solar-system-image');
-    if (introVisual) {
-        introVisual.addEventListener('click', function() {
-            alert('Clicking the solar system visualization will open a detailed visualization in a new tab.');
-        });
-    }
 });

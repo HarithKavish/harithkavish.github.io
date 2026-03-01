@@ -1,6 +1,6 @@
-# Explore the Solar System
+# Educational: Solar System Explorer
 
-A static website about the solar system, featuring detailed information on planets, dwarf planets, satellites, and other space objects.
+**A static educational website about the solar system, featuring detailed content on planets, dwarf planets, moons, and exoplanets.**
 
 ## Technologies Used
 - HTML5
@@ -8,4 +8,11 @@ A static website about the solar system, featuring detailed information on plane
 - JavaScript
 
 ## Live Demo
-[https://harithkavish.github.io/harithkavish-github-io/](https://harithkavish.github.io/harithkavish-github-io/)
+[View the Solar System Explorer](https://harithkavish.github.io/educational)
+
+## Features
+- Responsive design for all devices
+- Interactive animations and smooth transitions
+- Comprehensive educational content on solar system topics
+- Glossary for key terms
+- Clean, modern aesthetic with intuitive navigation
