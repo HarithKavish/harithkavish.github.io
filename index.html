@@ -3,215 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explore the Solar System</title>
+    <title>The Solar System - Our Cosmic Neighborhood</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <header class="header">
         <div class="container">
-            <h1>Explore the Solar System</h1>
-            <nav class="navbar">
+            <h1>THE SOLAR SYSTEM</h1>
+            <nav class="main-nav">
                 <ul>
                     <li><a href="#intro">Introduction</a></li>
                     <li><a href="#planets">Planets</a></li>
                     <li><a href="#dwarf-planets">Dwarf Planets</a></li>
-                    <li><a href="#satellites">Moons & Satellites</a></li>
-                    <li><a href="#exoplanets">Exoplanets</a></li>
-                    <li><a href="#glossary">Glossary</a></li>
+                    <li><a href="#moons">Moons</a></li>
+                    <li><a href="#asteroids">Asteroids & Comets</a></li>
+                    <li><a href="#space-stations">Space Stations</a></li>
+                    <li><a href="#future">Future Exploration</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
     <main class="main-content">
-        <section id="intro" class="intro">
+        <section id="intro" class="intro-section">
             <div class="container">
-                <h2>Our Solar System: A Cosmic Neighborhood</h2>
-                <div class="intro-content">
-                    <p>The solar system is the collection of eight planets, their moons, dwarf planets, comets, asteroids, and other objects that orbit the Sun. It formed about 4.6 billion years ago from a collapsing cloud of gas and dust. The Sun, which makes up about 99.86% of the solar system's mass, is at the center, and the planets orbit around it in nearly circular paths.</p>
-                    <div class="solar-system-image">
-                        <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
+                <div class="section-header">
+                    <h2>Our Cosmic Neighborhood</h2>
+                    <p>The solar system is the collection of eight planets, their moons, dwarf planets, comets, asteroids, and other objects that orbit the Sun. It formed 4.6 billion years ago from the gravitational collapse of a giant molecular cloud. The Sun, which contains nearly all the solar system's mass, is the central star and source of light and heat.</p>
+                </div>
+                <div class="solar-system-diagram">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Solar_system_planets_20090214.png/800px-Solar_system_planets_20090214.png" alt="Solar System Diagram" class="diagram-image">
+                    <div class="planet-circles">
+                        <div class="circle planet mercury" data-name="Mercury"></div>
+                        <div class="circle planet venus" data-name="Venus"></div>
+                        <div class="circle planet earth" data-name="Earth"></div>
+                        <div class="circle planet mars" data-name="Mars"></div>
+                        <div class="circle planet jupiter" data-name="Jupiter"></div>
+                        <div class="circle planet saturn" data-name="Saturn"></div>
+                        <div class="circle planet uranus" data-name="Uranus"></div>
+                        <div class="circle planet neptune" data-name="Neptune"></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="planets" class="planets">
+        <section id="planets" class="planets-section">
             <div class="container">
-                <h2>The Eight Planets</h2>
+                <div class="section-header">
+                    <h2>The Eight Planets</h2>
+                    <p>Each planet has unique characteristics that make it special. Below is an overview of each planet in our solar system.</p>
+                </div>
                 <div class="planet-grid">
                     <div class="planet-card">
+                        <div class="planet-icon mercury"></div>
                         <h3>Mercury</h3>
-                        <p>Mercury is the closest planet to the Sun and the smallest in the solar system. It has no atmosphere and extreme temperature variations, ranging from 430°C during the day to -180°C at night.</p>
-                        <div class="planet-visual">
-                            <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
-                        </div>
+                        <p>Mercury is the closest planet to the Sun and the smallest in the solar system. It has no atmosphere and extreme temperature variations, ranging from 430°C (806°F) during the day to -180°C (-292°F) at night.</p>
                     </div>
-
                     <div class="planet-card">
+                        <div class="planet-icon venus"></div>
                         <h3>Venus</h3>
-                        <p>Venus is similar in size to Earth but has a thick, toxic atmosphere composed mainly of carbon dioxide. Its surface temperature averages 462°C, making it the hottest planet in the solar system.</p>
-                        <div class="planet-visual">
-                            <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
-                        </div>
+                        <p>Venus is the second planet from the Sun and is often called Earth's "sister planet" due to their similar size and composition. Its thick atmosphere is composed mainly of carbon dioxide, creating a runaway greenhouse effect.</p>
                     </div>
-
                     <div class="planet-card">
+                        <div class="planet-icon earth"></div>
                         <h3>Earth</h3>
-                        <p>Earth is the only known planet to support life. It has a protective atmosphere, liquid water, and a magnetic field that shields it from harmful solar radiation. Its unique features include continents, oceans, and a dynamic climate.</p>
-                        <div class="planet-visual">
-                            <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
-                        </div>
+                        <p>Earth is the third planet from the Sun and the only known planet to support life. It is characterized by its liquid water, diverse ecosystems, and unique atmosphere.</p>
                     </div>
-
                     <div class="planet-card">
+                        <div class="planet-icon mars"></div>
                         <h3>Mars</h3>
-                        <p>Mars, often called the Red Planet, has a thin atmosphere and cold temperatures. It is known for its polar ice caps, canyons, and evidence of past water activity, making it a prime candidate for future human exploration.</p>
-                        <div class="planet-visual">
-                            <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
-                        </div>
+                        <p>Mars is the fourth planet from the Sun and often referred to as the "Red Planet" due to its reddish appearance caused by iron oxide on its surface. It has the tallest volcano in the solar system, Olympus Mons.</p>
                     </div>
-
                     <div class="planet-card">
+                        <div class="planet-icon jupiter"></div>
                         <h3>Jupiter</h3>
-                        <p>Jupiter is the largest planet in the solar system, known for its Great Red Spot—a massive storm that has raged for centuries. It has a strong magnetic field and numerous moons, including Ganymede, the largest moon in the solar system.</p>
-                        <div class="planet-visual">
-                            <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
-                        </div>
+                        <p>Jupiter is the fifth planet from the Sun and the largest in the solar system. It is a gas giant with a Great Red Spot, a massive storm that has raged for centuries. Jupiter has at least 95 known moons.</p>
                     </div>
-
                     <div class="planet-card">
+                        <div class="planet-icon saturn"></div>
                         <h3>Saturn</h3>
-                        <p>Saturn is famous for its extensive ring system, composed of billions of ice and rock particles. It has a complex weather system and is the second-largest planet in the solar system. Its moons, like Titan, are of significant interest for their potential habitability.</p>
-                        <div class="planet-visual">
-                            <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
-                        </div>
+                        <p>Saturn is the sixth planet from the Sun and is famous for its extensive ring system, composed primarily of ice particles and rock debris. It is the second-largest planet in the solar system.</p>
                     </div>
-
                     <div class="planet-card">
+                        <div class="planet-icon uranus"></div>
                         <h3>Uranus</h3>
-                        <p>Uranus is an ice giant with a blue-green color due to methane in its atmosphere. It rotates on its side, giving it an unusual tilt of 98 degrees. It has faint rings and a cold, windy atmosphere.</p>
-                        <div class="planet-visual">
-                            <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
-                        </div>
+                        <p>Uranus is the seventh planet from the Sun and is distinguished by its extreme axial tilt, which causes it to rotate on its side. It has a blue-green appearance due to methane in its atmosphere.</p>
                     </div>
-
                     <div class="planet-card">
+                        <div class="planet-icon neptune"></div>
                         <h3>Neptune</h3>
-                        <p>Neptune is the farthest planet from the Sun and known for its strong winds, reaching speeds of 2,100 km/h. It has a deep blue color due to methane and is an ice giant with a complex weather system.</p>
-                        <div class="planet-visual">
-                            <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
-                        </div>
+                        <p>Neptune is the eighth and farthest planet from the Sun. It is a gas giant with winds that reach speeds of up to 2,100 km/h (1,300 mph). Neptune is known for its deep blue color and faint rings.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="dwarf-planets" class="dwarf-planets">
+        <section id="dwarf-planets" class="dwarf-planets-section">
             <div class="container">
-                <h2>Dwarf Planets</h2>
+                <div class="section-header">
+                    <h2>Dwarf Planets</h2>
+                    <p>Dwarf planets are smaller than planets but meet most of the criteria to be considered a planet. They are not in orbit around the Sun, nor have they "cleared the neighborhood" around their orbits.</p>
+                </div>
                 <div class="dwarf-planets-grid">
                     <div class="dwarf-planet-card">
+                        <div class="dwarf-icon pluto"></div>
                         <h3>Pluto</h3>
-                        <p>Pluto, once considered the ninth planet, is now classified as a dwarf planet. It orbits the Sun in a highly elliptical path and has a thin atmosphere composed of nitrogen, methane, and carbon monoxide. Its surface features include glaciers and mountains.</p>
-                        <div class="dwarf-visual">
-                            <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
-                        </div>
+                        <p>Pluto is the largest known dwarf planet in the Kuiper Belt. It was once considered the ninth planet but was reclassified in 2006 due to its size and orbit. Pluto has five known moons, the largest being Charon.</p>
                     </div>
-
                     <div class="dwarf-planet-card">
+                        <div class="dwarf-icon eris"></div>
                         <h3>Eris</h3>
-                        <p>Eris is a dwarf planet located in the scattered disc, a distant region of the solar system. It is slightly smaller than Pluto and has a highly elliptical orbit. Eris is notable for being the most distant known dwarf planet.</p>
-                        <div class="dwarf-visual">
-                            <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
-                        </div>
+                        <p>Eris is a dwarf planet located in the scattered disk region of the solar system. It is slightly smaller than Pluto but has a similar composition. Eris is notable for being the most distant known dwarf planet.</p>
                     </div>
-
                     <div class="dwarf-planet-card">
+                        <div class="dwarf-icon haumea"></div>
                         <h3>Haumea</h3>
-                        <p>Haumea is an elongated, fast-spinning dwarf planet located in the Kuiper Belt. It has a unique shape due to its rapid rotation and is known for its bright surface, which reflects a significant amount of sunlight.</p>
-                        <div class="dwarf-visual">
-                            <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
-                        </div>
+                        <p>Haumea is an elongated, fast-rotating dwarf planet located in the Kuiper Belt. It is known for its high albedo, reflecting sunlight brightly, and its rapid rotation, which takes only about 4 hours.</p>
                     </div>
-
                     <div class="dwarf-planet-card">
+                        <div class="dwarf-icon makemake"></div>
                         <h3>Makemake</h3>
-                        <p>Makemake is another dwarf planet in the Kuiper Belt, known for its bright surface and high albedo. It has a small moon named S/2005 (136105) 1, discovered during observations of Makemake's occultation.</p>
-                        <div class="dwarf-visual">
-                            <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
-                        </div>
+                        <p>Makemake is another dwarf planet in the Kuiper Belt. It has a bright surface and is relatively large compared to other known Kuiper Belt objects. Makemake has no known moons and a surface temperature of around -238°C (-396°F).</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="satellites" class="satellites">
+        <section id="moons" class="moons-section">
             <div class="container">
-                <h2>Moons & Other Satellites</h2>
+                <div class="section-header">
+                    <h2>Moons of the Solar System</h2>
+                    <p>Moons, or natural satellites, are celestial bodies that orbit planets. Our solar system has at least 200+ known moons, with Jupiter and Saturn having the most.</p>
+                </div>
                 <div class="moon-grid">
                     <div class="moon-card">
+                        <div class="moon-icon earth-moon"></div>
                         <h3>Earth's Moon</h3>
-                        <p>The Moon is Earth's only natural satellite and the fifth-largest moon in the solar system. It plays a crucial role in Earth's climate and tides. Its surface is covered with craters and vast plains called maria.</p>
-                        <div class="moon-visual">
-                            <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
-                        </div>
+                        <p>The Moon is Earth's only natural satellite. It is the fifth largest moon in the solar system and the largest relative to its planet. The Moon plays a significant role in Earth's tides and stabilizes Earth's axial tilt.</p>
                     </div>
-
                     <div class="moon-card">
-                        <h3>Jupiter's Moons</h3>
-                        <p>Jupiter has at least 79 moons, with four large ones—Io, Europa, Ganymede, and Callisto—discovered by Galileo Galilei. Ganymede is the largest moon in the solar system, larger than Mercury.</p>
-                        <div class="moon-visual">
-                            <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
-                        </div>
+                        <div class="moon-icon jupiter-io"></div>
+                        <h3>Jupiter's Io</h3>
+                        <p>Io is the third-largest moon of Jupiter and is known for its volcanic activity. It has more volcanoes than any other body in the solar system, driven by tidal forces from Jupiter's gravity.</p>
                     </div>
-
                     <div class="moon-card">
-                        <h3>Saturn's Rings & Moons</h3>
-                        <p>Saturn has 146 known moons, with Titan being the largest and the only moon with a significant atmosphere. The rings, composed of ice and rock particles, are a defining feature of Saturn.</p>
-                        <div class="moon-visual">
-                            <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
-                        </div>
+                        <div class="moon-icon jupiter-europa"></div>
+                        <h3>Jupiter's Europa</h3>
+                        <p>Europa is the second-largest moon of Jupiter and is notable for its icy surface and subsurface ocean, which could potentially harbor life. Its surface is covered by a layer of ice that is believed to be about 15-25 km thick.</p>
+                    </div>
+                    <div class="moon-card">
+                        <div class="moon-icon saturn-titan"></div>
+                        <h3>Saturn's Titan</h3>
+                        <p>Titan is the largest moon of Saturn and the second-largest in the solar system. It has a thick atmosphere and liquid methane lakes on its surface, making it one of the most Earth-like bodies in the solar system.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="exoplanets" class="exoplanets">
+        <section id="asteroids" class="asteroids-section">
             <div class="container">
-                <h2>Exoplanets: Planets Beyond Our Solar System</h2>
-                <div class="exoplanet-content">
-                    <p>Exoplanets are planets that orbit stars outside our solar system. As of 2023, over 5,000 exoplanets have been discovered using various methods, including the transit method, radial velocity, and direct imaging. These discoveries have expanded our understanding of planetary diversity and the potential for life beyond Earth.</p>
-                    <div class="exoplanet-visual">
-                        <div class="profile-photo-placeholder" aria-label="Profile photo not provided">Profile photo not provided</div>
+                <div class="section-header">
+                    <h2>Asteroids and Comets</h2>
+                    <p>Asteroids are rocky bodies that orbit the Sun, primarily located in the asteroid belt between Mars and Jupiter. Comets are icy bodies that release gas and dust when near the Sun, forming a visible tail.</p>
+                </div>
+                <div class="asteroid-comet-grid">
+                    <div class="asteroid-card">
+                        <div class="asteroid-icon"></div>
+                        <h3>Asteroids</h3>
+                        <p>There are millions of asteroids in the solar system, with the largest, Ceres, being a dwarf planet. Asteroids vary in size from small rocks to objects over 500 km in diameter. They are remnants from the formation of the solar system.</p>
+                    </div>
+                    <div class="comet-card">
+                        <div class="comet-icon"></div>
+                        <h3>Comets</h3>
+                        <p>Comets are composed of ice, dust, and rocky material. When they approach the Sun, they heat up and release gas and dust, forming a coma and tail. Comets originate from the Oort Cloud and Kuiper Belt.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="glossary" class="glossary">
+        <section id="space-stations" class="space-stations-section">
             <div class="container">
-                <h2>Glossary</h2>
-                <div class="glossary-content">
-                    <div class="glossary-item">
-                        <h3>Asteroid</h3>
-                        <p>A rocky body that orbits the Sun, primarily found in the asteroid belt between Mars and Jupiter.</p>
+                <div class="section-header">
+                    <h2>Human Space Stations</h2>
+                    <p>Human space stations are artificial satellites designed for human habitation. They provide a platform for scientific research and testing of technologies in space.</p>
+                </div>
+                <div class="space-station-grid">
+                    <div class="space-station-card">
+                        <div class="station-icon skylab"></div>
+                        <h3>Skylab</h3>
+                        <p>Skylab was the first U.S. space station, launched in 1973. It served as a laboratory for astronomy, Earth observation, and medical experiments. Skylab was deorbited in 1979.</p>
                     </div>
-                    <div class="glossary-item">
-                        <h3>Comet</h3>
-                        <p>A small body of ice, dust, and rock that orbits the Sun, often developing a glowing coma and tail when near the Sun.</p>
+                    <div class="space-station-card">
+                        <div class="station-icon mir"></div>
+                        <h3>Mir</h3>
+                        <p>Mir was the first modular space station and operated from 1986 to 2001. It hosted multiple expeditions and was a key platform for international cooperation in space exploration.</p>
                     </div>
-                    <div class="glossary-item">
-                        <h3>Dwarf Planet</h3>
-                        <p>A celestial body that orbits the Sun, is spherical in shape, and has not cleared its orbit of other debris.</p>
+                    <div class="space-station-card">
+                        <div class="station-icon iss"></div>
+                        <h3>International Space Station (ISS)</h3>
+                        <p>The ISS is a collaborative project involving NASA, Roscosmos, JAXA, ESA, and CSA. It has been continuously occupied since 2000 and serves as a microgravity laboratory for scientific research.</p>
                     </div>
-                    <div class="glossary-item">
-                        <h3>Kuiper Belt</h3>
-                        <p>A region of space beyond Neptune containing many icy bodies, including dwarf planets like Pluto.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="future" class="future-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Future Exploration of the Solar System</h2>
+                    <p>Exploration of the solar system continues to expand with new missions and technologies. Here are some upcoming and planned missions.</p>
+                </div>
+                <div class="future-missions">
+                    <div class="mission-card">
+                        <h3>NASA's Artemis Program</h3>
+                        <p>The Artemis program aims to return humans to the Moon, including the first woman and person of color, and eventually to Mars. Artemis III is planned for 2026.</p>
                     </div>
-                    <div class="glossary-item">
-                        <h3>Orbit</h3>
-                        <p>The path that a celestial body follows as it revolves around another body, typically the Sun.</p>
+                    <div class="mission-card">
+                        <h3>ESA's Juice Mission</h3>
+                        <p>The Juice mission (JUpiter ICy moons Explorer) will study Jupiter's moons Ganymede, Callisto, and Europa, focusing on their potential habitability.</p>
+                    </div>
+                    <div class="mission-card">
+                        <h3>NASA's Europa Clipper</h3>
+                        <p>The Europa Clipper mission will investigate Europa's ocean and potential habitability. Launch is planned for 2024.</p>
+                    </div>
+                    <div class="mission-card">
+                        <h3>China's Tianwen-3 Mission</h3>
+                        <p>This mission aims to return samples from Mars and conduct further exploration of the Red Planet. It is planned for the late 2020s.</p>
                     </div>
                 </div>
             </div>
@@ -220,7 +240,7 @@
 
     <footer class="footer">
         <div class="container">
-            <p>© 2023 Explore the Solar System. All rights reserved.</p>
+            <p>© 2023 The Solar System Explorer. All rights reserved.</p>
         </div>
     </footer>
 

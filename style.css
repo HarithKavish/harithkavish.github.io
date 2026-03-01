@@ -1,11 +1,14 @@
 :root {
-    --primary-color: #3498db;
-    --secondary-color: #2ecc71;
-    --dark-color: #2c3e50;
-    --light-color: #ecf0f1;
-    --accent-color: #e74c3c;
-    --text-color: #333;
-    --text-light: #fff;
+    --primary-color: #1a237e;
+    --secondary-color: #3a4a8a;
+    --accent-color: #4cc9f0;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --success-color: #4cc9f0;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --text-color: #212529;
+    --text-light: #6c757d;
     --transition-speed: 0.3s;
 }
 
@@ -16,10 +19,11 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     line-height: 1.6;
     color: var(--text-color);
-    background-color: #f9f9f9;
+    background-color: #f5f7fa;
+    overflow-x: hidden;
 }
 
 .container {
@@ -30,9 +34,9 @@ body {
 }
 
 .header {
-    background-color: var(--dark-color);
-    color: var(--text-light);
-    padding: 20px 0;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 2rem 0;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -40,155 +44,256 @@ body {
 }
 
 .header h1 {
-    margin-bottom: 15px;
+    font-family: 'Orbitron', sans-serif;
     font-size: 2.5rem;
+    margin-bottom: 1rem;
     text-align: center;
 }
 
-.navbar {
+.main-nav ul {
     display: flex;
     justify-content: center;
-}
-
-.navbar ul {
-    display: flex;
     list-style: none;
-    gap: 30px;
+    gap: 2rem;
 }
 
-.navbar a {
-    color: var(--text-light);
+.main-nav a {
+    color: white;
     text-decoration: none;
     font-weight: 500;
-    transition: color var(--transition-speed);
-    padding: 5px 10px;
+    transition: color var(--transition-speed) ease;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
 }
 
-.navbar a:hover {
-    color: var(--primary-color);
+.main-nav a:hover {
+    color: var(--accent-color);
+}
+
+.main-nav a.active {
+    color: var(--accent-color);
+    font-weight: 700;
 }
 
 .main-content {
-    padding: 50px 0;
+    padding: 3rem 0;
 }
 
-.intro {
+.section-header {
     text-align: center;
+    margin-bottom: 3rem;
 }
 
-.intro-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-}
-
-.intro-content p {
-    max-width: 800px;
-    margin-bottom: 20px;
-}
-
-.solar-system-visual {
-    max-width: 100%;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform var(--transition-speed);
-}
-
-.intro-content:hover .solar-system-visual {
-    transform: translateY(-10px);
-}
-
-.planets, .dwarf-planets, .satellites, .exoplanets {
-    margin-bottom: 50px;
-}
-
-.planet-grid, .dwarf-planets-grid, .moon-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 30px;
-}
-
-.planet-card, .dwarf-planet-card, .moon-card {
-    background: white;
-    border-radius: 10px;
-    padding: 25px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-}
-
-.planet-card:hover, .dwarf-planet-card:hover, .moon-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-.planet-visual, .dwarf-visual, .moon-visual {
-    margin-top: 20px;
-}
-
-.planet-image, .dwarf-image, .moon-image {
-    width: 100%;
-    border-radius: 5px;
-    transition: transform var(--transition-speed);
-}
-
-.planet-card:hover .planet-image, .dwarf-planet-card:hover .dwarf-image, .moon-card:hover .moon-image {
-    transform: scale(1.05);
-}
-
-.exoplanet-content {
-    text-align: center;
-}
-
-.exoplanet-image {
-    max-width: 100%;
-    margin-top: 20px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-}
-
-.glossary {
-    margin-top: 50px;
-}
-
-.glossary-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-}
-
-.glossary-item {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-}
-
-.glossary-item h3 {
-    margin-bottom: 10px;
+.section-header h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 1rem;
     color: var(--primary-color);
 }
 
-.footer {
-    background-color: var(--dark-color);
+.section-header p {
+    font-size: 1.1rem;
     color: var(--text-light);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.solar-system-diagram {
     text-align: center;
-    padding: 20px 0;
-    margin-top: 50px;
+    margin: 3rem 0;
+}
+
+.diagram-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: transform var(--transition-speed) ease;
+}
+
+.diagram-image:hover {
+    transform: scale(1.05);
+}
+
+.planet-circles {
+    position: relative;
+    height: 300px;
+    margin: 2rem 0;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    animation: orbit 30s linear infinite;
+}
+
+.circle.planet {
+    background-color: var(--accent-color);
+}
+
+.circle.mercury {
+    width: 15px;
+    height: 15px;
+    top: 50%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.circle.venus {
+    width: 25px;
+    height: 25px;
+    top: 50%;
+    left: 30%;
+    animation-delay: 1s;
+}
+
+.circle.earth {
+    width: 30px;
+    height: 30px;
+    top: 50%;
+    left: 50%;
+    animation-delay: 2s;
+}
+
+.circle.mars {
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: 70%;
+    animation-delay: 3s;
+}
+
+.circle.jupiter {
+    width: 50px;
+    height: 50px;
+    top: 50%;
+    left: 90%;
+    animation-delay: 4s;
+}
+
+.circle.saturn {
+    width: 40px;
+    height: 40px;
+    top: 50%;
+    left: 95%;
+    animation-delay: 5s;
+}
+
+.circle.uranus {
+    width: 35px;
+    height: 35px;
+    top: 50%;
+    left: 85%;
+    animation-delay: 6s;
+}
+
+.circle.neptune {
+    width: 30px;
+    height: 30px;
+    top: 50%;
+    left: 75%;
+    animation-delay: 7s;
+}
+
+@keyframes orbit {
+    0% {
+        transform: translateX(0) rotate(0deg);
+    }
+    100% {
+        transform: translateX(100%) rotate(360deg);
+    }
+}
+
+.planet-grid, .dwarf-planets-grid, .moon-grid, .asteroid-comet-grid, .space-station-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.planet-card, .dwarf-planet-card, .moon-card, .asteroid-card, .comet-card, .space-station-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.planet-card:hover, .dwarf-planet-card:hover, .moon-card:hover, .asteroid-card:hover, .comet-card:hover, .space-station-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.planet-icon, .dwarf-icon, .moon-icon, .asteroid-icon, .comet-icon, .station-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    opacity: 0.8;
+    transition: opacity var(--transition-speed) ease;
+}
+
+.planet-card:hover .planet-icon, .dwarf-planet-card:hover .dwarf-icon, .moon-card:hover .moon-icon,
+.asteroid-card:hover .asteroid-icon, .comet-card:hover .comet-icon, .space-station-card:hover .station-icon {
+    opacity: 1;
+}
+
+.planet-icon.mercury { color: #b8b8b8; }
+.planet-icon.venus { color: #e6e6e6; }
+.planet-icon.earth { color: #0066cc; }
+.planet-icon.mars { color: #cc0000; }
+.planet-icon.jupiter { color: #d4af37; }
+.planet-icon.saturn { color: #d4af37; background-color: #f5f5f5; }
+.planet-icon.uranus { color: #87ceeb; }
+.planet-icon.neptune { color: #4682b4; }
+
+.dwarf-icon.pluto { color: #999; }
+.dwarf-icon.eris { color: #666; }
+.dwarf-icon.haumea { color: #e6e6e6; }
+.dwarf-icon.makemake { color: #ccc; }
+
+.moon-icon.earth-moon { color: #ccc; }
+.moon-icon.jupiter-io { color: #ffd700; }
+.moon-icon.jupiter-europa { color: #87ceeb; }
+.moon-icon.saturn-titan { color: #666; }
+
+.asteroid-icon, .comet-icon { color: #888; }
+
+.station-icon.skylab { color: #ff6b6b; }
+.station-icon.mir { color: #ff9500; }
+.station-icon.iss { color: #008080; }
+
+.future-missions {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.footer {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 3rem;
 }
 
 @media (max-width: 768px) {
-    .navbar ul {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-    }
-
     .header h1 {
         font-size: 2rem;
     }
 
-    .planet-grid, .dwarf-planets-grid, .moon-grid {
+    .main-nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .planet-grid, .dwarf-planets-grid, .moon-grid, .asteroid-comet-grid, .space-station-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .future-missions {
         grid-template-columns: 1fr;
     }
 }
@@ -196,5 +301,60 @@ body {
 @media (max-width: 480px) {
     .header h1 {
         font-size: 1.8rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.5rem;
+    }
+}
+
+.planet-icon {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.planet-icon.mercury { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23b8b8b8"/><path d="M50 30 L50 70" stroke="%23000" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23000" stroke-width="2"/></svg>'); }
+.planet-icon.venus { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23e6e6e6"/><path d="M50 30 L50 70" stroke="%23000" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23000" stroke-width="2"/><circle cx="50" cy="50" r="15" fill="%23ffd700"/></svg>'); }
+.planet-icon.earth { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%230066cc"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/><circle cx="50" cy="50" r="10" fill="%23fff"/></svg>'); }
+.planet-icon.mars { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23cc0000"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/><path d="M50 50 L55 55 L50 60 L45 55 Z" fill="%23fff"/></svg>'); }
+.planet-icon.jupiter { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23d4af37"/><path d="M50 30 L50 70" stroke="%23000" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23000" stroke-width="2"/><circle cx="50" cy="50" r="10" fill="%23000"/></svg>'); }
+.planet-icon.saturn { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23f5f5f5"/><circle cx="50" cy="50" r="35" fill="%23d4af37"/><path d="M50 30 L50 70" stroke="%23000" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23000" stroke-width="2"/></svg>'); }
+.planet-icon.uranus { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%2387ceeb"/><path d="M50 30 L50 70" stroke="%23000" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23000" stroke-width="2"/><circle cx="50" cy="50" r="10" fill="%23fff"/></svg>'); }
+.planet-icon.neptune { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%234682b4"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/><path d="M50 50 L55 55 L50 60 L45 55 Z" fill="%23fff"/></svg>'); }
+
+.dwarf-icon.pluto { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23999"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/></svg>'); }
+.dwarf-icon.eris { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23666"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/></svg>'); }
+.dwarf-icon.haumea { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23e6e6e6"/><path d="M50 30 L50 70" stroke="%23000" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23000" stroke-width="2"/><path d="M50 50 L55 55 L50 60 L45 55 Z" fill="%23000"/></svg>'); }
+.dwarf-icon.makemake { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23ccc"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/></svg>'); }
+
+.moon-icon.earth-moon { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23ccc"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/></svg>'); }
+.moon-icon.jupiter-io { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23ffd700"/><path d="M50 30 L50 70" stroke="%23000" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23000" stroke-width="2"/><circle cx="50" cy="50" r="10" fill="%23000"/></svg>'); }
+.moon-icon.jupiter-europa { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%2387ceeb"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/><path d="M50 50 L55 55 L50 60 L45 55 Z" fill="%23fff"/></svg>'); }
+.moon-icon.saturn-titan { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23666"/><path d="M50 30 L50 70" stroke="%23fff" stroke-width="2"/><path d="M30 50 L70 50" stroke="%23fff" stroke-width="2"/><path d="M50 50 L55 55 L50 60 L45 55 Z" fill="%23fff"/></svg>'); }
+
+.asteroid-icon, .comet-icon {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="%23888"/></svg>');
+}
+
+.comet-icon {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="%23888"/><path d="M50 10 L60 30 L90 30 L70 50 L90 70 L60 90 L50 50 L40 90 L10 70 L10 30 L30 30 Z" fill="%23fff"/></svg>');
+}
+
+.station-icon.skylab { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="30" y="20" width="40" height="60" fill="%23ff6b6b"/><rect x="35" y="25" width="30" height="55" fill="%23ff6b6b"/><rect x="35" y="25" width="30" height="5" fill="%23fff"/></svg>'); }
+.station-icon.mir { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="30" y="20" width="40" height="60" fill="%23ff9500"/><rect x="35" y="25" width="30" height="55" fill="%23ff9500"/><rect x="35" y="25" width="30" height="5" fill="%23fff"/><rect x="45" y="25" width="10" height="55" fill="%23ff9500"/></svg>'); }
+.station-icon.iss { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="30" y="20" width="40" height="60" fill="%23008080"/><rect x="35" y="25" width="30" height="55" fill="%23008080"/><rect x="35" y="25" width="30" height="5" fill="%23fff"/><rect x="45" y="25" width="10" height="55" fill="%23008080"/><rect x="35" y="35" width="20" height="10" fill="%23fff"/></svg>'); }
+
+@media (max-width: 768px) {
+    .planet-grid, .dwarf-planets-grid, .moon-grid {
+        grid-template-columns: 1fr;
     }
 }
