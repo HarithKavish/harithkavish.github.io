@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://harithkavish.github.io/</loc>
-    <lastmod>2025-10-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://harithkavish.com/</loc>
   </url>
   <url>
-    <loc>https://harithkavish.github.io/HarithKavish/</loc>
-    <lastmod>2025-10-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
+    <loc>https://harithkavish.com/products.html</loc>
   </url>
   <url>
-    <loc>https://harithkavish.github.io/chat/</loc>
-    <lastmod>2025-12-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://harithkavish.com/updates.html</loc>
   </url>
   <url>
-    <loc>https://harithkavish.github.io/AI-Chat/</loc>
-    <lastmod>2025-12-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://harithkavish.com/about-us.html</loc>
   </url>
   <url>
-    <loc>https://harithkavish.github.io/SkinNet-Analyzer/</loc>
-    <lastmod>2025-10-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://harithkavish.com/about-me.html</loc>
   </url>
   <url>
-    <loc>https://harithkavish.github.io/Multi-Object-Detection-using-YOLO/</loc>
-    <lastmod>2025-10-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://harithkavish.com/contact.html</loc>
+  </url>
+  <url>
+    <loc>https://harithkavish.com/sign-in.html</loc>
+  </url>
+  <url>
+    <loc>https://harithkavish.com/legal.html</loc>
+  </url>
+  <url>
+    <loc>https://harithkavish.com/status.html</loc>
+  </url>
+  <url>
+    <loc>https://harithkavish.com/account.html</loc>
+  </url>
+  <url>
+    <loc>https://harithkavish.com/dashboard.html</loc>
+  </url>
+  <url>
+    <loc>https://harithkavish.com/service-desk.html</loc>
   </url>
 </urlset>
