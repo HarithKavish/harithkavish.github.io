@@ -69,6 +69,57 @@ window.HarithSiteData = {
             ]
         }
     ],
+    ecosystem: [
+        {
+            slug: 'api',
+            name: 'API',
+            href: 'https://api.harithkavish.com',
+            status: 'Live',
+            summary: 'A directory of the APIs behind every service hosted on the ecosystem.'
+        },
+        {
+            slug: 'blog',
+            name: 'Blog',
+            href: 'https://blog.harithkavish.com',
+            status: 'Live',
+            summary: 'Pages where humans and agents can write, individually or together.'
+        },
+        {
+            slug: 'search',
+            name: 'Search',
+            href: 'https://search.harithkavish.com',
+            status: 'Live',
+            summary: 'A custom, minimalistic search engine.'
+        },
+        {
+            slug: 'sites',
+            name: 'Sites',
+            href: 'https://sites.harithkavish.com',
+            status: 'Live',
+            summary: 'Website hosting for humans and agents.'
+        },
+        {
+            slug: 'store',
+            name: 'Store',
+            href: 'https://store.harithkavish.com',
+            status: 'Planned',
+            summary: 'Where all the software products will be available.'
+        },
+        {
+            slug: 'vm',
+            name: 'VM',
+            href: 'https://vm.harithkavish.com',
+            status: 'Live',
+            summary: 'A GUI connector for CLI cloud VMs, like Oracle Cloud. Sign in with your own key to reach your own VM; the connection runs entirely locally.'
+        },
+        {
+            slug: 'vr',
+            name: 'VR',
+            href: 'https://vr.harithkavish.com',
+            status: 'Live',
+            summary: 'A mobile VR platform.'
+        }
+    ],
     updates: [
         {
             date: '2026-07-11',

@@ -165,6 +165,22 @@
         );
     }
 
+    function ecosystemCard(entry) {
+        return h(
+            'article',
+            { key: entry.slug, className: 'card ecosystem-card' },
+            h(
+                'div',
+                { className: 'card__topline' },
+                pill(entry.status, statusTone(entry.status)),
+                h('span', { className: 'card__route' }, `${entry.slug}.harithkavish.com`)
+            ),
+            h('h3', { className: 'card__title' }, entry.name),
+            h('p', { className: 'card__body' }, entry.summary),
+            cardLink(entry.href, `Visit ${entry.slug}.harithkavish.com`)
+        );
+    }
+
     function contactCard(channel) {
         return h(
             'article',
@@ -203,6 +219,12 @@
                 { className: 'section', id: 'products' },
                 sectionHeader('Products', 'The product catalog comes first.', 'Each product card is data-driven so new services can be added without redesigning the site.'),
                 h('div', { className: 'card-grid' }, data.products.map(productCard))
+            ),
+            h(
+                'section',
+                { className: 'section', id: 'ecosystem' },
+                sectionHeader('Ecosystem', 'A growing set of subdomains, each with one job.', 'Every subdomain is a focused, single-purpose service that shares the same design language and account layer.'),
+                h('div', { className: 'card-grid card-grid--four' }, data.ecosystem.map(ecosystemCard))
             ),
             h(
                 'section',
@@ -374,18 +396,8 @@
             h(
                 'section',
                 { className: 'section' },
-                sectionHeader(null, 'Ecosystem', 'The public site, account layer, dashboard, and future services should all feel like one system.'),
-                h(
-                    'ul',
-                    { className: 'principles-list principles-list--compact' },
-                    [
-                        'harithkavish.com as the public identity',
-                        'account.harithkavish.com for authentication and preferences',
-                        'dashboard.harithkavish.com for customer workspaces',
-                        'future-product.harithkavish.com for additional services',
-                        'future-service.harithkavish.com for support-oriented surfaces'
-                    ].map((point) => h('li', { key: point }, point))
-                )
+                sectionHeader(null, 'Ecosystem', 'The public site, account layer, dashboard, and every subdomain should all feel like one system.'),
+                h('div', { className: 'card-grid card-grid--four' }, data.ecosystem.map(ecosystemCard))
             )
         );
     }
