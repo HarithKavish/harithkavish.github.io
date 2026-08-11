@@ -34,6 +34,52 @@
         applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
     }
 
+    let mobileNavOpen = false;
+
+    function setMobileNavOpen(nextOpen) {
+        mobileNavOpen = nextOpen;
+        const nav = document.getElementById('primary-nav');
+        const toggle = document.querySelector('[data-nav-toggle]');
+        if (nav) {
+            nav.classList.toggle('is-open', mobileNavOpen);
+        }
+        if (toggle) {
+            toggle.classList.toggle('is-open', mobileNavOpen);
+            toggle.setAttribute('aria-expanded', String(mobileNavOpen));
+            toggle.setAttribute('aria-label', mobileNavOpen ? 'Close menu' : 'Open menu');
+        }
+    }
+
+    function toggleMobileNav() {
+        setMobileNavOpen(!mobileNavOpen);
+    }
+
+    function bindMobileNavEvents() {
+        document.addEventListener('click', (event) => {
+            if (!mobileNavOpen) {
+                return;
+            }
+            const nav = document.getElementById('primary-nav');
+            const toggle = document.querySelector('[data-nav-toggle]');
+            if ((nav && nav.contains(event.target)) || (toggle && toggle.contains(event.target))) {
+                return;
+            }
+            setMobileNavOpen(false);
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && mobileNavOpen) {
+                setMobileNavOpen(false);
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            if (mobileNavOpen && window.innerWidth > 760) {
+                setMobileNavOpen(false);
+            }
+        });
+    }
+
     function link(path) {
         return path.startsWith('http') ? path : `${rootUrl}${path}`;
     }
@@ -779,7 +825,7 @@
                         h(
                             'div',
                             { className: 'site-header__actions' },
-                            h('nav', { className: 'site-nav', 'aria-label': 'Primary' }, data.navigation.map(navItem)),
+                            h('nav', { className: 'site-nav', id: 'primary-nav', 'aria-label': 'Primary' }, data.navigation.map(navItem)),
                             h(
                                 'button',
                                 {
@@ -790,6 +836,25 @@
                                     'aria-label': currentTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
                                 },
                                 currentTheme === 'dark' ? 'Light mode' : 'Dark mode'
+                            ),
+                            h(
+                                'button',
+                                {
+                                    type: 'button',
+                                    className: 'nav-toggle',
+                                    'data-nav-toggle': 'true',
+                                    'aria-controls': 'primary-nav',
+                                    'aria-expanded': 'false',
+                                    'aria-label': 'Open menu',
+                                    onClick: toggleMobileNav
+                                },
+                                h(
+                                    'span',
+                                    { className: 'nav-toggle__bars', 'aria-hidden': 'true' },
+                                    h('span', { className: 'nav-toggle__bar' }),
+                                    h('span', { className: 'nav-toggle__bar' }),
+                                    h('span', { className: 'nav-toggle__bar' })
+                                )
                             )
                         )
                     )
@@ -810,4 +875,5 @@
     }
 
     renderApp();
+    bindMobileNavEvents();
 })();
