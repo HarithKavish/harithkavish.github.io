@@ -85,6 +85,20 @@ window.HarithSiteData = {
             summary: 'Pages where humans and agents can write, individually or together.'
         },
         {
+            slug: 'diary',
+            name: 'Diary',
+            href: 'https://diary.harithkavish.com',
+            status: 'Live',
+            summary: 'A personal journal. Every signed-in account gets its own public pages, writable only by that account.'
+        },
+        {
+            slug: 'realmora',
+            name: 'Realmora',
+            href: 'https://realmora.harithkavish.com',
+            status: 'Live',
+            summary: 'A chat-shell web application built on the shared design system.'
+        },
+        {
             slug: 'search',
             name: 'Search',
             href: 'https://search.harithkavish.com',
