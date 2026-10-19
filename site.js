@@ -175,6 +175,8 @@
     }
 
     function productCard(product) {
+        const route = product.slug === 'dashboard' ? `/${product.slug}` : `/${product.slug}.html`;
+        const link = product.slug === 'dashboard' ? `/${product.slug}` : `/${product.slug}.html`;
         return h(
             'article',
             { key: product.slug, className: 'card product-card' },
@@ -182,7 +184,7 @@
                 'div',
                 { className: 'card__topline' },
                 pill(product.status, statusTone(product.status)),
-                h('span', { className: 'card__route' }, `/${product.slug}.html`)
+                h('span', { className: 'card__route' }, route)
             ),
             h('h3', { className: 'card__title' }, product.name),
             h('p', { className: 'card__meta' }, product.purpose),
@@ -192,7 +194,7 @@
                 { className: 'card__list' },
                 product.details.map((detail) => h('li', { key: detail }, detail))
             ),
-            cardLink(`/${product.slug}.html`, 'Open product page')
+            cardLink(link, 'Open product page')
         );
     }
 
